@@ -1,0 +1,640 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>多人协同开发场景，如何做到高效发布 - 果粉圈</title>
+
+  
+    <meta name="description" content="微服务架构下，每个应用服务独立开发、独立发布，小步快跑，持续快速交付业务需求。多人协同开发同一个应用时，分支开发模式是一个适合的协同方案。该模式下一个需求或任务通常对应一个 feature 分支，多个需求一起合并到 release 分支进行集成测试验证并发布。期间可能遇到以下问题：  痛点 1：当开发同学领到一个需求时，怎么为这个需求快速地拉一个 feature 分支？ 痛点 2：当多个相关需求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多人协同开发场景，如何做到高效发布">
+<meta property="og:url" content="https://blog.g0f.cn/post/38427b86.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="微服务架构下，每个应用服务独立开发、独立发布，小步快跑，持续快速交付业务需求。多人协同开发同一个应用时，分支开发模式是一个适合的协同方案。该模式下一个需求或任务通常对应一个 feature 分支，多个需求一起合并到 release 分支进行集成测试验证并发布。期间可能遇到以下问题：  痛点 1：当开发同学领到一个需求时，怎么为这个需求快速地拉一个 feature 分支？ 痛点 2：当多个相关需求">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edd042cd5d864ab3af266624af0ade18~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=528&amp;s=258071&amp;e=png&amp;a=1&amp;b=e4e4e4">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ce2778567a1f473fad690e22b8ab41eb~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=398&amp;s=66829&amp;e=png&amp;a=1&amp;b=dbdbdb">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a8a11211506f40ceb2b3bd41b4eff52f~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=589312&amp;e=png&amp;b=989898">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2e93cc0868514daa9835d6815d01cf97~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=557443&amp;e=png&amp;b=999999">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/524bc871cd844514b61b4f2e022fee2b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=598025&amp;e=png&amp;b=fdfdfd">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/15c915b526d54002aedd7f09db1323de~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=622629&amp;e=png&amp;b=fcfcfc">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a99de7ade5b94262a047e2f16bb14c92~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=577098&amp;e=png&amp;b=999999">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/61c5c87411d94549a1d5ad23d34bf572~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=610008&amp;e=png&amp;b=999999">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4da3af724f564b5c922d6c1f1fbe4d5d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=623852&amp;e=png&amp;b=fcfcfc">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/68d8b63f18b24ab7858e54afcdc559ae~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=576537&amp;e=png&amp;b=999999">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a24fb303e9704557883848f0fe2a1ce1~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=623657&amp;e=png&amp;b=fdfdfd">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/72aa5b3b4a304acfb6ac73677541d122~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=628500&amp;e=png&amp;b=989898">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3b9368a2fd1b44fdb70c4550efb27394~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=632594&amp;e=png&amp;b=999898">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/91f4e501a0ec45c08ea1e2db6f195367~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=606127&amp;e=png&amp;b=999999">
+<meta property="article:published_time" content="2024-02-20T07:54:44.000Z">
+<meta property="article:modified_time" content="2024-02-20T07:54:44.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edd042cd5d864ab3af266624af0ade18~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=528&amp;s=258071&amp;e=png&amp;a=1&amp;b=e4e4e4">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-20T07:54:44.000Z">2024-02-20</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-20T07:54:44.000Z">2024-02-20</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>多人协同开发场景，如何做到高效发布</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<p>微服务架构下，每个应用服务独立开发、独立发布，小步快跑，持续快速交付业务需求。多人协同开发同一个应用时，分支开发模式是一个适合的协同方案。该模式下一个需求或任务通常对应一个 feature 分支，多个需求一起合并到 release 分支进行集成测试验证并发布。期间可能遇到以下问题：</p>
+<ul>
+<li>痛点 1：当开发同学领到一个需求时，怎么为这个需求快速地拉一个 feature 分支？</li>
+<li>痛点 2：当多个相关需求一起发布时，多个 feature 分支怎么高效自动化地合并到 release 分支？</li>
+<li>痛点 3：当其中一个 feature 分支没有经过测试验证时，怎么“阻止”它发布到生产环境避免漏测引起故障？</li>
+<li>痛点 4：当其中一个 feature 分支做了测试验证，但是发现有严重问题，怎样可以“退出”本次发布而不影响其他需求正常发布？</li>
+<li>痛点 5：当一个需求 feature 分支提交测试了、发布上线了，怎么自动、及时的更改相应需求状态，便于相关业务、产品、测试同学跟踪进度？</li>
+</ul>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edd042cd5d864ab3af266624af0ade18~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=528&amp;s=258071&amp;e=png&amp;a=1&amp;b=e4e4e4"></p>
+<h2>云效解决方案</h2>
+<p>云效应用交付平台 AppStack 提供的变更持续交付解决方案可以比较轻松地解决以上问题。在了解具体的使用前，我们先了解下 AppStack 中涉及的一些核心概念：</p>
+<ul>
+<li><strong>应用：</strong> 一个软件的最小发布单元，聚合代码、环境、版本等软件资产，以及研发流程定义。最小发布单元意味着无法解耦的一个或者多个服务的组合，这个服务组合会通过一个流程进行统一交付。</li>
+<li><strong>变更：</strong> 变更是对应用的一次特性改变（引入新的特性或改变已有特性），源于需求，终于交付。通常一个需求或任务对应一个变更，对应一个 feature 分支。</li>
+<li><strong>研发流程：</strong> 应用完成一次变更的过程和约束，包括开发、测试、发布上线的完整流程，由多个阶段的多条流水线承载，依次在不同环境进行测试、构建、部署，最终审批通过后发布生产环境。</li>
+</ul>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ce2778567a1f473fad690e22b8ab41eb~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=398&amp;s=66829&amp;e=png&amp;a=1&amp;b=dbdbdb"></p>
+<p>下面，我们以一个 spring-boot 应用的“图书馆管理系统”为例，演示如何在云效应用交付平台 AppStack 中开发“图书借阅功能”、“图书归还功能”、“图书到期续借功能”三个需求，并一起发布上线。**过程中，前述的 5 个痛点都将得到解决。</p>
+<h3>作为应用负责人</h3>
+<p>作为应用负责人，需要编排应用构建、部署流程，通过流水线工具自动化起来；需要定义应用生产发布准则，来规范应用研发流程降低发布风险。</p>
+<h4>新建应用</h4>
+<p>新建应用，输入应用名称，应用模板选择「变更持续交付模式」。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a8a11211506f40ceb2b3bd41b4eff52f~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=589312&amp;e=png&amp;b=989898"></p>
+<h4>代码源配置</h4>
+<p>应用设置，配置应用代码源，设置默认分支。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2e93cc0868514daa9835d6815d01cf97~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=557443&amp;e=png&amp;b=999999"></p>
+<h4>配置研发流程</h4>
+<p>本应用的研发流程可以分为测试阶段、预发阶段、生产阶段：</p>
+<ul>
+<li>测试阶段：由 Java 单元测试、Java 代码扫描、构建、部署测试环境等步骤组成。用于日常测试验证。</li>
+<li>预发阶段：由构建、部署预发环境等步骤组成。用于预发布验证。</li>
+<li>生产阶段：由构建、生产发布审批（人工卡点）、部署生产环境、合并主干、关闭变更等步骤组成。</li>
+<li>生产发布审批通过后，部署生产环境。</li>
+<li>生产环境部署验证通过后，表明本次发布成功，可以将发布 release 分支合并回主干 master，并自动关闭相关变更。</li>
+</ul>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/524bc871cd844514b61b4f2e022fee2b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=598025&amp;e=png&amp;b=fdfdfd"></p>
+<h4>设置变更集成方式和准入规则</h4>
+<p>本示例各阶段都选择「添加变更集成」方式，在运行阶段流水线时可以选择多个变更分支集成到 release 分支进行构建部署验证。</p>
+<ul>
+<li>测试阶段：无准入规则。</li>
+<li>预发阶段：配置准入规则为：「测试阶段-执行结果」等于「成功」，避免没有经过测试验证的分支直接进入预发。</li>
+<li>生产阶段：配置准入规则为：「测试阶段-执行结果」等于「成功」，「预发阶段-执行结果」等于「成功」，避免没有经过预发验证的分支直接进入生产阶段。</li>
+</ul>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/15c915b526d54002aedd7f09db1323de~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=622629&amp;e=png&amp;b=fcfcfc"></p>
+<h2>作为一线开发</h2>
+<p>“需求 1：图书借阅功能”、“需求 2：图书归还功能”、“需求 3：图书到期续借功能”三个需求分别分配给开发小张、小明、小强开发。</p>
+<h4>第 1 步，为一个需求新建一个变，更拉一个 feature 分支</h4>
+<p>小张创建一个变更「变更 1-实现图书借阅功能」，选择新建分支输入 feature001，则可自动为该需求拉取一个分支（解决上述痛点 1）。依次类推，小明创建一个变更「变更 2-实现图书归还功能」，自动新建分支 feature002。小强创建一个变更「变更 3-实现到期续借功能」，自动新建分支 feature003。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a99de7ade5b94262a047e2f16bb14c92~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=577098&amp;e=png&amp;b=999999"></p>
+<h4>第 2 步，开发代码提交到 feature 分支</h4>
+<p>小张开发好图书借阅相关代码后，提交代码到 feature001 上，小明开发图书归还相关代码后，提交代码到 feature002 分支上。</p>
+<h4>第 3 步，选择变更集成，部署测试环境验证</h4>
+<p>小张和小明，一借一还，需要一起部署到测试环境进行联调验证。进入应用研发流程页，选择变更 1 和变更 2 一起集成测试，云效会自动将 feature001 和 feature002 合并到自动生成的 release/xxx_n 分支（解决上述痛点 2），使用该 release 分支做构建，并部署环境。环境部署成功即可进行测试验证。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/61c5c87411d94549a1d5ad23d34bf572~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=610008&amp;e=png&amp;b=999999"></p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4da3af724f564b5c922d6c1f1fbe4d5d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=623852&amp;e=png&amp;b=fcfcfc"></p>
+<h4>第 4 步，提交变更进行预发布</h4>
+<p>测试环境验证通过，进入「预发阶段」，选择变更 1 和变更 2 进行集成，勾选自动合并上一阶段集成的分支，会自动生成新的 release/xxx_m 集成分支，自动合并上一阶段 feature001、feature002、release/xxx_n 分支，使用新的 release/xxx_m 分支构建并部署预发环境。预发部署成功后即可进行预发验证。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/68d8b63f18b24ab7858e54afcdc559ae~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=576537&amp;e=png&amp;b=999999"></p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a24fb303e9704557883848f0fe2a1ce1~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=586&amp;s=623657&amp;e=png&amp;b=fdfdfd"></p>
+<p>此时若在预发阶段选择变更 1、变更 2、变更 3一起集成，则经过变更准入卡点时会校验失败，因为变更 3 没有在测试环境部署验证过，即保证了没有经过测试验证的需求不可发布（解决上述痛点 3）。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/72aa5b3b4a304acfb6ac73677541d122~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=628500&amp;e=png&amp;b=989898"></p>
+<p>变更 3 因没有测试验证通过，不满足发布条件，团队本次决定图书续借功能不上线，只上线变更 1 和变更 2，则可再次运行预发阶段流水线，将变更 3 踢出集成区，退出本次发布（解决上述痛点 4）。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3b9368a2fd1b44fdb70c4550efb27394~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=632594&amp;e=png&amp;b=999898"></p>
+<h4>第 5 步，提交变更进行生产发布</h4>
+<p>预发验证通过后，即可进入生成发布阶段。选择待发布的变更 1 和变更 2，运行生产流水线，发布审批通过后，即可部署生产环境。生产环境部署完成，可配置自动关闭变更，并将发布 release/xxx_k 分支合并入主干 master，至此即完成了一次完整的需求发布上线。</p>
+<h3>作为业务/产品同学</h3>
+<p>变更发布完成了，我作为产品同学怎么知道需求发布了呢？云效 AppStack 的变更和云效项目项目协作 Projex 中的工作项做了状态联动，支持变更发布完成后自动将需求状态置为「已发布」，这样产品同学可及时看到需求进展（解决上述痛点 5）。</p>
+<p>具体配置方式如下：进入云效 Projex 项目-项目设置-自动化规则，选择「支持工作项与变更状态的联动」模板，配置当产品类需求关联的全部变更状态为「已发布」时，将需求状态置为「已完成」。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/91f4e501a0ec45c08ea1e2db6f195367~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=585&amp;s=606127&amp;e=png&amp;b=999999"></p>
+<p>至此，本方案完成了从应用配置、到需求开发、多变更集成测试、发布上线的完整流程，满足了变更分支自动创建、变更分支自动合并集成测试、发布准入卡点控制等诉求，支持变更关联业务需求和状态联动，完整追溯需求的全生命周期流程。</p>
+<blockquote>
+<p><strong>🔔 注：</strong> 云效 AppStack 中的变更持续交付模式为高级版付费功能，加入钉钉群：<em>42574350</em> 可申请免费试用体验。</p>
+</blockquote>
+<p>点击<a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.aliyun.com/product/yunxiao/appstack">此处</a>，了解更多。</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="多人协同开发场景，如何做到高效发布" href="https://juejin.cn/post/7337302010068058138" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">多人协同开发场景，如何做到高效发布</span><span class="cap link footnote">https://juejin.cn/post/7337302010068058138</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/38427b86.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/38427b86.html&title=多人协同开发场景，如何做到高效发布 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edd042cd5d864ab3af266624af0ade18~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&h=528&s=258071&e=png&a=1&b=e4e4e4&summary=
+微服务架构下，每个应用服务独立开发、独立发布，小步快跑，持续快速交付业务需求。多人协同开发同一个应用时，分支开发模式是一个适合的协同方案。该模式下一个需求或任务通常对应一个 feature 分支，多个需求一起合并到 release ..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=多人协同开发场景，如何做到高效发布 - 果粉圈&amp;body=https://blog.g0f.cn/post/38427b86.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/38427b86.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/4403381a.html">字节跳动推出中文版“Sora”？回应来了</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/f0562de9.html">已有近 3 年历史，支付宝 App 10.5.66 版本“长辈模式”悄悄淡出</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">云效解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">作为应用负责人</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">新建应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">代码源配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">配置研发流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">设置变更集成方式和准入规则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">作为一线开发</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">第 1 步，为一个需求新建一个变，更拉一个 feature 分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">第 2 步，开发代码提交到 feature 分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">第 3 步，选择变更集成，部署测试环境验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">第 4 步，提交变更进行预发布</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">第 5 步，提交变更进行生产发布</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">作为业务&#x2F;产品同学</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

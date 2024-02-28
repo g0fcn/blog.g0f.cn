@@ -1,0 +1,883 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC - 果粉圈</title>
+
+  
+    <meta name="description" content="EEC介绍   EEC（Excel Export Core）是一款轻量且高效的Excel读写工具，它具有包体小、接入代码量少和运行时消耗资源少等优点 EEC的设计初衷是为了解决Apache POI内存高、速度慢且API臃肿的诟病。EEC的底层并不依赖POI包，所有的底层代码均自己实现，事实上EEC仅依赖dom4j和slf4j，前者用于小文件xml读取，后者统一日志接口。 EEC在JVM参数-X">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC">
+<meta property="og:url" content="https://blog.g0f.cn/post/5052d418.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="EEC介绍   EEC（Excel Export Core）是一款轻量且高效的Excel读写工具，它具有包体小、接入代码量少和运行时消耗资源少等优点 EEC的设计初衷是为了解决Apache POI内存高、速度慢且API臃肿的诟病。EEC的底层并不依赖POI包，所有的底层代码均自己实现，事实上EEC仅依赖dom4j和slf4j，前者用于小文件xml读取，后者统一日志接口。 EEC在JVM参数-X">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=http://img.shields.io/badge/release-0.5.12-blue.svg?style=flat">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/write_read_100w.jpg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/dynamic_style.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/auto_width.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/multi-headers.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/report1.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/report3.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/preset_effect.jpg">
+<meta property="article:published_time" content="2024-02-18T02:24:01.000Z">
+<meta property="article:modified_time" content="2024-02-18T02:24:01.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="开源中国">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://gitee.com&url=http://img.shields.io/badge/release-0.5.12-blue.svg?style=flat">
+  
+  
+  
+  <meta name="keywords" content="媒体,开源中国">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD/">开源中国</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-18T02:24:01.000Z">2024-02-18</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-18T02:24:01.000Z">2024-02-18</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<h1>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#eec%E4%BB%8B%E7%BB%8D" id="user-content-eec介绍"></a>EEC介绍</h1>
+<p><a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Freleases" rel="external nofollow noopener noreferrer" target="_blank"><img class="lazy" alt="Release" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=http://img.shields.io/badge/release-0.5.12-blue.svg?style=flat"></a> <a href="https://gitee.com/link?target=http%3A%2F%2Fwww.apache.org%2Flicenses%2FLICENSE-2.0" rel="external nofollow noopener noreferrer" target="_blank"><img class="lazy" alt="License" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat"></a></p>
+<p>EEC（Excel Export Core）是一款轻量且高效的Excel读写工具，它具有包体小、接入代码量少和运行时消耗资源少等优点</p>
+<p>EEC的设计初衷是为了解决Apache POI内存高、速度慢且API臃肿的诟病。EEC的底层并不依赖POI包，所有的底层代码均自己实现，事实上EEC仅依赖<code>dom4j</code>和<code>slf4j</code>，前者用于小文件xml读取，后者统一日志接口。</p>
+<p>EEC在JVM参数<code>-Xmx10m -Xms10m</code>下读写100w行x29列内存使用截图，下载 <a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec-benchmark" rel="external nofollow noopener noreferrer" target="_blank">eec-benchmark</a> 项目进行性能测试</p>
+<p><img class="lazy" alt="write_read 100w" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/write_read_100w.jpg"></p>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#%E7%8E%B0%E7%8A%B6" id="user-content-现状"></a>现状</h2>
+<p>EEC支持大多数日常应用场景，最擅长的是表格处理，比如转对象数组、转Map数组、内容检查等导入/导出常见功能。</p>
+<p>目前已实现worksheet类型有六种，也可以继承已有<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/Sheet.java">Worksheet</a>来实现自定义数据源</p>
+<ul>
+<li>
+<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/ListSheet.java">ListSheet</a> // 对象数组</li>
+<li>
+<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/ListMapSheet.java">ListMapSheet</a> // Map数组</li>
+<li>
+<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/StatementSheet.java">StatementSheet</a> // PreparedStatement</li>
+<li>
+<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/ResultSetSheet.java">ResultSetSheet</a> // ResultSet支持(多用于存储过程)</li>
+<li>
+<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/EmptySheet.java">EmptySheet</a> // 空worksheet</li>
+<li>
+<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/src/main/java/org/ttzero/excel/entity/CSVSheet.java">CSVSheet</a> // 支持csv与xlsx互转</li>
+</ul>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD" id="user-content-主要功能"></a>主要功能</h2>
+<ol>
+<li>支持<strong>大数据量导出</strong>，行数无上限，超过单个Sheet上限会自动分页</li>
+<li>
+<strong>超低内存</strong>，无论是xlsx还是xls格式，大部分情况下可以在10MB以内完成十万级甚至百万级行数据读写</li>
+<li>支持动态样式，如导出库存时将低于预警阈值的行背景标黄显示</li>
+<li>支持一键设置斑马线，利于阅读</li>
+<li><strong>自适应列宽对中文更精准</strong></li>
+<li>采用Stream流读文件，按需加载不会将整个文件读入到内存</li>
+<li>支持Iterator和Stream+Lambda读文件，你可以像操作集合类一样操作Excel</li>
+<li>支持csv与excel格式相互转换</li>
+</ol>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#wiki" id="user-content-wiki"></a>WIKI</h2>
+<p>阅读<a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fwiki" rel="external nofollow noopener noreferrer" target="_blank">WIKI</a> 了解更多用法</p>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#gitee" id="user-content-gitee"></a>Gitee</h2>
+<p>国内用户可访问<a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec">Gitee</a>， 在Gitee提issue开发者也同样会及时回复</p>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" id="user-content-使用方法"></a>使用方法</h2>
+<p>pom.xml添加</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="nt">&lt;dependency&gt;</span></span>
+<span class="line" id="LC2">    <span class="nt">&lt;groupId&gt;</span>org.ttzero<span class="nt">&lt;/groupId&gt;</span></span>
+<span class="line" id="LC3">    <span class="nt">&lt;artifactId&gt;</span>eec<span class="nt">&lt;/artifactId&gt;</span></span>
+<span class="line" id="LC4">    <span class="nt">&lt;version&gt;</span>$&#123;eec.version&#125;<span class="nt">&lt;/version&gt;</span></span>
+<span class="line" id="LC5"><span class="nt">&lt;/dependency&gt;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#%E7%A4%BA%E4%BE%8B" id="user-content-示例"></a>示例</h2>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#1-%E7%AE%80%E5%8D%95%E5%AF%BC%E5%87%BA" id="user-content-1-简单导出"></a>1. 简单导出</h4>
+<p>对象数组导出时可以在对象上使用注解<code>@ExcelColumn("列名")</code>来设置excel头部信息</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"渠道ID"</span><span class="o">)</span></span>
+<span class="line" id="LC2"><span class="kd">private</span> <span class="kt">int</span> <span class="n">channelId</span><span class="o">;</span></span>
+<span class="line" id="LC3"></span>
+<span class="line" id="LC4"><span class="nd">@ExcelColumn</span></span>
+<span class="line" id="LC5"><span class="kd">private</span> <span class="nc">String</span> <span class="n">account</span><span class="o">;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<p>默认情况下导出的列顺序与字段在对象中的定义顺序一致，可以通过指定<code>colIndex</code>或指定Column数组来重置顺序。</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="c1">// 创建一个名为"test object"的excel文件</span></span>
+<span class="line" id="LC2"><span class="k">new</span> <span class="nf">Workbook</span><span class="o">(</span><span class="s">"test object"</span><span class="o">)</span></span>
+<span class="line" id="LC3"></span>
+<span class="line" id="LC4">    <span class="c1">// 添加"工作表"并指定导出数据，可以通过addSheet添加多个worksheet</span></span>
+<span class="line" id="LC5">    <span class="o">.</span><span class="na">addSheet</span><span class="o">(</span><span class="k">new</span> <span class="nc">ListSheet</span><span class="o">&lt;&gt;(</span><span class="s">"学生信息"</span><span class="o">,</span> <span class="n">students</span><span class="o">))</span></span>
+<span class="line" id="LC6"></span>
+<span class="line" id="LC7">    <span class="c1">// 指定输出位置，如果做文件导出可以直接输出到`respone.getOutputStream()`</span></span>
+<span class="line" id="LC8">    <span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"f:/excel"</span><span class="o">));</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#2-%E5%8A%A8%E6%80%81%E6%A0%B7%E5%BC%8F" id="user-content-2-动态样式"></a>2. 动态样式</h4>
+<p>动态样式和数据转换都是使用<code>@FunctionalInterface</code>实现，通常用于<strong>突出或高亮</strong>显示一些重要的单元格或行，下面展示如何将低下60分的成绩输出为"不合格"并将整行标为橙色</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="k">new</span> <span class="nc">Workbook</span><span class="o">(</span><span class="s">"2021小五班期未考试成绩"</span><span class="o">)</span></span>
+<span class="line" id="LC2">    <span class="o">.</span><span class="na">addSheet</span><span class="o">(</span><span class="k">new</span> <span class="nc">ListSheet</span><span class="o">&lt;&gt;(</span><span class="s">"期末成绩"</span><span class="o">,</span> <span class="n">students</span></span>
+<span class="line" id="LC3">         <span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"学号"</span><span class="o">,</span> <span class="s">"id"</span><span class="o">,</span> <span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">)</span></span>
+<span class="line" id="LC4">         <span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"姓名"</span><span class="o">,</span> <span class="s">"name"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">)</span></span>
+<span class="line" id="LC5">         <span class="o">,</span> <span class="k">new</span> <span class="nc">Column</span><span class="o">(</span><span class="s">"成绩"</span><span class="o">,</span> <span class="s">"score"</span><span class="o">,</span> <span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">n</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">60</span> <span class="o">?</span> <span class="s">"不合格"</span> <span class="o">:</span> <span class="n">n</span><span class="o">)</span></span>
+<span class="line" id="LC6">    <span class="o">).</span><span class="na">setStyleProcessor</span><span class="o">((</span><span class="n">o</span><span class="o">,</span> <span class="n">style</span><span class="o">,</span> <span class="n">sst</span><span class="o">)</span> <span class="o">-&gt;</span> </span>
+<span class="line" id="LC7">            <span class="n">o</span><span class="o">.</span><span class="na">getScore</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">60</span> <span class="o">?</span> <span class="n">sst</span><span class="o">.</span><span class="na">modifyFill</span><span class="o">(</span><span class="n">style</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Fill</span><span class="o">(</span><span class="nc">PatternType</span><span class="o">.</span><span class="na">solid</span><span class="o">,</span> <span class="nc">Color</span><span class="o">.</span><span class="na">orange</span><span class="o">))</span> <span class="o">:</span> <span class="n">style</span><span class="o">)</span></span>
+<span class="line" id="LC8">    <span class="o">).</span><span class="na">writeTo</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"f:/excel"</span><span class="o">));</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<p>效果如下图</p>
+<p><img class="lazy" alt="期未成绩" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/dynamic_style.png"></p>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#3-%E8%87%AA%E9%80%82%E5%BA%94%E5%88%97%E5%AE%BD%E6%9B%B4%E7%B2%BE%E5%87%86" id="user-content-3-自适应列宽更精准"></a>3. 自适应列宽更精准</h4>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="c1">// 测试类</span></span>
+<span class="line" id="LC2"><span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">WidthTestItem</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC3">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"整型"</span><span class="o">,</span> <span class="n">format</span> <span class="o">=</span> <span class="s">"#,##0_);[Red]-#,##0_);0_)"</span><span class="o">)</span></span>
+<span class="line" id="LC4">    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">nv</span><span class="o">;</span></span>
+<span class="line" id="LC5">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"字符串(en)"</span><span class="o">)</span></span>
+<span class="line" id="LC6">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">sen</span><span class="o">;</span></span>
+<span class="line" id="LC7">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"字符串(中文)"</span><span class="o">)</span></span>
+<span class="line" id="LC8">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">scn</span><span class="o">;</span></span>
+<span class="line" id="LC9">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"日期时间"</span><span class="o">,</span> <span class="n">format</span> <span class="o">=</span> <span class="s">"yyyy-mm-dd hh:mm:ss"</span><span class="o">)</span></span>
+<span class="line" id="LC10">    <span class="kd">private</span> <span class="nc">Timestamp</span> <span class="n">iv</span><span class="o">;</span></span>
+<span class="line" id="LC11"><span class="o">&#125;</span></span>
+<span class="line" id="LC12"></span>
+<span class="line" id="LC13"><span class="k">new</span> <span class="nf">Workbook</span><span class="o">(</span><span class="s">"Auto Width Test"</span><span class="o">)</span></span>
+<span class="line" id="LC14">    <span class="o">.</span><span class="na">setAutoSize</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="c1">// &lt;- 自适应列宽</span></span>
+<span class="line" id="LC15">    <span class="o">.</span><span class="na">addSheet</span><span class="o">(</span><span class="k">new</span> <span class="nc">ListSheet</span><span class="o">&lt;&gt;(</span><span class="n">randomTestData</span><span class="o">()))</span></span>
+<span class="line" id="LC16">    <span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"f:/excel"</span><span class="o">));</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<p><img class="lazy" alt="自动列宽" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/auto_width.png"></p>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#4-%E6%94%AF%E6%8C%81%E5%A4%9A%E8%A1%8C%E8%A1%A8%E5%A4%B4" id="user-content-4-支持多行表头"></a>4. 支持多行表头</h4>
+<p>EEC使用多个ExcelColumn注解来实现多级表头，名称一样的行或列将自动合并</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"> <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">RepeatableEntry</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC2">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"运单号"</span><span class="o">)</span></span>
+<span class="line" id="LC3">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">orderNo</span><span class="o">;</span></span>
+<span class="line" id="LC4">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"收件地址"</span><span class="o">)</span></span>
+<span class="line" id="LC5">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"省"</span><span class="o">)</span></span>
+<span class="line" id="LC6">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">rProvince</span><span class="o">;</span></span>
+<span class="line" id="LC7">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"收件地址"</span><span class="o">)</span></span>
+<span class="line" id="LC8">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"市"</span><span class="o">)</span></span>
+<span class="line" id="LC9">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">rCity</span><span class="o">;</span></span>
+<span class="line" id="LC10">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"收件地址"</span><span class="o">)</span></span>
+<span class="line" id="LC11">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"详细地址"</span><span class="o">)</span></span>
+<span class="line" id="LC12">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">rDetail</span><span class="o">;</span></span>
+<span class="line" id="LC13">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"收件人"</span><span class="o">)</span></span>
+<span class="line" id="LC14">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">recipient</span><span class="o">;</span></span>
+<span class="line" id="LC15">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"寄件地址"</span><span class="o">)</span></span>
+<span class="line" id="LC16">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"省"</span><span class="o">)</span></span>
+<span class="line" id="LC17">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">sProvince</span><span class="o">;</span></span>
+<span class="line" id="LC18">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"寄件地址"</span><span class="o">)</span></span>
+<span class="line" id="LC19">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"市"</span><span class="o">)</span></span>
+<span class="line" id="LC20">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">sCity</span><span class="o">;</span></span>
+<span class="line" id="LC21">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"寄件地址"</span><span class="o">)</span></span>
+<span class="line" id="LC22">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"详细地址"</span><span class="o">)</span></span>
+<span class="line" id="LC23">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">sDetail</span><span class="o">;</span></span>
+<span class="line" id="LC24">    <span class="nd">@ExcelColumn</span><span class="o">(</span><span class="s">"寄件人"</span><span class="o">)</span></span>
+<span class="line" id="LC25">    <span class="kd">private</span> <span class="nc">String</span> <span class="n">sender</span><span class="o">;</span></span>
+<span class="line" id="LC26"><span class="o">&#125;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<p><img class="lazy" alt="多行表头" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/multi-headers.png"></p>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#5-%E6%8A%A5%E8%A1%A8%E8%BD%BB%E6%9D%BE%E5%88%B6%E4%BD%9C" id="user-content-5-报表轻松制作"></a>5. 报表轻松制作</h4>
+<p>现在使用普通的ListSheet就可以导出漂亮的报表。示例请跳转到 <a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fwiki%2F%25E6%258A%25A5%25E8%25A1%25A8%25E7%25B1%25BB%25E5%25AF%25BC%25E5%2587%25BA%25E6%25A0%25B7%25E5%25BC%258F%25E7%25A4%25BA%25E4%25BE%258B" rel="external nofollow noopener noreferrer" target="_blank">WIKI</a></p>
+<p>记帐类</p>
+<p><img class="lazy" alt="报表1" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/report1.png"></p>
+<p>统计类</p>
+<p><img class="lazy" alt="报表2" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/report3.png"></p>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#6-%E6%94%AF%E6%8C%8128%E7%A7%8D%E9%A2%84%E8%AE%BE%E5%9B%BE%E7%89%87%E6%A0%B7%E5%BC%8F" id="user-content-6-支持28种预设图片样式"></a>6. 支持28种预设图片样式</h4>
+<p>导出图片时可以设置图片样式使其更美观，关于图片样式请参考<a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fwiki%2F1-%25E5%25AF%25BC%25E5%2587%25BAExcel%23%25E5%25AF%25BC%25E5%2587%25BA%25E5%259B%25BE%25E7%2589%2587" rel="external nofollow noopener noreferrer" target="_blank">1-导出Excel#导出图片</a></p>
+<p><img class="lazy" alt="effect" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://gitee.com&url=https://gitee.com/wangguanquan/eec/raw/master/images/preset_effect.jpg"></p>
+<h3>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#%E8%AF%BB%E5%8F%96%E7%A4%BA%E4%BE%8B" id="user-content-读取示例"></a>读取示例</h3>
+<p>EEC使用<code>ExcelReader#read</code>静态方法读文件，因其支持标准Stream所以可以直接使用<code>map</code>、<code>filter</code>和<code>collect</code>等JDK内置函数，读取Excel就像操作集合类一样简单，极大降低学习成本。</p>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#1-%E4%BD%BF%E7%94%A8stream" id="user-content-1-使用stream"></a>1. 使用Stream</h4>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="k">try</span> <span class="o">(</span><span class="nc">ExcelReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="nc">ExcelReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"./用户注册.xlsx"</span><span class="o">)))</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC2">    <span class="c1">// 读取所有worksheet并输出</span></span>
+<span class="line" id="LC3">    <span class="n">reader</span><span class="o">.</span><span class="na">sheets</span><span class="o">().</span><span class="na">flatMap</span><span class="o">(</span><span class="nl">Sheet:</span><span class="o">:</span><span class="n">rows</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span></span>
+<span class="line" id="LC4"><span class="o">&#125;</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC5">    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span></span>
+<span class="line" id="LC6"><span class="o">&#125;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#2-%E8%AF%BB%E5%85%A5%E5%88%B0%E6%95%B0%E7%BB%84%E6%88%96list%E4%B8%AD" id="user-content-2-读入到数组或list中"></a>2. 读入到数组或List中</h4>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="k">try</span> <span class="o">(</span><span class="nc">ExcelReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="nc">ExcelReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"./User.xlsx"</span><span class="o">)))</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC2">    <span class="c1">// 读取第1个Sheet页</span></span>
+<span class="line" id="LC3">    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">sheet</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span></span>
+<span class="line" id="LC4">        <span class="c1">// 指定第6行为表头，前5行为概要信息</span></span>
+<span class="line" id="LC5">        <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="mi">6</span><span class="o">)</span></span>
+<span class="line" id="LC6">        <span class="c1">// 读取数据行</span></span>
+<span class="line" id="LC7">        <span class="o">.</span><span class="na">rows</span><span class="o">()</span></span>
+<span class="line" id="LC8">        <span class="c1">// 将每行数据转换为User象</span></span>
+<span class="line" id="LC9">        <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">row</span> <span class="o">-&gt;</span> <span class="n">row</span><span class="o">.</span><span class="na">to</span><span class="o">(</span><span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">))</span></span>
+<span class="line" id="LC10">        <span class="c1">// 收集为List或数组进行后续处理</span></span>
+<span class="line" id="LC11">        <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span></span>
+<span class="line" id="LC12"><span class="o">&#125;</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC13">    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span></span>
+<span class="line" id="LC14"><span class="o">&#125;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#3-%E8%BF%87%E6%BB%A4%E5%92%8C%E8%81%9A%E5%90%88" id="user-content-3-过滤和聚合"></a>3. 过滤和聚合</h4>
+<p>EEC支持Stream的大部分功能，以下代码展示过滤平台为"iOS"的注册用户</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="n">reader</span><span class="o">.</span><span class="na">sheet</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">header</span><span class="o">(</span><span class="mi">6</span><span class="o">)</span></span>
+<span class="line" id="LC2">    <span class="o">.</span><span class="na">rows</span><span class="o">()</span></span>
+<span class="line" id="LC3">    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">row</span> <span class="o">-&gt;</span> <span class="s">"iOS"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">row</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"platform"</span><span class="o">)))</span> <span class="c1">// 过滤平台为"iOS"的用户</span></span>
+<span class="line" id="LC4">    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">row</span> <span class="o">-&gt;</span> <span class="n">row</span><span class="o">.</span><span class="na">to</span><span class="o">(</span><span class="nc">Regist</span><span class="o">.</span><span class="na">class</span><span class="o">))</span></span>
+<span class="line" id="LC5">    <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">());</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<h4>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#4-%E5%A4%9A%E7%BA%A7%E8%A1%A8%E5%A4%B4%E8%AF%BB%E5%8F%96" id="user-content-4-多级表头读取"></a>4. 多级表头读取</h4>
+<p>多级表头可以使用<code>header</code>方法来指定表头所在的多个行号</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="n">reader</span><span class="o">.</span><span class="na">sheet</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span></span>
+<span class="line" id="LC2">    <span class="o">.</span><span class="na">header</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span> <span class="c1">// &lt;- 指定第1、2行均为表头</span></span>
+<span class="line" id="LC3">    <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">Row:</span><span class="o">:</span><span class="n">toMap</span><span class="o">)</span> <span class="c1">// &lt;- Row 转 Map</span></span>
+<span class="line" id="LC4">    <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">)</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<p>多级表头将以<code>A1:A2:A3</code>这种格式进行纵向拼接，像上面第4个示例中的运单数据读取结果将以<code>运单号</code>，<code>收件地址:省</code>，<code>收件地址:市</code>呈现，这样就可以解决出现两个<code>省</code>、<code>市</code>导致错乱的问题</p>
+<p>更多关于多表头使用方法可以参考 <a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fwiki%2F%25E5%25A6%2582%25E4%25BD%2595%25E8%25AE%25BE%25E7%25BD%25AE%25E5%25A4%259A%25E8%25A1%258C%25E8%25A1%25A8%25E5%25A4%25B4%23%25E8%25AF%25BB%25E5%258F%2596%25E5%25B8%25A6%25E5%25A4%259A%25E8%25A1%258C%25E8%25A1%25A8%25E5%25A4%25B4%25E7%259A%2584%25E6%2596%2587%25E4%25BB%25B6" rel="external nofollow noopener noreferrer" target="_blank">WIKI</a></p>
+<h3>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#xls%E6%A0%BC%E5%BC%8F%E6%94%AF%E6%8C%81" id="user-content-xls格式支持"></a>xls格式支持</h3>
+<p>pom.xml添加如下依赖，添加好后即完成了xls的兼容，是的！你不需要为xls格式添加任何一行代码。</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="nt">&lt;dependency&gt;</span></span>
+<span class="line" id="LC2">    <span class="nt">&lt;groupId&gt;</span>org.ttzero<span class="nt">&lt;/groupId&gt;</span></span>
+<span class="line" id="LC3">    <span class="nt">&lt;artifactId&gt;</span>eec-e3-support<span class="nt">&lt;/artifactId&gt;</span></span>
+<span class="line" id="LC4">    <span class="nt">&lt;version&gt;</span>$&#123;eec-e3-support.version&#125;<span class="nt">&lt;/version&gt;</span></span>
+<span class="line" id="LC5"><span class="nt">&lt;/dependency&gt;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<p>读取xls的方法与xlsx完全一样，外部不需要判断是哪种格式，EEC为其提供了完全一样的接口，内部会根据文件头去判断具体类型，这种方式比简单判断文件后缀准确得多。</p>
+<p>两个工具的兼容性 <a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fwiki%2FEEC%25E4%25B8%258EE3-support%25E5%2585%25BC%25E5%25AE%25B9%25E6%2580%25A7%25E5%25AF%25B9%25E7%2585%25A7%25E8%25A1%25A8" rel="external nofollow noopener noreferrer" target="_blank">参考此表</a></p>
+<h3>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#csv%E4%B8%8Eexcel%E6%A0%BC%E5%BC%8F%E4%BA%92%E8%BD%AC" id="user-content-csv与excel格式互转"></a>CSV与Excel格式互转</h3>
+<ul>
+<li>CSV =&gt; Excel：向Workbook中添加一个<code>CSVSheet</code>工作表</li>
+<li>Excel =&gt; CSV：读Excel时调用<code>saveAsCSV</code>另存为csv格式</li>
+</ul>
+<p>代码示例</p>
+<div class="white"><div class="highlight markdown-code-block">
+<pre><span class="line" id="LC1"><span class="c1">// 直接保存为csv生成测试文件，对于数据量较多的场合也可以使用#more方法分批获取数据</span></span>
+<span class="line" id="LC2"><span class="k">new</span> <span class="nf">Workbook</span><span class="o">()</span></span>
+<span class="line" id="LC3">    <span class="o">.</span><span class="na">addSheet</span><span class="o">(</span><span class="n">createTestData</span><span class="o">())</span></span>
+<span class="line" id="LC4">    <span class="o">.</span><span class="na">saveAsCSV</span><span class="o">()</span> <span class="c1">// 指定输出格式为csv</span></span>
+<span class="line" id="LC5">    <span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"d:\\abc.csv"</span><span class="o">));</span></span>
+<span class="line" id="LC6"></span>
+<span class="line" id="LC7"><span class="c1">// CSV转Excel</span></span>
+<span class="line" id="LC8"><span class="k">new</span> <span class="nf">Workbook</span><span class="o">()</span></span>
+<span class="line" id="LC9">    <span class="o">.</span><span class="na">addSheet</span><span class="o">(</span><span class="k">new</span> <span class="nc">CSVSheet</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"d:\\abc.csv"</span><span class="o">)))</span> <span class="c1">// 添加CSVSheet并指定csv路径</span></span>
+<span class="line" id="LC10">    <span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"d:\\abc.xlsx"</span><span class="o">));</span></span>
+<span class="line" id="LC11">    </span>
+<span class="line" id="LC12"><span class="c1">// Excel转CSV</span></span>
+<span class="line" id="LC13"><span class="k">try</span> <span class="o">(</span><span class="nc">ExcelReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="nc">ExcelReader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"d:\\abc.xlsx"</span><span class="o">)))</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC14">    <span class="c1">// 读取Excel使用saveAsCSV保存为CSV格式</span></span>
+<span class="line" id="LC15">    <span class="n">reader</span><span class="o">.</span><span class="na">sheet</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">saveAsCSV</span><span class="o">(</span><span class="nc">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"./"</span><span class="o">));</span></span>
+<span class="line" id="LC16"><span class="o">&#125;</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">&#123;</span></span>
+<span class="line" id="LC17">    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span></span>
+<span class="line" id="LC18"><span class="o">&#125;</span></span></pre>
+<div class="markdown-code-block-copy-btn"></div>
+</div></div>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#changelog" id="user-content-changelog"></a>CHANGELOG</h2>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#version-0512-2023-11-26" id="user-content-version-0512-2023-11-26"></a>Version 0.5.12 (2023-11-26)</h2>
+<ul>
+<li>移除watch改用slf4j输出日志</li>
+<li>新增进度窗口<code>onProgress</code>
+</li>
+<li>优化自适应列宽算法使其支持更多字体和大小</li>
+<li>数据转换器功能增强，ExcelColumn增加converter属性以支持导出/导入时双向数据转换(<a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fissues%2F362" rel="external nofollow noopener noreferrer" target="_blank">#362</a>)</li>
+<li>支持读取xlsx格式wps的内嵌图片(<a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fissues%2F363" rel="external nofollow noopener noreferrer" target="_blank">#363</a>)</li>
+<li>部分类的注释改为中文，后续会将全部注释改为中文</li>
+</ul>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#version-0511-2023-10-08" id="user-content-version-0511-2023-10-08"></a>Version 0.5.11 (2023-10-08)</h2>
+<ul>
+<li>优化ExcelReader性能，性能提升100%~300%</li>
+<li>增加<code>setHeaderColumnReadOption</code>方法提高ExcelReader丰富性</li>
+<li>修复读取16进制转义字符时出现乱码问题</li>
+<li>修复非法UTF8字符导致写文件异常</li>
+<li>无数据且能获取表头信息时正常写表头(<a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fissues%2F361" rel="external nofollow noopener noreferrer" target="_blank">#361</a>)</li>
+<li>屏蔽JDK17以上版本使用ExcelReader抛异常的问题</li>
+</ul>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#version-0510-2023-08-10" id="user-content-version-0510-2023-08-10"></a>Version 0.5.10 (2023-08-10)</h2>
+<ul>
+<li>修复单元格长度过长导致内容错位的异常(<a href="https://gitee.com/link?target=https%3A%2F%2Fgithub.com%2Fwangguanquan%2Feec%2Fissues%2F354" rel="external nofollow noopener noreferrer" target="_blank">#354</a>)</li>
+<li>支持导出图片</li>
+</ul>
+<h2>
+<a class="anchor" target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec#version-059-2023-05-10" id="user-content-version-059-2023-05-10"></a>Version 0.5.9 (2023-05-10)</h2>
+<ul>
+<li>修复dom4j默认构造器容易造成XXE安全漏洞</li>
+</ul>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/wangguanquan/eec/blob/master/CHANGELOG">更多...</a></p>
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC" href="https://gitee.com/wangguanquan/eec" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC</span><span class="cap link footnote">https://gitee.com/wangguanquan/eec</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/5052d418.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/5052d418.html&title=Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC - 果粉圈&pics=https://cdn.g0f.cn//?r=https://gitee.com&url=http://img.shields.io/badge/release-0.5.12-blue.svg?style=flat&summary=
+
+EEC介绍
+ 
+EEC（Excel Export Core）是一款轻量且高效的Excel读写工具，它具有包体小、接入代码量少和运行时消耗资源少等优点
+EEC的设计初衷是为了解决Apache POI内存高、速度慢且API臃肿的诟病。..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=Gitee 推荐 | 轻量且高效的 Excel 读写工具 EEC - 果粉圈&amp;body=https://blog.g0f.cn/post/5052d418.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/5052d418.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/4c660797.html">VALL-E X —— 多语言文本到语音合成与语音克隆</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/f8538eb0.html">霍格天体：一个近乎完美的环状星系</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/3aad60a.html" title="2023 年度 Rust 调查报告"><span class="title">2023 年度 Rust 调查报告</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">
+EEC介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+主要功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+WIKI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+Gitee</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+1. 简单导出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+2. 动态样式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+3. 自适应列宽更精准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+4. 支持多行表头</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+5. 报表轻松制作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+6. 支持28种预设图片样式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">
+读取示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+1. 使用Stream</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+2. 读入到数组或List中</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+3. 过滤和聚合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">
+4. 多级表头读取</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">
+xls格式支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">
+CSV与Excel格式互转</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+CHANGELOG</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+Version 0.5.12 (2023-11-26)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+Version 0.5.11 (2023-10-08)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+Version 0.5.10 (2023-08-10)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">
+Version 0.5.9 (2023-05-10)</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

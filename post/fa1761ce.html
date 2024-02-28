@@ -1,0 +1,762 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？ - 果粉圈</title>
+
+  
+    <meta name="description" content="本期作者  一. 背景 如下配置所示，我们在 &#x2F;etc&#x2F;resolv.conf 中配置了两个 nameserver，其中 server2 在灾备机房 ，作为一种 failover 策略。 nameserver server1 nameserver server2 options timeout:1 attempts:1  我们的预期是如果 server1 服务正常，则所有的 DNS 请求应该由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？">
+<meta property="og:url" content="https://blog.g0f.cn/post/fa1761ce.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="本期作者  一. 背景 如下配置所示，我们在 &#x2F;etc&#x2F;resolv.conf 中配置了两个 nameserver，其中 server2 在灾备机房 ，作为一种 failover 策略。 nameserver server1 nameserver server2 options timeout:1 attempts:1  我们的预期是如果 server1 服务正常，则所有的 DNS 请求应该由">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d49150d0a5944d5aae33058072a3b0fd~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=892&amp;h=306&amp;s=63064&amp;e=png&amp;b=fefdfd">
+<meta property="article:published_time" content="2024-02-20T03:23:48.000Z">
+<meta property="article:modified_time" content="2024-02-20T03:23:48.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d49150d0a5944d5aae33058072a3b0fd~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=892&amp;h=306&amp;s=63064&amp;e=png&amp;b=fefdfd">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-20T03:23:48.000Z">2024-02-20</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-20T03:23:48.000Z">2024-02-20</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<h1><strong>本期作者</strong></h1>
+<p><img class="lazy" alt="截屏2024-02-19 19.46.41.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d49150d0a5944d5aae33058072a3b0fd~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=892&amp;h=306&amp;s=63064&amp;e=png&amp;b=fefdfd"></p>
+<h1><strong>一. 背景</strong></h1>
+<p>如下配置所示，我们在 <code>/etc/resolv.conf</code> 中配置了两个 nameserver，其中 server2 在灾备机房 ，作为一种 failover 策略。</p>
+<pre><code>nameserver server1
+nameserver server2
+options timeout:1 attempts:1
+</code></pre>
+<p>我们的预期是如果 server1 服务正常，则所有的 DNS 请求应该由 server1 处理，且 server2 故障不应对业务有任何影响 。只有当 server1 服务异常，DNS 请求才应该重试到 server2。</p>
+<p>然而我们在线上观察到一直有 AAAA 类型的 DNS 请求发送到 server2，而且如果 client 到 server2 的网络异常时，业务的 http 请求耗时会增加 1s，这并不符合预期。同时因为我们的内网域名都没有 AAAA 记录，且内网服务器也是关闭了 IPv6 协议的，AAAA 请求也不符合预期。</p>
+<h1><strong>二. 问题排查</strong></h1>
+<p>经过和业务同学求证，相关程序语言为 Go ，请求使用的是 Go 原生 net 库。在 Go net 库中，最经常使用的方式如下：</p>
+<pre><code>package main 
+
+<p>import (<br>    “net”  <br>    “net&#x2F;http”<br>) </p>
+<p>func main() &amp;#123;<br>    http.Get(“<a target="_blank" rel="external nofollow noopener noreferrer" href="https://internal.domain.name&quot;/">https://internal.domain.name&quot;</a>)<br>    net.Dial(“tcp”, “internal.domain.name:443”)<br>&amp;#125;<br></p></code></pre><p></p>
+<h2><strong>1. 梳理源码</strong></h2>
+<p>让我们顺着源码分析 net 库的解析逻辑。无论是 <code>http.Get</code> 还是 <code>net.Dial</code> 最终都会到 <code>func (d *Dialer) DialContext()</code> 这个方法。然后层层调用到 <code>func (r *Resolver) lookupIP()</code> 方法，这里定义了何时使用 Go 内置解析器或调用操作系统 C lib 库提供的解析方法，以及 /etc/hosts 的优先级。</p>
+<p>同时补充一个比较重要的信息：windows 、darwin(MacOS等)优先使用 C lib 库解析，debug 时需要注意。</p>
+<pre><code>func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error) &#123;    
+    ...    
+    addrs, err := d.resolver().resolveAddrList(resolveCtx, "dial", network, address, d.LocalAddr)    
+    ...
+&#125;
+
+<p>func (r *Resolver) resolveAddrList(ctx context.Context, op, network, addr string, hint Addr) (addrList, error) &amp;#123;    <br>    …<br>    addrs, err :&#x3D; r.internetAddrList(ctx, afnet, addr)    <br>    …<br>&amp;#125; </p>
+<p>func (r *Resolver) internetAddrList(ctx context.Context, net, addr string) (addrList, error) &amp;#123;    <br>    …  <br>    ips, err :&#x3D; r.lookupIPAddr(ctx, net, host)    <br>    …<br>&amp;#125; </p>
+<p>func (r *Resolver) lookupIPAddr(ctx context.Context, network, host string) ([]IPAddr, error) &amp;#123;  <br>    …  <br>    resolverFunc :&#x3D; r.lookupIP  <br>    …  <br>    ch :&#x3D; r.getLookupGroup().DoChan(lookupKey, func() (any, error) &amp;#123;        <br>        return testHookLookupIP(lookupGroupCtx, resolverFunc, network, host)    <br>    &amp;#125;)    <br>    …<br>&amp;#125; </p>
+<p>func (r *Resolver) lookupIP(ctx context.Context, network, host string) (addrs []IPAddr, err error) &amp;#123;    <br>    if r.preferGo() &amp;#123;  <br>        return r.goLookupIP(ctx, network, host)<br>    &amp;#125;    <br>    order, conf :&#x3D; systemConf().hostLookupOrder(r, host)    <br>    if order &#x3D;&#x3D; hostLookupCgo &amp;#123;        <br>           return cgoLookupIP(ctx, network, host)    <br>    &amp;#125;    <br>    ips, _, err :&#x3D; r.goLookupIPCNAMEOrder(ctx, network, host, order, conf)  <br>    return ips, err<br>&amp;#125;<br></p></code></pre><p></p>
+<p>我们线上的操作系统是 Debain，确认会使用 Go 内置解析器。所以下一步来到了 <code>func (r *Resolver) goLookupIPCNAMEOrder()</code> 方法。这里我们可以通过 <code>qtypes</code> 看到如果 <code>net.Dial</code> 的 <code>network</code> 参数传入的是 <code>tcp</code> ，域名的 A 和 AAAA 记录都会被查询，无论服务器是否关闭 ipv6。</p>
+<pre><code>func (r *Resolver) goLookupIPCNAMEOrder(ctx context.Context, network, name string, order hostLookupOrder, conf *dnsConfig) (addrs []IPAddr, cname dnsmessage.Name, err error) &#123;    
+    ...    
+    lane := make(chan result, 1)     
+    qtypes := []dnsmessage.Type&#123;dnsmessage.TypeA, dnsmessage.TypeAAAA&#125;    
+    switch ipVersion(network) &#123;   
+    case '4':      
+        qtypes = []dnsmessage.Type&#123;dnsmessage.TypeA&#125;   
+    case '6':        
+        qtypes = []dnsmessage.Type&#123;dnsmessage.TypeAAAA&#125;    
+    &#125;   
+    var queryFn func(fqdn string, qtype dnsmessage.Type)   
+    var responseFn func(fqdn string, qtype dnsmessage.Type) result   
+    if conf.singleRequest &#123;  
+        queryFn = func(fqdn string, qtype dnsmessage.Type) &#123;&#125;  
+        responseFn = func(fqdn string, qtype dnsmessage.Type) result &#123;            
+            dnsWaitGroup.Add(1)           
+            defer dnsWaitGroup.Done()          
+            p, server, err := r.tryOneName(ctx, conf, fqdn, qtype)           
+            return result&#123;p, server, err&#125;     
+        &#125;  
+    &#125; else &#123;   
+        queryFn = func(fqdn string, qtype dnsmessage.Type) &#123;   
+            dnsWaitGroup.Add(1)         
+            go func(qtype dnsmessage.Type) &#123;     
+                p, server, err := r.tryOneName(ctx, conf, fqdn, qtype)    
+                lane &lt;- result&#123;p, server, err&#125;          
+                dnsWaitGroup.Done()         
+            &#125;(qtype)        
+        &#125;     
+        responseFn = func(fqdn string, qtype dnsmessage.Type) result &#123;        
+            return &lt;-lane       
+        &#125;    
+    &#125;  
+    
+<pre><code>for _, fqdn := range conf.nameList(name) &amp;#123;      
+    for _, qtype := range qtypes &amp;#123;          
+        queryFn(fqdn, qtype)     
+    &amp;#125;   
+&amp;#125;
+
+... 
+for _, qtype := range qtypes &amp;#123;       
+    result := responseFn(fqdn, qtype)   
+&amp;#125;
+...
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<p>从 <code>goLookupIPCNAMEOrder</code> 方法中我们可以看到由 <code>tryOneName</code> 方法分别处理 A 和 AAAA 记录。深入 <code>tryOneName</code> 内部，我们终于发现具体的 nameserver 选择逻辑，在某些错误情况下会重试请求到下一个 nameserver。</p>
+<pre><code>func (r *Resolver) tryOneName(ctx context.Context, cfg *dnsConfig, name string, qtype dnsmessage.Type) (dnsmessage.Parser, string, error) &#123;  
+    ...  
+    q := dnsmessage.Question&#123;     
+        Name:  n,       
+        Type:  qtype,      
+        Class: dnsmessage.ClassINET,   
+    &#125;  
+    
+<pre><code>for i := 0; i &amp;lt; cfg.attempts; i++ &amp;#123;    
+    for j := uint32(0); j &amp;lt; sLen; j++ &amp;#123;  
+        server := cfg.servers[(serverOffset+j)%sLen]     
+
+        p, h, err := r.exchange(ctx, server, q, cfg.timeout, cfg.useTCP, cfg.trustAD)   
+        ...  
+        if err := checkHeader(&amp;amp;p, h); err != nil &amp;#123;  
+            dnsErr := &amp;amp;DNSError&amp;#123; 
+                Err:    err.Error(),             
+                Name:   name,        
+                Server: server,      
+            &amp;#125;               
+            if err == errServerTemporarilyMisbehaving &amp;#123;   
+                dnsErr.IsTemporary = true   
+            &amp;#125;              
+            if err == errNoSuchHost &amp;#123;                
+                // The name does not exist, so trying               
+                // another server won&#39;t help.   
+                
+                dnsErr.IsNotFound = true           
+                return p, server, dnsErr             
+            &amp;#125;          
+            lastErr = dnsErr          
+            continue           
+      &amp;#125;    
+ ...
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<h2><strong>2. 线上 debug</strong></h2>
+<p>接下来我们可以构造一个简单的程序在线上 debug，看看到底是因为原因导致 AAAA 请求重试到了下一个 nameserver。(tips: debug 需要把 resolv.conf 的 timeout 调长一些)</p>
+<pre><code>package main
+
+<p>import (    <br>    “net”<br>) </p>
+<p>func main() &amp;#123;<br>    c, err :&#x3D; net.Dial(“tcp”, “internal.domain.name:80”)  <br>    if err !&#x3D; nil &amp;#123;<br>        return  <br>    &amp;#125;  <br>    _ &#x3D; c.Close()<br>&amp;#125;<br></p></code></pre><p></p>
+<pre><code>dlv debug main.go
+(dlv) break /usr/local/go/src/net/dnsclient_unix.go:279
+(dlv) break /usr/local/go/src/net/dnsclient_unix.go:297
+(dlv) continue
+(dlv) print err
+error(*errors.errorString) *&#123;   
+    s: "lame referral",&#125;
+</code></pre>
+<p>通过 debug 我们最终定位到 err 由下面这段代码抛出。</p>
+<pre><code>func checkHeader(p *dnsmessage.Parser, h dnsmessage.Header) error &#123;  
+    ...   
+    // libresolv continues to the next server when it receives  
+    // an invalid referral response. See golang.org/issue/15434.   
+    if h.RCode == dnsmessage.RCodeSuccess &amp;&amp; !h.Authoritative &amp;&amp; !h.RecursionAvailable &amp;&amp; err == dnsmessage.ErrSectionDone &#123;       
+        return errLameReferral  
+    &#125;    
+    ....
+&#125;
+</code></pre>
+<p>原来如果返回的 DNS response 以下4个条件全部满足，就会触发重试逻辑：</p>
+<ol>
+<li>响应没有错误</li>
+<li>应答 Server 不是权威服务器</li>
+<li>应答 Server 不支持递归请求</li>
+<li>应答的 records 为空</li>
+</ol>
+<p>这里有一个疑点是我们的 DNS Server 是支持递归请求的，经过排查，我们发现是因为在 DNS Server 有一层 NetScaler 作为负载均衡器，负载均衡是以 DNS proxy server 的方式运行，默认并没有开启对递归请求的支持。</p>
+<p>我们可以运行 dig 命令观察是否有如下输出来判断 server 是否支持递归请求。</p>
+<pre><code>;; WARNING: recursion requested but not available
+</code></pre>
+<h2><strong>3. 原因梳理</strong></h2>
+<p>至此，我们已经弄清楚了为什么会有 AAAA 类型的请求发送到 nameserver2。而文章开头提到的业务 http 请求耗时增加 1s 的原因则是因为 client 到 server2 网络异常时，需要等待重试的 AAAA 请求超时，才会返回解析结果。</p>
+<p>还有一个问题困扰着我们，为什么用 ping 等程序验证，并没有发现类似的问题。我们通过直接用 C <code>getaddrinfo</code> 函数测试，以及通过 <code>-tags 'netcgo'</code> 编译相同的 go 程序验证，发现在 A 记录有值的情况下，AAAA 请求都不会重试到下一个 nameserver。回到 Go 中触发重试的这段代码深入分析，注释中可以看到由 golang.org/issue/15434 引入，提交代码的作者是为了解决 issue 中的问题复制了 libresolv 的行为。然而翻阅 glibc 的代码可以看到 next_ns 中还有这样一段逻辑：只要 A 或者 AAAA 任意一个有记录值，都不会重试到下一个 nameserver。这段逻辑并没有引入 Go 中。所以我们需要注意 Go 内置解析器与 glibc 中的行为和结果都有差异，它可能会影响到我们的服务。</p>
+<pre><code>next_ns:   
+    if (recvresp1 || (buf2 != NULL &amp;&amp; recvresp2)) &#123;   
+      *resplen2 = 0; 
+      return resplen;    
+    &#125; 
+
+<p>… </p>
+<p>if (anhp-&gt;rcode &#x3D;&#x3D; NOERROR &amp;&amp; anhp-&gt;ancount &#x3D;&#x3D; 0  <br>    &amp;&amp; anhp-&gt;aa &#x3D;&#x3D; 0 &amp;&amp; anhp-&gt;ra &#x3D;&#x3D; 0 &amp;&amp; anhp-&gt;arcount &#x3D;&#x3D; 0) &amp;#123;  <br>    goto next_ns;<br>&amp;#125;<br></p></code></pre><p></p>
+<h1><strong>三. 优化</strong></h1>
+<p>经过上面的排查，我们已经确认了 AAAA 请求的源头，以及为什么会重试到下一个 server。接下来可以针对性的优化。</p>
+<p>1.  对于 Go 程序中 AAAA 请求重试到下一个 server 的优化方案：</p>
+<p>a. 代价相对较小的方案，程序构建时添加 -tags 'netcgo' 编译参数，指定使用 cgo-based 解析器。</p>
+<p>b. DNS Server proxy 层支持递归请求。这里有必要说明递归支持不能在 proxy 层简单的直接开启，proxy 和 recursion 在逻辑上有冲突的地方，务必做好必要的验证和确认，否则可能会带来新的问题。</p>
+<ol start="2">
+<li>如果业务程序不需要支持 IPv6 网络，可以通过指定网络类型为 IPv4，来消除 AAAA 请求，同时避免随之带来的问题。（也顺带减少了相关开销）</li>
+</ol>
+<p>a. <code>net.Dial</code> 相关方法可以指定 <code>network</code> 为 <code>tcp4</code>、<code>udp4</code> 来强制使用 IPv4</p>
+<pre><code>net.Dial("tcp4", "internal.domain.name:443")
+net.Dial("udp4", "internal.domain.name:443")
+</code></pre>
+<p>b. <code>net/http</code> 相关方法可以通过如下示例来强制使用 IPv4</p>
+<pre><code>package main
+
+<p>import (<br>    “context”  <br>    “log”  <br>    “net”  <br>    “net&#x2F;http”  <br>    “time”<br>)</p>
+<p>func main() &amp;#123;<br>    dialer :&#x3D; &amp;net.Dialer&amp;#123;  <br>        Timeout:   30 * time.Second,        <br>        KeepAlive: 30 * time.Second,  <br>    &amp;#125;   </p>
+<pre><code>transport := http.DefaultTransport.(*http.Transport).Clone()
+transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) &amp;#123;        
+    return dialer.DialContext(ctx, &quot;tcp4&quot;, addr)   
+&amp;#125;     
+
+httpClient := &amp;amp;http.Client&amp;#123;  
+    Timeout: 30 * time.Second,   
+&amp;#125;    
+httpClient.Transport = transport  
+
+resp, err := httpClient.Get(&quot;https://internal.domain.name&quot;)  
+if err != nil &amp;#123;  
+    log.Fatal(err)    
+&amp;#125;    
+log.Println(resp.StatusCode)
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<h1><strong>四. 总结</strong></h1>
+<ol>
+<li>Go net 库中提供了两种解析逻辑：自实现的内置解析器和系统提供的解析函数。windows 、darwin(MacOS等)优先使用系统提供的解析函数，常见的 Debain、Centos 等优先使用内置解析器。</li>
+<li>Go net 库中的内置解析器和系统提供的解析函数行为和结果并不完全一致，它可能会影响到我们的服务。</li>
+<li>业务应设置合理的超时时间，不易过短，以确保基础设施的 failover 策略有足够的响应时间。</li>
+</ol>
+<h1><strong>推荐阅读：</strong></h1>
+<p><em>https://studygolang.com/topics/15021</em></p>
+<p><em>https://pkg.go.dev/net</em> 中的 Name Resolution 章节</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？" href="https://juejin.cn/post/7337225888265044022" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？</span><span class="cap link footnote">https://juejin.cn/post/7337225888265044022</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/fa1761ce.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/fa1761ce.html&title=精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？ - 果粉圈&pics=https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d49150d0a5944d5aae33058072a3b0fd~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=892&h=306&s=63064&e=png&b=fefdfd&summary=
+本期作者
+
+一. 背景
+如下配置所示，我们在 /etc/resolv.conf 中配置了两个 nameserver，其中 server2 在灾备机房 ，作为一种 failover 策略。
+nameserver server1
+nam..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=精心设计的 DNS Failover 策略在 Go 中竟然带来了反效果，发生了什么？ - 果粉圈&amp;body=https://blog.g0f.cn/post/fa1761ce.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/fa1761ce.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/886ae218.html">开源日报：目前还没有“大模型版 Linux”；nginx 核心开发者创建新分支</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/32356368.html">Steam Audio SDK 完整源代码现已开源</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">本期作者</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">一. 背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">二. 问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">1. 梳理源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">2. 线上 debug</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">3. 原因梳理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">三. 优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">四. 总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">推荐阅读：</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

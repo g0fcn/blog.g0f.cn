@@ -1,0 +1,579 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>DDoS Threat Report for 2023 Q4 - 果粉圈</title>
+
+  
+    <meta name="description" content="This post is also available in 简体中文, 繁體中文, 日本語, 한국어, Deutsch, Español, Français and Português. Welcome to the sixteenth edition of Cloudflare’s DDoS Threat Report. This edition covers DDoS trends an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDoS Threat Report for 2023 Q4">
+<meta property="og:url" content="https://blog.g0f.cn/post/4030b705.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="This post is also available in 简体中文, 繁體中文, 日本語, 한국어, Deutsch, Español, Français and Português. Welcome to the sixteenth edition of Cloudflare’s DDoS Threat Report. This edition covers DDoS trends an">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/image14-1.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/image1.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/HTTP-and-Network-layer-DDoS-attacks-by-quarter-1.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--1-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--2-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--3-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--5-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/imageLikeEmbed.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--6-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--7-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--8-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--9-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--10-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/Top-Attacked-Industry-by-Region-Q4-2023.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--11-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--12-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--13-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--14-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--15-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--16-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/DDoS-attacks-stats-2023-Q4_a.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--17-.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--18--1.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--19-.png">
+<meta property="article:published_time" content="2024-01-09T14:00:25.000Z">
+<meta property="article:modified_time" content="2024-01-09T14:00:25.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="These Blogs">
+<meta property="article:tag" content="Cloudflare">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/image14-1.png">
+  
+  
+  
+  <meta name="keywords" content="These Blogs,Cloudflare">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/these-blogs/">These Blogs</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/these-blogs/cloudflare/">Cloudflare</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-01-09T14:00:25.000Z">2024-01-09</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-01-09T14:00:25.000Z">2024-01-09</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>DDoS Threat Report for 2023 Q4</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+ <p><small>This post is also available in <a>简体中文</a>, <a>繁體中文</a>, <a>日本語</a>, <a>한국어</a>, <a>Deutsch</a>, <a>Español</a>, <a>Français</a> and <a>Português</a>.</small></p>
+<figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/image14-1.png"></figure><p>Welcome to the sixteenth edition of Cloudflare’s DDoS Threat Report. This edition covers DDoS trends and key findings for the fourth and final quarter of the year 2023, complete with a review of major trends throughout the year.</p><h2>What are DDoS attacks?</h2><p>DDoS attacks, or <a>distributed denial-of-service attacks</a>, are a type of cyber attack that aims to disrupt websites and online services for users, making them unavailable by overwhelming them with more traffic than they can handle. They are similar to car gridlocks that jam roads, preventing drivers from getting to their destination.</p><p>There are three main types of DDoS attacks that we will cover in this report. The first is an <a>HTTP request</a> intensive DDoS attack that aims to overwhelm HTTP servers with more requests than they can handle to cause a denial of service event. The second is an <a>IP packet</a> intensive DDoS attack that aims to overwhelm in-line appliances such as routers, firewalls, and servers with more packets than they can handle. The third is a bit-intensive attack that aims to saturate and clog the Internet link causing that ‘gridlock’ that we discussed. In this report, we will highlight various techniques and insights on all three types of attacks.</p><p>Previous editions of the report can be found <a>here</a>, and are also available on our interactive hub, <a>Cloudflare Radar</a>. Cloudflare Radar showcases global Internet traffic, attacks, and technology trends and insights, with drill-down and filtering capabilities for zooming in on insights of specific countries, industries, and service providers. Cloudflare Radar also offers a <a>free API</a> allowing academics, data sleuths, and other web enthusiasts to investigate Internet usage across the globe.</p><p>To learn how we prepare this report, refer to our <a>Methodologies</a>.</p><h2>Key findings</h2><ol><li>In Q4, we observed a 117% year-over-year increase in network-layer DDoS attacks, and overall increased DDoS activity targeting retail, shipment and public relations websites during and around Black Friday and the holiday season.</li><li>In Q4, DDoS attack traffic targeting Taiwan registered a 3,370% growth, compared to the previous year, amidst the upcoming general election and reported tensions with China. The percentage of DDoS attack traffic targeting Israeli websites grew by 27% quarter-over-quarter, and the percentage of DDoS attack traffic targeting Palestinian websites grew by 1,126% quarter-over-quarter — as the military conflict between Israel and Hamas continues.</li><li>In Q4, there was a staggering 61,839% surge in DDoS attack traffic targeting Environmental Services websites compared to the previous year, coinciding with the 28th United Nations Climate Change Conference (COP 28).</li></ol><p>For an in-depth analysis of these key findings and additional insights that could redefine your understanding of current cybersecurity challenges, read on!</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/image1.png"><figcaption>Illustration of a DDoS attack</figcaption></figure><h2>Hyper-volumetric HTTP DDoS attacks</h2><p>2023 was the year of uncharted territories. DDoS attacks reached new heights — in size and sophistication. The wider Internet community, including Cloudflare, faced a persistent and deliberately engineered campaign of thousands of hyper-volumetric DDoS attacks at never before seen rates.</p><p>These attacks were highly complex and exploited an <a>HTTP/2 vulnerability</a>. Cloudflare developed purpose-built technology to mitigate the vulnerability’s effect and worked with others in the industry to responsibly disclose it.</p><p>As part of this DDoS campaign, in Q3 our systems mitigated the largest attack we’ve ever seen — 201 million requests per second (rps). That’s almost 8 times larger than our previous 2022 record of 26 million rps.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0.png"><figcaption>Largest HTTP DDoS attacks as seen by Cloudflare, by year</figcaption></figure><h2>Growth in network-layer DDoS attacks</h2><p>After the hyper-volumetric campaign subsided, we saw an unexpected drop in HTTP DDoS attacks. Overall in 2023, our automated defenses mitigated over 5.2 million HTTP DDoS attacks consisting of over 26 trillion requests. That averages at 594 HTTP DDoS attacks and 3 billion mitigated requests every hour.</p><p>Despite these astronomical figures, the amount of HTTP DDoS attack requests actually declined by 20% compared to 2022. This decline was not just annual but was also observed in 2023 Q4 where the number of HTTP DDoS attack requests decreased by 7% YoY and 18% QoQ.</p><p>On the network-layer, we saw a completely different trend. Our automated defenses mitigated 8.7 million network-layer DDoS attacks in 2023. This represents an 85% increase compared to 2022.</p><p>In 2023 Q4, Cloudflare’s automated defenses mitigated over 80 petabytes of network-layer attacks. On average, our systems auto-mitigated 996 network-layer DDoS attacks and 27 terabytes every hour. The number of network-layer DDoS attacks in 2023 Q4 increased by 175% YoY and 25% QoQ.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/HTTP-and-Network-layer-DDoS-attacks-by-quarter-1.png"><figcaption>HTTP and Network-layer DDoS attacks by quarter</figcaption></figure><h3>DDoS attacks increase during and around COP 28</h3><p>In the final quarter of 2023, the landscape of cyber threats witnessed a significant shift. While the Cryptocurrency sector was initially leading in terms of the volume of HTTP DDoS attack requests, a new target emerged as a primary victim. The Environmental Services industry experienced an unprecedented surge in HTTP DDoS attacks, with these attacks constituting half of all its HTTP traffic. This marked a staggering 618-fold increase compared to the previous year, highlighting a disturbing trend in the cyber threat landscape.</p><p>This surge in cyber attacks coincided with COP 28, which ran from November 30th to December 12th, 2023. The conference was a pivotal event, signaling what many considered the <a>'beginning of the end' for the fossil fuel era</a>. It was observed that in the period leading up to COP 28, there was a noticeable spike in HTTP attacks targeting Environmental Services websites. This pattern wasn't isolated to this event alone.</p><p>Looking back at historical data, particularly during COP 26 and COP 27, as well as other UN environment-related resolutions or announcements, a similar pattern emerges. Each of these events was accompanied by a corresponding increase in cyber attacks aimed at Environmental Services websites.</p><p>In February and March 2023, significant environmental events like the UN's resolution on <a>climate justice</a> and the launch of United Nations Environment Programme’s <a>Freshwater Challenge</a> potentially heightened the profile of environmental websites, possibly correlating with an increase in attacks on these sites​​​​.</p><p>This recurring pattern underscores the growing intersection between environmental issues and cyber security, a nexus that is increasingly becoming a focal point for attackers in the digital age.</p><h2>DDoS attacks and Iron Swords</h2><p>It’s not just UN resolutions that trigger DDoS attacks. Cyber attacks, and particularly DDoS attacks, have long been a tool of war and disruption. We witnessed an increase in DDoS attack activity in the Ukraine-Russia war, and now we’re also witnessing it in the Israel-Hamas war. We first reported the cyber activity in our report <a>Cyber attacks in the Israel-Hamas war</a>, and we continued to monitor the activity throughout Q4.</p><p>Operation “Iron Swords” is the <a>military offensive launched by Israel against Hamas</a> following the <a>Hamas-led 7 October attack</a>. During this ongoing armed conflict, we continue to see DDoS attacks targeting both sides.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--1-.png"><figcaption>DDoS attacks targeting Israeli and Palestinian websites, by industry</figcaption></figure><p>Relative to each region's traffic, the Palestinian territories was the second most attacked region by HTTP DDoS attacks in Q4. Over 10% of all HTTP requests towards Palestinian websites were DDoS attacks, a total of 1.3 billion DDoS requests — representing a 1,126% increase in QoQ. 90% of these DDoS attacks targeted Palestinian Banking websites. Another 8% targeted Information Technology and Internet platforms.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--2-.png"><figcaption>Top attacked Palestinian industries</figcaption></figure><p>Similarly, our systems automatically mitigated over 2.2 billion HTTP DDoS requests targeting Israeli websites. While 2.2 billion represents a decrease compared to the previous quarter and year, it did amount to a larger percentage out of the total Israel-bound traffic. This normalized figure represents a 27% increase QoQ but a 92% decrease YoY. Notwithstanding the larger amount of attack traffic, Israel was the 77th most attacked region relative to its own traffic. It was also the 33rd most attacked by total volume of attacks, whereas the Palestinian territories was 42nd.</p><p>Of those Israeli websites attacked, Newspaper &amp; Media were the main target — receiving almost 40% of all Israel-bound HTTP DDoS attacks. The second most attacked industry was the Computer Software industry. The Banking, Financial Institutions, and Insurance (BFSI) industry came in third.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--3-.png"><figcaption>Top attacked Israeli industries</figcaption></figure><p>On the network layer, we see the same trend. Palestinian networks were targeted by 470 terabytes of attack traffic — accounting for over 68% of all traffic towards Palestinian networks. Surpassed only by China, this figure placed the Palestinian territories as the second most attacked region in the world, by network-layer DDoS attack, relative to all Palestinian territories-bound traffic. By absolute volume of traffic, it came in third. Those 470 terabytes accounted for approximately 1% of all DDoS traffic that Cloudflare mitigated.</p><p>Israeli networks, though, were targeted by only 2.4 terabytes of attack traffic, placing it as the 8th most attacked country by network-layer DDoS attacks (normalized). Those 2.4 terabytes accounted for almost 10% of all traffic towards Israeli networks.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--5-.png"><figcaption>Top attacked countries</figcaption></figure><p>When we turned the picture around, we saw that 3% of all bytes that were ingested in our Israeli-based data centers were network-layer DDoS attacks. In our Palestinian-based data centers, that figure was significantly higher — approximately 17% of all bytes.</p><p>On the application layer, we saw that 4% of HTTP requests originating from Palestinian IP addresses were DDoS attacks, and almost 2% of HTTP requests originating from Israeli IP addresses were DDoS attacks as well.</p><h2>Main sources of DDoS attacks</h2><p>In the third quarter of 2022, China was the largest source of HTTP DDoS attack traffic. However, since the fourth quarter of 2022, the US took the first place as the largest source of HTTP DDoS attacks and has maintained that undesirable position for five consecutive quarters. Similarly, our data centers in the US are the ones ingesting the most network-layer DDoS attack traffic — over 38% of all attack bytes.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/imageLikeEmbed.png"><figcaption>HTTP DDoS attacks originating from China and the US by quarter</figcaption></figure><p>Together, China and the US account for a little over a quarter of all HTTP DDoS attack traffic in the world. Brazil, Germany, Indonesia, and Argentina account for the next twenty-five percent.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--6-.png"><figcaption>Top source of HTTP DDoS attacks</figcaption></figure><p>These large figures usually correspond to large markets. For this reason, we also normalize the attack traffic originating from each country by comparing their outbound traffic. When we do this, we often get small island nations or smaller market countries that a disproportionate amount of attack traffic originates from. In Q4, 40% of Saint Helena’s outbound traffic were HTTP DDoS attacks — placing it at the top. Following the ‘<a>remote volcanic tropical island</a>’, Libya came in second, <a>Swaziland</a> (also known as Eswatini) in third. Argentina and Egypt follow in fourth and fifth place.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--7-.png"><figcaption>Top source of HTTP DDoS attacks with respect to each country’s traffic</figcaption></figure><p>On the network layer, Zimbabwe came in first place. Almost 80% of all traffic we ingested in our Zimbabwe-based data center was malicious. In second place, Paraguay, and Madagascar in third.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--8-.png"><figcaption>Top source of Network-layer DDoS attacks with respect to each country’s traffic</figcaption></figure><h2>Most attacked industries</h2><p>By volume of attack traffic, Cryptocurrency was the most attacked industry in Q4. Over 330 billion HTTP requests targeted it. This figure accounts for over 4% of all HTTP DDoS traffic for the quarter. The second most attacked industry was Gaming &amp; Gambling. These industries are known for being coveted targets and attract a lot of traffic and attacks.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--9-.png"><figcaption>Top industries targeted by HTTP DDoS attacks</figcaption></figure><p>On the network layer, the Information Technology and Internet industry was the most attacked — over 45% of all network-layer DDoS attack traffic was aimed at it. Following far behind were the Banking, Financial Services and Insurance (BFSI), Gaming &amp; Gambling, and Telecommunications industries.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--10-.png"><figcaption>Top industries targeted by Network-layer DDoS attacks</figcaption></figure><p>To change perspectives, here too, we normalized the attack traffic by the total traffic for a specific industry. When we do that, we get a different picture.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/Top-Attacked-Industry-by-Region-Q4-2023.png"><figcaption>Top attacked industries by HTTP DDoS attacks, by region</figcaption></figure><p>We already mentioned in the beginning of this report that the Environmental Services industry was the most attacked relative to its own traffic. In second place was the Packaging and Freight Delivery industry, which is interesting because of its timely correlation with online shopping during Black Friday and the winter holiday season. Purchased gifts and goods need to get to their destination somehow, and it seems as though attackers tried to interfere with that. On a similar note, DDoS attacks on retail companies increased by 16% compared to the previous year.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--11-.png"><figcaption>Top industries targeted by HTTP DDoS attacks with respect to each industry’s traffic</figcaption></figure><p>On the network layer, Public Relations and Communications was the most targeted industry — 36% of its traffic was malicious. This too is very interesting given its timing. Public Relations and Communications companies are usually linked to managing public perception and communication. Disrupting their operations can have immediate and widespread reputational impacts which becomes even more critical during the Q4 holiday season. This quarter often sees increased PR and communication activities due to holidays, end-of-year summaries, and preparation for the new year, making it a critical operational period — one that some may want to disrupt.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--12-.png"><figcaption>Top industries targeted by Network-layer DDoS attacks with respect to each industry’s traffic</figcaption></figure><h2>Most attacked countries and regions</h2><p>Singapore was the main target of HTTP DDoS attacks in Q4. Over 317 billion HTTP requests, 4% of all global DDoS traffic, were aimed at Singaporean websites. The US followed closely in second and Canada in third. Taiwan came in as the fourth most attacked region — amidst the upcoming <a>general elections and the tensions with China</a>. Taiwan-bound attacks in Q4 traffic increased by 847% compared to the previous year, and 2,858% compared to the previous quarter. This increase is not limited to the absolute values. When normalized, the percentage of HTTP DDoS attack traffic targeting Taiwan relative to all Taiwan-bound traffic also significantly increased. It increased by 624% quarter-over-quarter and 3,370% year-over-year.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--13-.png"><figcaption>Top targeted countries by HTTP DDoS attacks</figcaption></figure><p>While China came in as the ninth most attacked country by HTTP DDoS attacks, it's the number one most attacked country by network-layer attacks. 45% of all network-layer DDoS traffic that Cloudflare mitigated globally was China-bound. The rest of the countries were so far behind that it is almost negligible.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--14-.png"><figcaption>Top targeted countries by Network-layer DDoS attacks</figcaption></figure><p>When normalizing the data, Iraq, Palestinian territories, and Morocco take the lead as the most attacked regions with respect to their total inbound traffic. What’s interesting is that Singapore comes up as fourth. So not only did Singapore face the largest amount of HTTP DDoS attack traffic, but that traffic also made up a significant amount of the total Singapore-bound traffic. By contrast, the US was second most attacked by volume (per the application-layer graph above), but came in the fiftieth place with respect to the total US-bound traffic.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--15-.png"><figcaption>Top targeted countries by HTTP DDoS attacks with respect to each country’s traffic</figcaption></figure><p>Similar to Singapore, but arguably more dramatic, China is both the number one most attacked country by network-layer DDoS attack traffic, and also with respect to all China-bound traffic. Almost 86% of all China-bound traffic was mitigated by Cloudflare as network-layer DDoS attacks. The Palestinian territories, Brazil, Norway, and again Singapore followed with large percentages of attack traffic.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--16-.png"><figcaption>Top targeted countries by Network-layer DDoS attacks with respect to each country’s traffic</figcaption></figure><h2>Attack vectors and attributes</h2><p>The majority of DDoS attacks are short and small relative to Cloudflare’s scale. However, unprotected websites and networks can still suffer disruption from short and small attacks without proper inline automated protection — underscoring the need for organizations to be proactive in adopting a robust security posture.</p><p>In 2023 Q4, 91% of attacks ended within 10 minutes, 97% peaked below 500 megabits per second (mbps), and 88% never exceeded 50 thousand packets per second (pps).</p><p>Two out of every 100 network-layer DDoS attacks lasted more than an hour, and exceeded 1 gigabit per second (gbps). One out of every 100 attacks exceeded 1 million packets per second. Furthermore, the amount of network-layer DDoS attacks exceeding 100 million packets per second increased by 15% quarter-over-quarter.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/DDoS-attacks-stats-2023-Q4_a.png"><figcaption>DDoS attack stats you should know</figcaption></figure><p>One of those large attacks was a Mirai-botnet attack that peaked at 160 million packets per second. The packet per second rate was not the largest we’ve ever seen. The largest we’ve ever seen was <a>754 million packets per second</a>. That attack occurred in 2020, and we have yet to see anything larger.</p><p>This more recent attack, though, was unique in its bits per second rate. This was the largest network-layer DDoS attack we’ve seen in Q4. It peaked at 1.9 terabits per second and originated from a <a>Mirai botnet</a>. It was a multi-vector attack, meaning it combined multiple attack methods. Some of those methods included UDP fragments flood, UDP/Echo flood, SYN Flood, ACK Flood, and TCP malformed flags.</p><p>This attack targeted a known European Cloud Provider and originated from over 18 thousand unique IP addresses that are assumed to be <a>spoofed</a>. It was automatically detected and mitigated by Cloudflare’s defenses.</p><p>This goes to show that even the largest attacks end very quickly. Previous large attacks we’ve seen ended within seconds — underlining the need for an in-line automated defense system. Though still rare, attacks in the terabit range are becoming more and more prominent.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--17-.png"><figcaption>1.9 Terabit per second Mirai DDoS attacks</figcaption></figure><p>The use of Mirai-variant botnets is still very common. In Q4, almost 3% of all attacks originate from Mirai. Though, of all attack methods, DNS-based attacks remain the attackers’ favorite. Together, DNS Floods and DNS Amplification attacks account for almost 53% of all attacks in Q4. <a>SYN Flood</a> follows in second and <a>UDP floods</a> in third. We’ll cover the two DNS attack types here, and you can visit the hyperlinks to learn more about UDP and SYN floods in our Learning Center.</p><h3>DNS floods and amplification attacks</h3><p>DNS floods and DNS amplification attacks both exploit the <a>Domain Name System (DNS)</a>, but they operate differently. DNS is like a phone book for the Internet, translating human-friendly domain names like "www.cloudflare.com" into numerical IP addresses that computers use to identify each other on the network.</p><p>Simply put, DNS-based DDoS attacks comprise the method computers and servers used to identify one another to cause an outage or disruption, without actually ‘taking down’ a server. For example, a server may be up and running, but the DNS server is down. So clients won't be able to connect to it and will experience it as an outage.</p><p>A <strong>DNS flood</strong> attack bombards a DNS server with an overwhelming number of DNS queries. This is usually done using a <a>DDoS botnet</a>. The sheer volume of queries can overwhelm the DNS server, making it difficult or impossible for it to respond to legitimate queries. This can result in the aforementioned service disruptions, delays or even an outage for those trying to access the websites or services that rely on the targeted DNS server.</p><p>On the other hand, a <strong>DNS amplification</strong> attack involves sending a small query with a spoofed IP address (the address of the victim) to a DNS server. The trick here is that the DNS response is significantly larger than the request. The server then sends this large response to the victim's IP address. By exploiting open DNS resolvers, the attacker can amplify the volume of traffic sent to the victim, leading to a much more significant impact. This type of attack not only disrupts the victim but also can congest entire networks.</p><p>In both cases, the attacks exploit the critical role of DNS in network operations. Mitigation strategies typically include securing DNS servers against misuse, implementing rate limiting to manage traffic, and filtering DNS traffic to identify and block malicious requests.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--18--1.png"><figcaption>Top attack vectors</figcaption></figure><p>Amongst the emerging threats we track, we recorded a 1,161% increase in ACK-RST Floods as well as a 515% increase in CLDAP floods, and a 243% increase in SPSS floods, in each case as compared to last quarter. Let’s walk through some of these attacks and how they’re meant to cause disruption.</p><figure><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/pasted-image-0--19-.png"><figcaption>Top emerging attack vectors</figcaption></figure><h3>ACK-RST floods</h3><p>An ACK-RST Flood exploits the <a>Transmission Control Protocol (TCP)</a> by sending numerous ACK and RST packets to the victim. This overwhelms the victim's ability to process and respond to these packets, leading to service disruption. The attack is effective because each ACK or RST packet prompts a response from the victim’s system, consuming its resources. ACK-RST Floods are often difficult to filter since they mimic legitimate traffic, making detection and mitigation challenging.</p><h3>CLDAP floods</h3><p>CLDAP (Connectionless Lightweight Directory Access Protocol) is a variant of LDAP (Lightweight Directory Access Protocol). It's used for querying and modifying directory services running over IP networks. CLDAP is connectionless, using UDP instead of TCP, making it faster but less reliable. Because it uses UDP, there’s no handshake requirement which allows attackers to spoof the IP address thus allowing attackers to exploit it as a reflection vector. In these attacks, small queries are sent with a spoofed source IP address (the victim's IP), causing servers to send large responses to the victim, overwhelming it. Mitigation involves filtering and monitoring unusual CLDAP traffic.</p><h3>SPSS floods</h3><p>Floods abusing the SPSS (Source Port Service Sweep) protocol is a network attack method that involves sending packets from numerous random or spoofed source ports to various destination ports on a targeted system or network. The aim of this attack is two-fold: first, to overwhelm the victim's processing capabilities, causing service disruptions or network outages, and second, it can be used to scan for open ports and identify vulnerable services. The flood is achieved by sending a large volume of packets, which can saturate the victim's network resources and exhaust the capacities of its firewalls and intrusion detection systems. To mitigate such attacks, it's essential to leverage in-line automated detection capabilities.</p><h2>Cloudflare is here to help - no matter the attack type, size, or duration</h2><p>Cloudflare’s mission is to help build a better Internet, and we believe that a better Internet is one that is secure, performant, and available to all. No matter the attack type, the attack size, the attack duration or the motivation behind the attack, Cloudflare’s defenses stand strong. Since we pioneered <a>unmetered DDoS Protection in 2017</a>, we’ve made and kept our commitment to make enterprise-grade DDoS protection free for all organizations alike — and of course, without compromising performance. This is made possible by our <a>unique technology</a> and robust network architecture.</p><p>It’s important to remember that security is a process, not a single product or flip of a switch. Atop of our automated DDoS protection systems, we offer comprehensive bundled features such as <a>firewall</a>, <a>bot detection</a>, <a>API protection</a>, and <a>caching</a> to bolster your defenses. Our multi-layered approach optimizes your security posture and minimizes potential impact. We’ve also put together a <a>list of recommendations</a> to help you optimize your defenses against DDoS attacks, and you can follow our step-by-step wizards to <a>secure your applications</a> and <a>prevent DDoS attacks</a>. And, if you’d like to benefit from our easy to use, best-in-class protection against DDoS and other attacks on the Internet, you can sign up — for free! — at <a>cloudflare.com</a>. If you’re under attack, register or call the cyber emergency hotline number shown <a>here</a> for a rapid response.</p> 
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="DDoS threat report for 2023 Q4" href="https://blog.cloudflare.com/ddos-threat-report-2023-q4" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">DDoS threat report for 2023 Q4</span><span class="cap link footnote">https://blog.cloudflare.com/ddos-threat-report-2023-q4</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/4030b705.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/4030b705.html&title=DDoS Threat Report for 2023 Q4 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://blog.cloudflare.com&url=http://blog.cloudflare.com/content/images/2024/01/image14-1.png&summary=
+ This post is also available in 简体中文, 繁體中文, 日本語, 한국어, Deutsch, Español, Français and Português.
+Welcome to the sixte..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=DDoS Threat Report for 2023 Q4 - 果粉圈&amp;body=https://blog.g0f.cn/post/4030b705.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/4030b705.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/d01f728.html">北半球的象限仪流星雨</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/f3831669.html">Introducing Cloudflare’s 2024 API Security and Management Report</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/442d0c95.html" title="A Look at Internet Traffic Trends During Super Bowl LVIII"><span class="title">A Look at Internet Traffic Trends During Super Bowl LVIII</span></a><a class="item" href="/post/f2fc5c41.html" title="Adding New LLMs, Text Classification and Code Generation Models to the Workers AI Catalog"><span class="title">Adding New LLMs, Text Classification and Code Generation Models to the Workers AI Catalog</span></a><a class="item" href="/post/366b68c8.html" title="All You Need to Know About the Digital Services Act"><span class="title">All You Need to Know About the Digital Services Act</span></a><a class="item" href="/post/933ba5df.html" title="An Overview of Cloudflare's Logging Pipeline"><span class="title">An Overview of Cloudflare's Logging Pipeline</span></a><a class="item" href="/post/70aeef1.html" title="Cloudflare Defeats Patent Troll Sable at Trial"><span class="title">Cloudflare Defeats Patent Troll Sable at Trial</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">What are DDoS attacks?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Key findings</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Hyper-volumetric HTTP DDoS attacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Growth in network-layer DDoS attacks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">DDoS attacks increase during and around COP 28</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">DDoS attacks and Iron Swords</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Main sources of DDoS attacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Most attacked industries</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Most attacked countries and regions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Attack vectors and attributes</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">DNS floods and amplification attacks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">ACK-RST floods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">CLDAP floods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">SPSS floods</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">Cloudflare is here to help - no matter the attack type, size, or duration</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

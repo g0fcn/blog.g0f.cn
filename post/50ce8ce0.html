@@ -1,0 +1,636 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>AI黑马Groq颠覆英伟达？LPU性能与成本解读 - 果粉圈</title>
+
+  
+    <meta name="description" content="Groq 是一家技术公司，由 Jonathan Ross 在 2016 年创立。Ross 曾是 Google 第一个张量处理单元（TPU）的创造者，他的创立理念源于一个观点：芯片设计应从软件定义网络（SDN）中吸取灵感。  2024 年 2 月 13 日，Groq 在 ArtificialAnalysis.ai 最新的 LLM 基准测试中明显获胜，Groq 在延迟与吞吐量等关键性能指标上击败了八">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI黑马Groq颠覆英伟达？LPU性能与成本解读">
+<meta property="og:url" content="https://blog.g0f.cn/post/50ce8ce0.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="Groq 是一家技术公司，由 Jonathan Ross 在 2016 年创立。Ross 曾是 Google 第一个张量处理单元（TPU）的创造者，他的创立理念源于一个观点：芯片设计应从软件定义网络（SDN）中吸取灵感。  2024 年 2 月 13 日，Groq 在 ArtificialAnalysis.ai 最新的 LLM 基准测试中明显获胜，Groq 在延迟与吞吐量等关键性能指标上击败了八">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/63a23203-75c4-4e75-9efc-91b6d82fbce5.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/25ebd939-fdc5-454b-b6af-3ab63a48253a.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/7b5166a3-b71d-47fa-9168-6065ab7e6e5f.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/c2fc7bad-5073-480f-b226-04df930b80b2.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/976eb7b0-faef-4fc9-a7d6-2f18b306897b.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/736fc9aa-1b65-4abd-b24c-f6b962f77946.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/89d7b340-3c42-4c0b-aaef-72604a32791f.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/9deb9aae-ad3d-4265-9462-9c1f0ec81bda.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/63f8d90d-300d-4498-b062-93955074204d.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/e8161168-b7b8-4f46-8b68-5eed42edbf2b.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/3589842b-a1a8-4e32-bd1e-2989c9fd30b5.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/89145262-78c1-4635-8f1a-ef1a9e1bbaaf.png">
+<meta property="article:published_time" content="2024-02-22T03:58:08.000Z">
+<meta property="article:modified_time" content="2024-02-22T03:58:08.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="华尔街见闻">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/63a23203-75c4-4e75-9efc-91b6d82fbce5.png">
+  
+  
+  
+  <meta name="keywords" content="媒体,华尔街见闻">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E5%8D%8E%E5%B0%94%E8%A1%97%E8%A7%81%E9%97%BB/">华尔街见闻</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-22T03:58:08.000Z">2024-02-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-22T03:58:08.000Z">2024-02-22</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>AI黑马Groq颠覆英伟达？LPU性能与成本解读</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<p>Groq 是一家技术公司，由 Jonathan Ross 在 2016 年创立。Ross 曾是 Google 第一个张量处理单元（TPU）的创造者，他的创立理念源于一个观点：芯片设计应从软件定义网络（SDN）中吸取灵感。</p>
+<p><img class="wscnph lazy" data-wscnh="567" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/63a23203-75c4-4e75-9efc-91b6d82fbce5.png"></p>
+<p>2024 年 2 月 13 日，Groq 在 ArtificialAnalysis.ai 最新的 LLM 基准测试中明显获胜，Groq 在延迟与吞吐量等关键性能指标上击败了八名参与者，Groq 处理吞吐量达到其他推理服务的 4 倍，同时收费还不到 Mistral 自己的 1/3。</p>
+<p><img class="wscnph lazy" data-wscnh="590" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/25ebd939-fdc5-454b-b6af-3ab63a48253a.png"></p>
+<p>ArtificialAnalysis.ai 联合创始人 Micah Hill-Smith 表示，Groq 代表了可用速度的一步变化，为 LLM 提供了新的用例。</p>
+<p>Groq 创始人&amp;CEO Jonathan Ross 表示，Groq 的存在是为了消除“贫富差距”，并帮助 AI 社区中的每个人蓬勃发展。此外，他还表示，推理对于实现这一目标至关重要，因为速度是将开发人员的想法转化为业务解决方案和改变生活的应用程序的关键。</p>
+<p>关于 Groq 的核心团队、合作伙伴以及投资方如下：</p>
+<p style="text-align: center;">核心团队<br><img class="wscnph lazy" data-wscnh="481" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/7b5166a3-b71d-47fa-9168-6065ab7e6e5f.png">合作伙伴</p>
+<p><img class="wscnph lazy" data-wscnh="541" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/c2fc7bad-5073-480f-b226-04df930b80b2.png"></p>
+<p style="text-align: center;">投资方</p>
+<p><img class="wscnph lazy" data-wscnh="456" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/976eb7b0-faef-4fc9-a7d6-2f18b306897b.png"></p>
+<p>Groq 最新一轮 3 亿美元 C 轮融资追溯至 2021 年 4 月，而不是 ChatGPT 发布后的一年多，这一轮投资者包括老虎、D1 以及 Alumni Ventures。</p>
+<p>关于 AI 早期市场融资，有新 Newin 近期同步分享了解码 SaaS IPO｜硅谷 VC 最新洞察，2024 年市场环境最为关键的 5 个指标（附报告）欢迎订阅。</p>
+<h2><strong>关于 Groq 的 LPU</strong></h2>
+<p>Groq 创新的核心在于其 LPU，旨在以前所未有的速度加速 AI 模型，包括 ChatGPT 等语言模型。</p>
+<p>LPU 推理引擎（LPU 代表语言处理单元™）是一种新型的端到端处理单元系统，可为 具有顺序组件的计算密集型应用程序提供最快的推理，例如 AI 语言应用程序 (LLM) ）。</p>
+<p>LPU 旨在克服 LLM 的两个瓶颈：计算密度和内存带宽。就 LLM 而言，LPU 比 GPU 和 CPU 具有更大的计算能力。这减少了每个单词的计算时间，从而可以更快地生成文本序列。此外，消除外部内存瓶颈使 LPU 推理引擎能够在 LLM 上提供比 GPU 好几个数量级的性能。</p>
+<p>与利用高带宽内存 (HBM) 的 GPU 不同，Groq 的 LPU 利用 SRAM 进行数据处理，从而显着降低能耗并提高效率。GroqChip 的独特架构与其时间指令集相结合，可实现自然语言和其他顺序数据的理想顺序处理。</p>
+<p><img class="wscnph lazy" data-wscnh="507" data-wscntype="image" data-wscnw="1065" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/736fc9aa-1b65-4abd-b24c-f6b962f77946.png"><br>根据 Groq，开发者使用起来的最快方法如下：</p>
+<p>GroqCloud： 请求 API 访问权限 以在基于令牌的定价模型中运行 LLM 应用程序</p>
+<p>Groq 编译器：编译当前应用程序以查看详细的性能、延迟和功耗指标。通过我们的客户门户请求访问权限。</p>
+<p><img class="wscnph lazy" data-wscnh="497" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/89d7b340-3c42-4c0b-aaef-72604a32791f.png"></p>
+<p>此外，开发者也可向 Groq 直接购买硬件。根据合作伙伴 Bittware 介绍，GroqChip 独立芯片是一款从头开始的可扩展处理器，以加速AI、ML和HPC工作负载，该架构比GPU简单得多，而且是以软件为先的设计，使其更容易编程，并以较低的延迟提供可预测的性能。</p>
+<p><img class="wscnph lazy" data-wscnh="607" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/9deb9aae-ad3d-4265-9462-9c1f0ec81bda.png"></p>
+<p>在软件定义网络中，通用硬件配合软件层来处理路由的复杂性，避免了使用专门的硬件。这一理念也体现在 Groq 的技术和其论文《用于大规模机器学习的软件定义张量流多处理器》中。</p>
+<p>Groq 采用了一种从编译器开始的方法，编译器将代码转换为芯片能理解的机器语言。其目标是将机器学习算法简化，使之能在极其简单的处理器上运行，同时运行速度快且不会引发现代处理器中常见的昂贵内存调用和预测失误。</p>
+<p>Groq 的芯片区别于传统使用高带宽内存（HBM）或动态随机存取内存（DRAM）的设计。这些内存类型需要定期刷新，引入了延迟和数据位置的不确定性。</p>
+<p>相反，Groq 使用静态随机存取存储器（SRAM），这种存储方式在双稳态锁存电路中稳定存储数据，避免了DRAM 和 HBM 所依赖的晶体管/电容器结构，这一设计使得 Groq 能够准确知道任何特定时刻数据的位置，允许其编译器预先定义内存调用，通过相对简单的架构实现快速计算。</p>
+<p>Groq 的技术在运行基于 Transformer 的模型（如 GPT-4）上表现出色，因为这类计算具有高度确定性。Groq 的系统特别适合序列操作，如基于 Token 的生成，每个新 Token 的生成依赖于前一个，这样的串行操作使得计算速度成为优势。</p>
+<p>Groq 的创新不仅提高了计算效率，还可能改变与 AI 的互动方式。如其创始人所言，随着 AI 变得越来越类似于人类，与之交互的微小不便会变得更加明显和限制性。Groq 提供了一种通过高效、确定性的计算来保持交互幻觉的方法，这在实时交互和可能的实时视频生成方面开辟了新的可能性。</p>
+<p>Groq 的芯片采用完全确定性的 VLIW（非常长指令字）架构，没有缓冲区，并且在 Global Foundries 的 14nm 工艺节点上达到了约 725mm^2 的芯片尺寸。它没有外部内存，并且在处理过程中将权重、KVCache 和激活等全部保留在芯片上。因为每个芯片只有 230 MB 的 SRAM，实际上没有有用的模型能够完全适应单个芯片。相反，它们必须使用许多芯片来适应模型，并将它们网络化连接起来。</p>
+<p><img class="wscnph lazy" data-wscnh="705" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/63f8d90d-300d-4498-b062-93955074204d.png"></p>
+<h2>关于 Groq 的性能与成本</h2>
+<p>Groq 在单个序列上拥有真正惊人的性能优势。这可能使得如思维链这样的技术在现实世界中更加可用。此外，随着 AI 系统变得自主，LLMs 的输出速度需要更高，以适应如代理程序之类的应用。</p>
+<p>同样，代码生成也需要显著降低个 token 输出延迟。实时 Sora 风格模型可能是娱乐领域的一个惊人途径。如果延迟过高，这些服务甚至可能对最终市场客户来说既不可行也不可用。</p>
+<p>这导致了关于 Groq 的硬件和推理服务将为AI行业带来革命性影响的巨大炒作。虽然对于某些市场和应用来说，它确实是一个游戏规则改变者，但速度只是方程的一部分。供应链多元化是另一个对 Groq 有利的因素。他们的芯片完全在美国制造和封装。</p>
+<p>相比之下， Nvidia 、Google、AMD 和其他 AI 芯片需要从韩国进口内存，以及从中国台湾进口芯片/先进封装。</p>
+<p>这些对 Groq 来说都是正面因素，但评估硬件是否具有革命性的主要公式是性能/总拥有成本。这是谷歌深刻理解的东西。</p>
+<p>AI 时代的黎明已经到来，至关重要的是要理解，由AI驱动的软件的成本结构与传统软件大相径庭。芯片微架构和系统架构在开发和可扩展性这些创新新形式的软件中扮演着至关重要的角色。</p>
+<p>AI 软件运行的硬件 Infra 对 Capex（资本性支出）和Opex（运营性支出）以及随后的毛利润有着明显更大的影响，与之前开发者成本相对较大的软件世代相比，这种影响更为显著。</p>
+<p>因此，将相当大的注意力投入到优化你的 AI Infra 上，以能够部署 AI 软件，变得更加关键。在 Infra 上具有优势的公司，也将在部署和扩展 AI App 方面具有优势。</p>
+<p>对于开发人员和 IT 团队来说，Groq 的 LPU 和软件架构带来了三个主要优势：</p>
+<blockquote>
+<p>快速洞察： Groq 产品的高性能和低延迟可帮助数据科学家更快地构建和迭代机器学习模型。</p>
+<p>更快的生产时间：Groq 的编译器和软件环境简化了部署，从而可以更快地进行实验。与生产模型交互的能力加快了开发周期。</p>
+<p>面向未来的基础设施：Groq 的软件定义架构、先进网络和可扩展平台为 AI 增长提供了经济高效的基础。随着需求的变化，开发人员可以避免锁定或瓶颈。</p>
+</blockquote>
+<p>创始人 Ross 还表示，Groq LPU 推理引擎已经证明，它比 GPU 更好、更快、更实惠，可用于通用 AI 语言推理。</p>
+<p>在 Mixtral 模型的情况下， Groq 不得不连接 8 个机架，每个机架有 9 台服务器，每台服务器有 8 个芯片。这总共 576 个芯片组成了推理单元，用以服务 Mixtral 模型。相比之下， Nvidia 的单个 H100 就能在低批量大小下适配模型，并且两个芯片就有足够的内存支持大批量大小。</p>
+<p>Groq 芯片的晶圆成本可能低于每晶圆 6000 美元。与此相比， Nvidia 的 H100 在 TSMC 的 5nm 定制变体 4N 上的芯片尺寸为 814mm^2，这些晶圆的成本接近每晶圆 16000 美元。另一方面， Groq 的架构对于实施产量收割似乎不那么可行，相比之下， Nvidia 由于在大多数 H100 SKU 中禁用了约 15% 的芯片面积，拥有极高的参数产量。</p>
+<p>此外， Nvidia 为每颗 H100 芯片从 SK Hynix 购买 80 GB 的 HBM，成本约为 1150 美元。Nvidia 还必须支付TSMC 的 CoWoS 成本并承担产量损失，而 Groq 没有任何芯片外内存。</p>
+<p>Groq 的芯片原材料成本明显更低。Groq 还是一家初创公司，因此它们对芯片的低批量/相对固定成本较高，这包括必须支付 Marvell 一大笔定制 ASIC 服务的利润。</p>
+<p><img class="wscnph lazy" data-wscnh="504" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/e8161168-b7b8-4f46-8b68-5eed42edbf2b.png"></p>
+<p>这张表格展示了三种部署，表格中展示了 Groq 输出每个 token 的硅材料成本方面相对于 Nvidia 系统有一个芯片架构上的优势。</p>
+<p>8xA100 可以服务 Mixtral 并实现每用户约 220 个 token 每秒的吞吐量，而 8xH100 可以在没有推测性解码的情况下达到每用户约 280个 token 每秒。</p>
+<p>通过推测性解码，8xH100 推理单元可以实现接近每用户 420 个 token 每秒的吞吐量。虽然吞吐量可能超过这个数字，但在 MoE（专家混合）模型上实施推测性解码是具有挑战性的。</p>
+<p>由于经济性非常差，目前还不存在以延迟优化的 API 服务。API 提供商目前看不到为更低的延迟收取 10 倍以上费用的市场。一旦代理和其他极低延迟任务变得更受欢迎，基于 GPU 的 API 提供商可能会启动延迟优化的 API ，与他们当前的吞吐量优化的 API 并行。</p>
+<p>一旦 Groq 下周实施他们的批处理系统，即使是采用推测性解码的延迟优化 Nvidia 系统在吞吐量和成本上也远远落后于没有推测性解码的 Groq 。</p>
+<p>此外， Groq 使用的是较旧的 14nm 工艺技术，并向 Marvell 支付了可观的芯片利润。如果 Groq 获得更多资金并且能够提升他们下一代 4nm 芯片的生产，预计在 2025 年下半年推出，经济情况可能开始发生显著变化。值得注意的是， Nvidia 远非坐以待毙，我们认为他们将在不到一个月的时间内宣布他们的下一代 B100。</p>
+<p>在吞吐量优化系统中，经济情况显著改变。Nvidia 系统在BOM基础上每美元性能获得一个数量级的提升，但每用户吞吐量较低。对于吞吐量优化场景， Groq 在架构上完全不具备竞争力。</p>
+<p>此外，创始人 Ross 还强调了 Groq 在美国制造的承诺，并指出 Groq 的芯片由 Global Foundries 在美国制造。在加拿大封装，并在加利福尼亚州组装，在地缘政治压力下的技术供应链中，拥有国内产能具有战略优势。对于国防和受监管行业，本地制造还可以简化合规性。</p>
+<p>“Tokenomics”（代币经济学）看起来非常不同。Nvidia 的 GPU 基板拥有巨大的毛利润。此外，对服务器收取的 350,000 美元价格，远高于超大规模计算提供商的 H100 服务器成本，还包括了显著的内存成本、8 个 InfiniBand NICs 的总带宽为 3.2 Tbps 以及在 Nvidia 利润之上叠加的不错的 OEM 利润。</p>
+<p><img class="wscnph lazy" data-wscnh="771" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/3589842b-a1a8-4e32-bd1e-2989c9fd30b5.png"></p>
+<p>对于 Groq ，正在估算系统成本，并考虑到芯片、封装、网络、 CPU 、内存的细节，同时假设较低的整体 ODM 利润。没有包括 Groq 销售硬件所收取的利润，但这也是 Groq 的成本与推理 API 提供商的成本的公平比较，因为两者都在提供相同的产品/模型。</p>
+<p><img class="wscnph lazy" data-wscnh="749" data-wscntype="image" data-wscnw="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/89145262-78c1-4635-8f1a-ef1a9e1bbaaf.png"></p>
+<p>值得注意的是，8 个 Nvidia GPU 只需要 2 个 CPU ，但 Groq 的 576 芯片系统目前有 144 个 CPU 和 144 TB 的 RAM。</p>
+<p><span style="color: #b3b3b3;">文章来源：<a href="https://mp.weixin.qq.com/s/LowpdbHg4gorvXDFAKNrBQ" rel="external nofollow noopener noreferrer" target="_blank">有新Newin</a>，原文标题：《AI 黑马 Groq 颠覆英伟达 ？LPU 性能与成本解读》</span></p><div style="color: #666; margin-bottom: 15px;">风险提示及免责条款</div>
+<div style="font-size: 12px;font-family: 黑体;color: #666;line-height: 20px;">
+            市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。
+          </div>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="AI黑马Groq颠覆英伟达？LPU性能与成本解读" href="https://wallstreetcn.com/articles/3708787" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">AI黑马Groq颠覆英伟达？LPU性能与成本解读</span><span class="cap link footnote">https://wallstreetcn.com/articles/3708787</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/50ce8ce0.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/50ce8ce0.html&title=AI黑马Groq颠覆英伟达？LPU性能与成本解读 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://wpimg-wscn.awtmt.com/63a23203-75c4-4e75-9efc-91b6d82fbce5.png&summary=
+Groq 是一家技术公司，由 Jonathan Ross 在 2016 年创立。Ross 曾是 Google 第一个张量处理单元（TPU）的创造者，他的创立理念源于一个观点：芯片设计应从软件定义网络（SDN）中吸取灵感。
+
+2024..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=AI黑马Groq颠覆英伟达？LPU性能与成本解读 - 果粉圈&amp;body=https://blog.g0f.cn/post/50ce8ce0.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/50ce8ce0.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/da5589b1.html">续航增至720KM！长安启源A07纯电真香版即将上市</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/6c8b5e13.html">午报|广州南沙沥心沙大桥被船只撞断，涉事船主已被控制</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/faea6d1c.html" title="胡塞武装称袭击英国船只并击落美军无人机"><span class="title">胡塞武装称袭击英国船只并击落美军无人机</span></a><a class="item" href="/post/29974a4a.html" title="乌武装部队总司令称乌军已由进攻转向防御"><span class="title">乌武装部队总司令称乌军已由进攻转向防御</span></a><a class="item" href="/post/9dd4e954.html" title="回去才知道，现在老家县城都这么猛了"><span class="title">回去才知道，现在老家县城都这么猛了</span></a><a class="item" href="/post/7575002e.html" title="14天退货期满前，第一批果粉退货Vision Pro"><span class="title">14天退货期满前，第一批果粉退货Vision Pro</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">关于 Groq 的 LPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">关于 Groq 的性能与成本</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

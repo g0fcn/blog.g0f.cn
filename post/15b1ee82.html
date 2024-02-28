@@ -1,0 +1,1240 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架 - 果粉圈</title>
+
+  
+    <meta name="description" content="ioGame21 首发计划  https:&#x2F;&#x2F;github.com&#x2F;game-town&#x2F;ioGame&#x2F;releases&#x2F;tag&#x2F;21.0  框架版本更新日志 (yuque.com)    功能支持 完成 描述 issu     游戏对外服开放自定义协议 ✅ 功能增强 #213   游戏对外服缓存 ✅ 功能增强、性能提升 #76   FlowContext 增加通信能力，提供同步、异步、异步回调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架">
+<meta property="og:url" content="https://blog.g0f.cn/post/15b1ee82.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="ioGame21 首发计划  https:&#x2F;&#x2F;github.com&#x2F;game-town&#x2F;ioGame&#x2F;releases&#x2F;tag&#x2F;21.0  框架版本更新日志 (yuque.com)    功能支持 完成 描述 issu     游戏对外服开放自定义协议 ✅ 功能增强 #213   游戏对外服缓存 ✅ 功能增强、性能提升 #76   FlowContext 增加通信能力，提供同步、异步、异步回调">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1707826063452005074/b4b96239_5475.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1683534421248294819/72c4dfdb_5475.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1708310869810934709/12963674_5475.jpeg">
+<meta property="article:published_time" content="2024-02-19T03:23:09.000Z">
+<meta property="article:modified_time" content="2024-02-19T03:23:09.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="开源中国">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1707826063452005074/b4b96239_5475.png">
+  
+  
+  
+  <meta name="keywords" content="媒体,开源中国">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD/">开源中国</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-19T03:23:09.000Z">2024-02-19</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-19T03:23:09.000Z">2024-02-19</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<div class="content">
+<h3>ioGame21 首发计划</h3>
+<div>
+<p style="margin-left:0; margin-right:0"><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Freleases%2Ftag%2F21.0" target="_blank" rel="external nofollow noopener noreferrer"><span>https://github.com/game-town/ioGame/releases/tag/21.0</span></a></p>
+</div>
+<p style="color:#333333; margin-left:.8em; margin-right:.8em; text-align:start"><span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fab15oe" target="_blank" rel="external nofollow noopener noreferrer"><span>框架版本更新日志 (yuque.com)</span></a></span></p>
+<table>
+<tbody>
+<tr>
+<th>功能支持</th>
+<th>完成</th>
+<th>描述</th>
+<th>issu</th>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fxeokui" target="_blank" rel="external nofollow noopener noreferrer">游戏对外服开放自定义协议</a></td>
+<td>✅</td>
+<td>功能增强</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F213" target="_blank" rel="external nofollow noopener noreferrer">#213</a></td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fkhg23pvbh59a7spm" target="_blank" rel="external nofollow noopener noreferrer">游戏对外服缓存</a></td>
+<td>✅</td>
+<td>功能增强、性能提升</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F76" target="_blank" rel="external nofollow noopener noreferrer">#76</a></td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzz8xiz%23YQOZ5" target="_blank" rel="external nofollow noopener noreferrer">FlowContext</a> 增加通信能力，提供同步、异步、异步回调的便捷使用</td>
+<td>✅</td>
+<td>功能增强</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F235" target="_blank" rel="external nofollow noopener noreferrer">#235</a></td>
+</tr>
+<tr>
+<td>虚拟线程支持; 各逻辑服之间通信阻塞部分，改为使用虚拟线程，避免阻塞业务线程</td>
+<td>✅</td>
+<td>功能增强、性能提升</td>
+<td> </td>
+</tr>
+<tr>
+<td>默认不使用 bolt 线程池，减少上下文切换。<br> <br> ioGame17：<br> netty --&gt; bolt 线程池 --&gt; ioGame 线程池。<br> <br> ioGame21：<br> 1. netty --&gt; ioGame 线程池。<br> 2. 部分业务将直接在 netty 线程中消费业务。<br> <br> 文档 - <a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Feixd6x" target="_blank" rel="external nofollow noopener noreferrer">ioGame 线程相关</a></td>
+<td>✅</td>
+<td>性能提升</td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzurusq" target="_blank" rel="external nofollow noopener noreferrer">全链路调用日志跟踪</a>；日志增强 traceId</td>
+<td>✅</td>
+<td>功能增强</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F230" target="_blank" rel="external nofollow noopener noreferrer">#230</a></td>
+</tr>
+<tr>
+<td>移除文档自动生成，改为由开发者调用触发。</td>
+<td>✅</td>
+<td>整理</td>
+<td> </td>
+</tr>
+<tr>
+<td>移除过期代码</td>
+<td>✅</td>
+<td>整理</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F239" target="_blank" rel="external nofollow noopener noreferrer">#237</a></td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fgmxz33" target="_blank" rel="external nofollow noopener noreferrer">分布式事件总线</a><br> <br> 可以代替 redis pub sub 、 MQ ，并且具备全链路调用日志跟踪，这点是中间件产品做不到的。</td>
+<td>✅</td>
+<td>功能增强</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F228" target="_blank" rel="external nofollow noopener noreferrer">#228</a></td>
+</tr>
+<tr>
+<td>日志库使用新版本 slf4j 2.0</td>
+<td>✅</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Ffury.apache.org%2F" target="_blank" rel="external nofollow noopener noreferrer">Fury</a> 支持。<br> <br> Fury 是一个基于JIT动态编译和零拷贝的高性能多语言序列化框架</td>
+<td> </td>
+<td>在计划内，不一定会支持</td>
+<td>因在发布 ioGame21 时，Fury 还未发布稳定版本，所以这里暂不支持。</td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Flxqbnb%23bJ6T8" target="_blank" rel="external nofollow noopener noreferrer">心跳响应前的回调</a></td>
+<td>✅</td>
+<td>功能增强</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F234" target="_blank" rel="external nofollow noopener noreferrer">#234</a></td>
+</tr>
+<tr>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzz8xiz%23HQYmm" target="_blank" rel="external nofollow noopener noreferrer">FlowContext</a> 增加更新、获取元信息的便捷使用</td>
+<td>✅</td>
+<td>功能增强</td>
+<td><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F236" target="_blank" rel="external nofollow noopener noreferrer">#236</a></td>
+</tr>
+</tbody>
+</table>
+<h3>ioGame21 首发内容简介</h3>
+<p>在 ioGame21 中，该版本做了数百项优化及史诗级增强。</p>
+<ul>
+<li>文档方面</li>
+<li>线程管理域方面的开放与统一、减少线程池上下文切换</li>
+<li>FlowContext 得到了<strong>史诗级</strong>的增强。</li>
+<li>新增通讯方式 - 分布式事件总线</li>
+<li>游戏对外服方面增强</li>
+<li>全链路调用日志跟踪</li>
+<li>各逻辑服之间通信阻塞部分，改为使用虚拟线程, 避免阻塞业务线程，从而使得框架的吞吐量得到了巨大的提升。</li>
+</ul>
+<h4>游戏对外服相关</h4>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F76" target="_blank" rel="external nofollow noopener noreferrer">#76</a> 游戏对外服缓存</p>
+<p>更多的介绍，请阅读<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fkhg23pvbh59a7spm" target="_blank" rel="external nofollow noopener noreferrer">游戏对外服缓存</a>文档。</p>
+<p>游戏对外服缓存，可以将一些热点的业务数据缓存在游戏对外服中，玩家每次访问相关路由时，会直接从游戏对外服的内存中取数据。这样可以避免反复请求游戏逻辑服，从而达到性能的超级提升；</p>
+<pre><code class="language-java">private static void extractedExternalCache() &#123;
+    // 框架内置的缓存实现类
+    DefaultExternalCmdCache externalCmdCache = new DefaultExternalCmdCache();
+    // 添加到配置中
+    ExternalGlobalConfig.externalCmdCache = externalCmdCache;
+    // 配置缓存 3-1
+    externalCmdCache.addCmd(3, 1);
+&#125;
+</code></pre>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F213" target="_blank" rel="external nofollow noopener noreferrer">#213</a> 游戏对外服开放自定义协议</p>
+<p>更多的介绍，请阅读<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fxeokui" target="_blank" rel="external nofollow noopener noreferrer">游戏对外服的协议说明</a>文档。</p>
+<p>开发者可自定义游戏对外服协议，用于代替框架默认的 ExternalMessage 公共对外协议。</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F234" target="_blank" rel="external nofollow noopener noreferrer">#234</a> 心跳响应前的回调</p>
+<p>更多的介绍，请阅读<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fuueq3i" target="_blank" rel="external nofollow noopener noreferrer">心跳设置与心跳钩子</a>文档。</p>
+<p>在部分场景下，在响应心跳前可添加当前时间，使得客户端与服务器时间同步。</p>
+<pre><code class="language-java">@Slf4j
+public class DemoIdleHook implements SocketIdleHook &#123;
+    ... ... 省略部分代码
+    volatile byte[] timeBytes;
+
+<pre><code>public DemoIdleHook() &amp;#123;
+    updateTime();
+    // 每秒更新当前时间
+    TaskKit.runInterval(this::updateTime, 1, TimeUnit.SECONDS);
+&amp;#125;
+
+private void updateTime() &amp;#123;
+    LongValue data = LongValue.of(TimeKit.currentTimeMillis());
+    // 避免重复序列化，这里提前序列化好时间数据
+    timeBytes = DataCodecKit.encode(data);
+&amp;#125;
+
+@Override
+public void pongBefore(BarMessage idleMessage) &amp;#123;
+    // 把当前时间戳给到心跳接收端
+    idleMessage.setData(timeBytes);
+&amp;#125;
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<h4>FlowContext</h4>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F235" target="_blank" rel="external nofollow noopener noreferrer">#235</a> FlowContext 增加通信能力，提供同步、异步、异步回调的便捷使用</p>
+<p>更多的介绍，请阅读 <a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzz8xiz" target="_blank" rel="external nofollow noopener noreferrer">FlowContext</a> 文档。</p>
+<pre><code class="language-java">// 跨服请求 - 同步、异步回调演示
+void invokeModuleMessage() &#123;
+    // 路由、请求参数
+    ResponseMessage responseMessage = flowContext.invokeModuleMessage(cmdInfo, yourData);
+    RoomNumMsg roomNumMsg = responseMessage.getData(RoomNumMsg.class);
+    log.info("同步调用 : &#123;&#125;", roomNumMsg.roomCount);
+
+<pre><code>// --- 此回调写法，具备全链路调用日志跟踪 ---
+// 路由、请求参数、回调
+flowContext.invokeModuleMessageAsync(cmdInfo, yourData, responseMessage -&amp;gt; &amp;#123;
+    RoomNumMsg roomNumMsg = responseMessage.getData(RoomNumMsg.class);
+    log.info(&quot;异步回调 : &amp;#123;&amp;#125;&quot;, roomNumMsg.roomCount);
+&amp;#125;);
+</code></pre>
+<p>&amp;#125;</p>
+<p>&#x2F;&#x2F; 广播<br>public void broadcast(FlowContext flowContext) &amp;#123;<br>    &#x2F;&#x2F; 全服广播 - 路由、业务数据<br>    flowContext.broadcast(cmdInfo, yourData);</p>
+<pre><code>// 广播消息给单个用户 - 路由、业务数据、userId
+long userId = 100;
+flowContext.broadcast(cmdInfo, yourData, userId);
+
+// 广播消息给指定用户列表 - 路由、业务数据、userIdList
+List&amp;lt;Long&amp;gt; userIdList = new ArrayList&amp;lt;&amp;gt;();
+userIdList.add(100L);
+userIdList.add(200L);
+flowContext.broadcast(cmdInfo, yourData, userIdList);
+
+// 给自己发送消息 - 路由、业务数据
+flowContext.broadcastMe(cmdInfo, yourData);
+
+// 给自己发送消息 - 业务数据
+// 路由则使用当前 action 的路由。
+flowContext.broadcastMe(yourData);
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F236" target="_blank" rel="external nofollow noopener noreferrer">#236</a> FlowContext 增加更新、获取元信息的便捷使用</p>
+<p>更多的介绍，请阅读 <a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzz8xiz" target="_blank" rel="external nofollow noopener noreferrer">FlowContext</a> 文档。</p>
+<pre><code class="language-java">void test(MyFlowContext flowContext) &#123;
+    // 获取元信息
+    MyAttachment attachment = flowContext.getAttachment();
+    attachment.nickname = "渔民小镇";
+
+<pre><code>// [同步]更新 - 将元信息同步到玩家所在的游戏对外服中
+flowContext.updateAttachment();
+
+// [异步无阻塞]更新 - 将元信息同步到玩家所在的游戏对外服中
+flowContext.updateAttachmentAsync();
+</code></pre>
+<p>&amp;#125;</p>
+<p>public class MyFlowContext extends FlowContext &amp;#123;<br>    MyAttachment attachment;</p>
+<pre><code>@Override
+@SuppressWarnings(&quot;unchecked&quot;)
+public MyAttachment getAttachment() &amp;#123;
+    if (Objects.isNull(attachment)) &amp;#123;
+        this.attachment = this.getAttachment(MyAttachment.class);
+    &amp;#125;
+
+    return this.attachment;
+&amp;#125;
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<h4>线程相关</h4>
+<p>更多的介绍，请阅读 <a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Feixd6x" target="_blank" rel="external nofollow noopener noreferrer">ioGame 线程相关</a>文档。</p>
+<p>虚拟线程支持，各逻辑服之间通信阻塞部分使用虚拟线程来处理，避免阻塞业务线程。</p>
+<p>默认不使用 bolt 线程池，减少上下文切换。ioGame21 业务消费的线程相关内容如下：</p>
+<ol>
+<li>netty --&gt; ioGame 线程池。</li>
+<li>部分业务将直接在 netty 线程中消费业务。</li>
+</ol>
+<p>在 ioGame21 中，框架内置了 3 个线程执行器管理域，分别是</p>
+<ol>
+<li>UserThreadExecutorRegion ，用户线程执行器管理域。</li>
+<li>UserVirtualThreadExecutorRegion ，用户虚拟线程执行器管理域。</li>
+<li>SimpleThreadExecutorRegion ，简单的线程执行器管理域。</li>
+</ol>
+<p><strong>从工具类中得到与用户（玩家）所关联的线程执行器</strong></p>
+<pre><code class="language-java">@Test
+public void userThreadExecutor() &#123;
+    long userId = 1;
+
+<pre><code>ThreadExecutor userThreadExecutor = ExecutorRegionKit.getUserThreadExecutor(userId);
+
+userThreadExecutor.execute(() -&amp;gt; &amp;#123;
+    // print 1
+    log.info(&quot;userThreadExecutor : 1&quot;);
+&amp;#125;);
+
+userThreadExecutor.execute(() -&amp;gt; &amp;#123;
+    // print 2
+    log.info(&quot;userThreadExecutor : 2&quot;);
+&amp;#125;);
+</code></pre>
+<p>&amp;#125;</p>
+<p>@Test<br>public void getUserVirtualThreadExecutor() &amp;#123;<br>    long userId &#x3D; 1;</p>
+<pre><code>ThreadExecutor userVirtualThreadExecutor = ExecutorRegionKit.getUserVirtualThreadExecutor(userId);
+
+userVirtualThreadExecutor.execute(() -&amp;gt; &amp;#123;
+    // print 1
+    log.info(&quot;userVirtualThreadExecutor : 1&quot;);
+&amp;#125;);
+
+userVirtualThreadExecutor.execute(() -&amp;gt; &amp;#123;
+    // print 2
+    log.info(&quot;userVirtualThreadExecutor : 2&quot;);
+&amp;#125;);
+</code></pre>
+<p>&amp;#125;</p>
+<p>@Test<br>public void getSimpleThreadExecutor() &amp;#123;<br>    long userId &#x3D; 1;</p>
+<pre><code>ThreadExecutor simpleThreadExecutor = ExecutorRegionKit.getSimpleThreadExecutor(userId);
+
+simpleThreadExecutor.execute(() -&amp;gt; &amp;#123;
+    // print 1
+    log.info(&quot;simpleThreadExecutor : 1&quot;);
+&amp;#125;);
+
+simpleThreadExecutor.execute(() -&amp;gt; &amp;#123;
+    // print 2
+    log.info(&quot;simpleThreadExecutor : 2&quot;);
+&amp;#125;);
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<p><strong>从 FlowContext 中得到与用户（玩家）所关联的线程执行器</strong></p>
+<pre><code class="language-java">void executor() &#123;
+    // 该方法具备全链路调用日志跟踪
+    flowContext.execute(() -&gt; &#123;
+        log.info("用户线程执行器");
+    &#125;);
+
+<pre><code>// 正常提交任务到用户线程执行器中
+// getExecutor() 用户线程执行器
+flowContext.getExecutor().execute(() -&amp;gt; &amp;#123;
+    log.info(&quot;用户线程执行器&quot;);
+&amp;#125;);
+</code></pre>
+<p>&amp;#125;</p>
+<p>void executeVirtual() &amp;#123;<br>    &#x2F;&#x2F; 该方法具备全链路调用日志跟踪<br>    flowContext.executeVirtual(() -&gt; &amp;#123;<br>        log.info(“用户虚拟线程执行器”);<br>    &amp;#125;);</p>
+<pre><code>// 正常提交任务到用户虚拟线程执行器中
+// getVirtualExecutor() 用户虚拟线程执行器
+flowContext.getVirtualExecutor().execute(() -&amp;gt; &amp;#123;
+    log.info(&quot;用户虚拟线程执行器&quot;);
+&amp;#125;);
+
+// 示例演示 - 更新元信息（可以使用虚拟线程执行完成一些耗时的操作）
+flowContext.executeVirtual(() -&amp;gt; &amp;#123;
+    log.info(&quot;用户虚拟线程执行器&quot;);
+    
+    // 更新元信息
+    flowContext.updateAttachment();
+    
+    // ... ... 其他业务逻辑
+&amp;#125;);
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+<h4>日志相关</h4>
+<p>日志库使用新版本 slf4j 2.x</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F230" target="_blank" rel="external nofollow noopener noreferrer">#230</a> 支持全链路调用日志跟踪；</p>
+<p>更多的介绍，请阅读<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzurusq" target="_blank" rel="external nofollow noopener noreferrer">全链路调用日志跟踪</a>文档。</p>
+<p><strong>开启 traceId 特性</strong></p>
+<p>该配置需要在游戏对外服中设置，因为游戏对外服是玩家请求的入口。</p>
+<pre><code class="language-java">// true 表示开启 traceId 特性
+IoGameGlobalConfig.openTraceId = true;
+</code></pre>
+<p>将<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fxhvpqy" target="_blank" rel="external nofollow noopener noreferrer">全链路调用日志跟踪插件</a> TraceIdInOut 添加到业务框架中，表示该游戏逻辑服需要支持全链路调用日志跟踪。如果游戏逻辑服没有添加该插件的，表示不需要记录日志跟踪。</p>
+<pre><code class="language-java">BarSkeletonBuilder builder = ...;
+// traceId
+TraceIdInOut traceIdInOut = new TraceIdInOut();
+builder.addInOut(traceIdInOut);
+</code></pre>
+<h4>分布式事件总线</h4>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fgame-town%2FioGame%2Fissues%2F228" target="_blank" rel="external nofollow noopener noreferrer">#228</a> 分布式事件总线是新增的通讯方式，可以代替 redis pub sub 、 MQ ...等中间件产品；分布式事件总线具备全链路调用日志跟踪，这点是中间件产品所做不到的。</p>
+<p>文档 - <a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fgmxz33" target="_blank" rel="external nofollow noopener noreferrer">分布式事件总线</a></p>
+<h4>小结</h4>
+<p>在 ioGame21 中，该版本做了数百项优化及史诗级增强。</p>
+<ul>
+<li>在线文档方面</li>
+<li>线程管理域方面的开放与统一、减少线程池上下文切换</li>
+<li>FlowContext 增强</li>
+<li>新增通讯方式 - 分布式事件总线</li>
+<li>游戏对外服方面增强</li>
+<li>全链路调用日志跟踪</li>
+</ul>
+<h4>ioGame17 迁移到 ioGame21</h4>
+<p>文档：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fhcgsfobyoph9r74r" target="_blank" rel="external nofollow noopener noreferrer">17 迁移到 ioGame21</a></p>
+<p> </p>
+<hr>
+<div>
+<h3><span style="color:#40485b">ioGame 使用趋势数据</span></h3>
+<p style="margin-left:0; margin-right:0"><span>关注 ioGame 的游戏服务器开发者持续增多，</span><strong><span style="color:#df2a3f">2022-09 ~ 至今</span></strong><span style="color:#000000">各月</span><span>的统计数据；</span></p>
+<p style="margin-left:0; margin-right:0"><span>这里的统计信息是关于开发者关注 ioGame 框架相关的，从统计数据中可以看出，由于 ioGame 上手简单，功能强大等优点，得到了众多开发者的关注。如果你想知道 ioGame 有没有人在使用，可以先到这里看下统计数据、开发者的评价与讨论。</span></p>
+<p style="margin-left:0; margin-right:0"><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fgpxk93%23TwVa8" target="_blank" rel="external nofollow noopener noreferrer"><span>https://www.yuque.com/iohao/game/gpxk93#TwVa8</span></a></p>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><span>这里展示了每月的统计数据，统计数据来源于语雀后台，这些数据都是</span><strong><span style="color:#df2a3f">真实的、客观存在的、活的</span></strong><span>。</span></p>
+<div>
+<blockquote>
+<p style="margin-left:0; margin-right:0"><strong><span style="color:#df2a3f">因为成本的原因，某宝某多还没有出现能提供这种服务的商家，所以这样的统计数据也更具真实性。</span></strong></p>
+</blockquote>
+</div>
+<p style="margin-left:0; margin-right:0"><span>通过统计数据，我们可以看到每天会有很多开发者在访问 ioGame 的在线文档，并且这些统计数据不是来源于口嗨的，也不是主观创造的。</span></p>
+<p style="margin-left:0; margin-right:0"><span>所以，还在犹豫要不要使用 ioGame 的开发者们，更应该讨论的是“为什么这些开发者会选择使用 ioGame”，而不是 ioGame 有没有人在使用的问题。</span></p>
+<p style="margin-left:0; margin-right:0"><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao" target="_blank" rel="external nofollow noopener noreferrer"><span>点击我，到语雀后台查看 ioGame 的数据</span></a></p>
+<p style="margin-left:0; margin-right:0"><img class="lazy" alt height="424" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1707826063452005074/b4b96239_5475.png" width="680"></p>
+</div>
+<hr>
+<div>
+<h3><strong><span style="color:#222222">最小依赖</span></strong></h3>
+<p style="margin-left:0; margin-right:0"><span>ioGame 已经上传到中央仓库，建议开发者的 maven 仓库代理使用原生的或腾讯云的代理，目前不推荐阿里云的代理。</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fswt3ls%23Amq4K" target="_blank" rel="external nofollow noopener noreferrer"><span>腾讯云代理设置可参考这里</span></a><span>。</span></p>
+<p style="margin-left:0; margin-right:0"><span>ioGame最新版本查看 </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fab15oe" target="_blank" rel="external nofollow noopener noreferrer"><span>https://www.yuque.com/iohao/game/ab15oe</span></a></p>
+<p style="margin-left:0; margin-right:0"><span>ioGame 是轻量级的网络游戏服务器框架，</span><strong><span>不依赖任何第三方</span></strong><span>中间件或数据库</span><strong><span>就能支持集群、分布式</span></strong><span>，只需要 java 环境就可以运行。此时，你只需一个依赖即可获得整个框架，并同时支持开头介绍的全部功能特性。</span></p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.iohao.game&lt;/groupId&gt;
+    &lt;artifactId&gt;run-one-netty&lt;/artifactId&gt;
+    &lt;version&gt;$&#123;ioGame.version&#125;&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<div>
+   
+ </div>
+</div>
+<p> </p>
+<hr>
+<h2>框架整体预览导图</h2>
+<p><img class="lazy" alt height="468" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1683534421248294819/72c4dfdb_5475.png" width="620"></p>
+<p> </p>
+<hr>
+<h2>ioGame 网络游戏服务器框架简介</h2>
+<p> </p>
+<ul>
+<li>无锁异步化、事件驱动的架构设计；轻量级，无需依赖任何第三方中间件或数据库就能支持集群、分布式</li>
+<li>通过 ioGame 可以很容易的搭建出一个集群无中心节点、集群自动化、多进程的分布式游戏服务器</li>
+<li>包体小、启动快、内存占用少、更加的节约、无需配置文件、提供了优雅的路由访问权限控制</li>
+<li>让开发者使用一套业务代码，无需改动，支持多种连接方式：WebSocket、TCP、UDP</li>
+<li>让开发者用一套业务代码，能轻松切换和扩展不同的通信协议：Protobuf、JSON</li>
+<li>近原生的性能；业务框架在单线程中平均每秒可以执行 1152 万次业务逻辑</li>
+<li>代码即联调文档、JSR380验证、断言 + 异常机制 = 更少的维护成本</li>
+<li>框架具备智能的同进程亲和性；开发中，业务代码可定位与跳转</li>
+<li>架构部署灵活性与多样性：既可相互独立，又可相互融合</li>
+<li>可同时与同类型的多个游戏逻辑服通信并得到数据</li>
+<li>逻辑服之间可相互跨进程、跨机器进行通信</li>
+<li>支持玩家对游戏逻辑服进行动态绑定</li>
+<li>能与任何其他框架做融合共存</li>
+<li>对 webMVC 开发者友好</li>
+<li>无 spring 强依赖</li>
+<li>零学习成本</li>
+<li>javaSE</li>
+</ul>
+<p><span>你是否想要开发一个</span><strong><span>高性能、稳定、易用、自带负载均衡、避免类爆炸设计、可跨进程跨机器通信、集群无中心节点、集群自动化、有状态多进程的分布式的</span></strong><span>网络编程服务器呢？如果是的话，这里向你推荐一个由 java 语言编写的网络编程框架 ioGame。下面将会从多个方面来对框架做一些简单的介绍。</span></p>
+<div>
+<p style="margin-left:0; margin-right:0"><span>ioGame 是一个</span><span style="color:#262626">轻量级的</span><span>网络编程框架，适用于</span><strong><span style="color:#df2a3f">网络游戏服务器、物联网、内部系统</span></strong><span>及各种需要长连接的场景；</span></p>
+<div>
+<blockquote>
+<p style="margin-left:0; margin-right:0"><span>ioGame 有以下特点：</span></p>
+<ul>
+<li><span>无锁异步化、事件驱动的架构设计</span></li>
+<li><span>同时支持 TCP、WebSocket、UDP 多种连接方式，并且可扩展</span></li>
+<li><span>支持 protobuf、json 等不同的通信协议</span></li>
+<li><span>集群无中心节点、集群自动化、分布式的设计</span></li>
+<li><span style="color:#000000">真轻量级，不依赖任何第三方中间件或数据库就能支持集群、分布式</span></li>
+<li><span>提供多种通讯方式，且逻辑服之间可以相互跨机器通信</span></li>
+<li><span>框架为开发者提供了同步、异步、异步回调的方法，用于逻辑服之间的相互访问</span></li>
+<li><span>ioGame 是纯 javaSE 的，使得 ioGame 能与其他框架方便的进行集成、融合；如 spring ...等</span></li>
+<li><span>学习成本低，开发体验好</span></li>
+<li><span>支持多服单进程、多服多进程的启动和部署方式</span></li>
+<li><span>提供游戏文档生成的辅助功能</span></li>
+<li><span>包体小、启动快、内存占用少</span></li>
+<li><span>提供优雅的路由访问权限控制</span></li>
+<li><span>提供了灵活的线程扩展、设置</span></li>
+<li><span>具备智能的同进程亲和性</span></li>
+<li><span>具备全链路调用日志跟踪特性</span></li>
+<li><span>业务框架提供了插件机制，插件是可插拨、可扩展的</span></li>
+<li><span>JSR380验证、断言 + 异常机制 = 更少的维护成本</span></li>
+<li><span>action 支持自动装箱、拆箱基础类型，用于解决</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fieimzn" target="_blank" rel="external nofollow noopener noreferrer"><span>协议碎片</span></a><span>的问题</span></li>
+</ul>
+</blockquote>
+</div>
+<p style="margin-left:0; margin-right:0"><span>ioGame 是一个专为网络编程设计的</span><span style="color:#262626">轻量级</span><span>框架，它可以帮助你快速地搭建和运行自己的网络服务器。ioGame 适用于</span><strong><span style="color:#df2a3f">网络游戏服务器、物联网、内部系统</span></strong><span>及各种需要长连接的场景。如各种类型和规模的网络游戏，无论是 H5、手游还是 PC 游戏，无论是简单的聊天室，还是复杂的</span><strong><span style="color:#262626">全球同服</span></strong><span style="color:#262626">、回合制游戏、策略游戏、放置休闲游戏、即时战斗、</span><span>MMORPG 等，ioGame 都可以满足你的需求。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#262626">ioGame 在打包、内存占用、启动速度等方面也是优秀的。打 jar 包后大约 </span><strong><span style="color:#262626">15MB</span></strong><span style="color:#262626">，应用通常会在 </span><strong><span style="color:#262626">0.x 秒</span></strong><span style="color:#262626">内完成启动，内存占用小。详细请看 </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzm6qg2%23LF8Qh" target="_blank" rel="external nofollow noopener noreferrer"><span>快速从零编写服务器完整示例</span></a><span style="color:#262626">。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在生态融合方面，ioGame 可以很方便的与 spring 集成（5 行代码）；除了 spring 外，还能与任何其他的框架做</span><strong><span>融合</span></strong><span>，如：solon </span><span>... 等，从而使用其他框架的相关生态。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在轻量级方面，ioGame </span><strong><span style="color:#df2a3f">不依赖任何第三方</span></strong><span>中间件或数据库</span><strong><span style="color:#df2a3f">就能支持集群、分布式</span></strong><span>，只需要 java 环境就可以运行。这意味着在使用上简单了，在部署上也为企业减少了部署成本、维护难度。使用 ioGame 时，只需一个依赖即可获得整个框架，而无需在安装其他服务，如： Nginx、Redis、MQ、Mysql、ZooKeeper、Protobuf 协议编译工具...等。</span></p>
+<p style="margin-left:0; margin-right:0"><span>ioGame 具备</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzurusq" target="_blank" rel="external nofollow noopener noreferrer"><span>全链路调用日志跟踪</span></a><span>特性，这在分布式下非常的实用。该特性为每个请求分配一个唯一标识，并记录在日志中，通过唯一标识可以快速的在日志中过滤出指定请求的信息。ioGame 提供的全链路调用日志跟踪特性更是强大，</span><strong><span>支持跨机器、跨进程</span></strong><span>。简单的说，从玩家的请求进来到结束，无论该请求经过了多少个游戏逻辑服，都能精准记录。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在通讯方式方面，大部分框架只能支持推送（广播）这一类型的通讯方式；ioGame 则提供了多种类型的通讯方式，通过对各种通讯方式的组合使用，可以简单完成以往难以完成的工作，并且这些通讯方式都支持跨进程、跨机器通信，且具备全链路调用日志跟踪。这些通讯方式分别是</span></p>
+<ol>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fkrzxcmgoispw0gl8" target="_blank" rel="external nofollow noopener noreferrer"><span>请求响应</span></a><span>（单次请求处理）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fqv4qfo" target="_blank" rel="external nofollow noopener noreferrer"><span>广播</span></a><span>（推送）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fanguu6" target="_blank" rel="external nofollow noopener noreferrer"><span>单个逻辑服间的相互通讯</span></a><span>（可跨机器通信、可跨进程通信）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Frf9rb9" target="_blank" rel="external nofollow noopener noreferrer"><span>与同类型多个逻辑服相互通讯</span></a><span>（可跨多个机器通信、可跨多个进程通信）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzgaldoxz6zgg0tgn" target="_blank" rel="external nofollow noopener noreferrer"><span>脉冲通讯</span></a><span>（可跨多个机器通信、可跨多个进程通信）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fgmxz33" target="_blank" rel="external nofollow noopener noreferrer"><span>分布式事件总线</span></a><span>（类似 MQ、Redis 发布订阅机制；可跨多个机器通信、可跨多个进程通信）</span></li>
+</ol>
+<p style="margin-left:0; margin-right:0"><span>在编码风格上，ioGame 为开发者提供了类 MVC 的编码风格（无入侵的 Java Bean ），这种设计方式很好的</span><strong><span>避免了类爆炸</span></strong><span>。同时，框架为开发者提供了同步、异步、异步回调的方法，用于逻辑服之间的相互访问；这使得开发者所编写的代码会非常的优雅，并且具备全链路调用日志跟踪。</span></p>
+<p style="margin-left:0; margin-right:0"><span>从 ioGame21 开始，框架添加了虚拟线程的相关支持。各逻辑服之间通信阻塞部分使用虚拟线程，这样可以很好的避免阻塞业务线程，并大幅提高了框架的吞吐量。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在线程安全方面，框架为开发者解决了单个玩家的</span><strong><span>并发问题</span></strong><span>；即使玩家重新登录后，也会使用相同的线程来消费业务，并推荐使用</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fgmfy1k" target="_blank" rel="external nofollow noopener noreferrer"><span>领域事件</span></a><span>来解决同一房间或业务内多个玩家的并发问题。</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Feixd6x" target="_blank" rel="external nofollow noopener noreferrer"><span>框架在线程的扩展性</span></a><span>上提供了友好的支持，开发者可以很容易的编写出无锁并发代码，这得益于 ioGame 独有的线程执行器设计与扩展。换句话说，你不会因为并发问题烦恼。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在无锁并发方面，ioGame 提供了优雅、独特的线程执行器设计。通过该特性，开发者能轻易的编写出无锁高并发的代码。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在连接方式方面，ioGame 允许开发者</span><strong><span>使用一套业务代码</span></strong><span>，同时支持多种连接方式，无需进行任何修改。ioGame 已经支持了 TCP、WebSocket 和 UDP 连接方式，并且也支持在这几种连接方式之间进行灵活切换。连接方式是可扩展的，并且扩展操作也很简单，这意味着之后如果支持了 KCP，无论你当前项目使用的是 TCP、WebSocket 还是 UDP，都可以切换成 KCP；注意了，即使切换到 KCP 的连接方式，现有的业务代码也无需改变。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在通信协议方面，ioGame 让开发者</span><strong><span>用一套业务代码</span></strong><span>，就能轻松</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fuq2zrltrc7to27bt" target="_blank" rel="external nofollow noopener noreferrer"><span>切换和扩展不同的通信协议</span></a><span>，如 Protobuf、JSON 等。只需一行代码，就可以从 Protobuf 切换到 JSON，无需改变业务方法。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在增减协议方面，ioGame 可以让你在</span><strong><span>新增或减少协议</span></strong><span>时，</span><strong><span>无需重启</span></strong><span>游戏对外服与 Broker（游戏网关）；这样既能避免玩家断线，又能避免因新增、减少协议而重启所有机器的痛点。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在协议碎片方面，action 支持自动装箱、拆箱基础类型特性，用于解决</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fieimzn" target="_blank" rel="external nofollow noopener noreferrer"><span>协议碎片</span></a><span>的问题。同时该特性除了能使你的业务代码更加清晰以外，还能大幅提高开发者在该环节的生产力。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在集群方面，ioGame 的 Broker （游戏网关）采用无中心节点、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fqmo56c" target="_blank" rel="external nofollow noopener noreferrer"><span>自动化的集群设计</span></a><span>，所有节点平等且自治，不存在单点故障。集群能够</span><strong><span>自动管理和弹性扩缩</span></strong><span>，节点加入或退出时，能够自动保证负载均衡和数据一致性，不影响服务可用性。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在分布式方面，ioGame 的逻辑服使用了分布式设计思想，将服务器分为</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fwotnhl" target="_blank" rel="external nofollow noopener noreferrer"><span>游戏对外服</span></a><span>、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fensevx" target="_blank" rel="external nofollow noopener noreferrer"><span>游戏逻辑服</span></a><span>等不同层次，并且每一层都有明确的职责和接口。这样可以提高代码可读性和可维护性，并且方便进行</span><strong><span>水平扩展</span></strong><span>。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在学习成本方面，ioGame 的学习成本非常低，可以说是</span><strong><span>零学习成本</span></strong><span>，即使没有游戏编程经验，也能轻松上手。开发者只需掌握普通的 java 方法或 webMVC 相关知识，就能用框架开发业务。框架不要求开发者改变编码习惯，而是自身适应开发者的需求。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Funp26u" target="_blank" rel="external nofollow noopener noreferrer"><span>同进程亲和性</span></a><span>方面，在同一进程内，不同 Netty 实例之间的通信，是通过内存进行传输的，不需要经过网络传输，数据传输速度极快。同进程亲和性指的是，优先访问同进程内的游戏逻辑服，当同进程内没有能处理请求的游戏逻辑服时，才会去其他进程或机器中查找能处理请求的游戏逻辑服；简单点说，框架对于请求的处理很智能，会优先将请求给同进程内的逻辑服消费。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在开发体验方面，ioGame 非常注重开发者的开发体验；框架提供了 </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fghng6g" target="_blank" rel="external nofollow noopener noreferrer"><span>JSR380 验证</span></a><span>、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Favlo99" target="_blank" rel="external nofollow noopener noreferrer"><span>断言 + 异常机制</span></a><span>、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fpf3sx0" target="_blank" rel="external nofollow noopener noreferrer"><span>业务代码定位</span></a><span>，action 支持自动装箱、拆箱基础类型，用于解决</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fieimzn" target="_blank" rel="external nofollow noopener noreferrer"><span>协议碎片</span></a><span>的问题 ...等。诸多丰富的功能，使得开发者的业务代码更加的清晰、简洁；</span></p>
+<p style="margin-left:0; margin-right:0"><span>业务框架提供了</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fbsgvzglvlr5tenao" target="_blank" rel="external nofollow noopener noreferrer"><span>插件</span></a><span>机制，插件是可插拨、可扩展的。框架内置提供了 </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fpf3sx0" target="_blank" rel="external nofollow noopener noreferrer"><span>DebugInOut</span></a><span>、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fznapzm1dqgehdyw8" target="_blank" rel="external nofollow noopener noreferrer"><span>action 调用统计</span></a><span>、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzoqabk4gez3bckis" target="_blank" rel="external nofollow noopener noreferrer"><span>业务线程监控插件</span></a><span>、</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fumzk2d6lovo4n9gz" target="_blank" rel="external nofollow noopener noreferrer"><span>各时间段调用统计插件</span></a><span>...等插件；不同的插件提供了不同的关注点，比如我们可以使用调用、监控等插件相互配合，可以让我们在开发阶段就知道</span><strong><span>是否存在性能问题</span></strong><span>。合理利用好各个插件，可以让我们在开发阶段就能知道问题所在，提前发现问题，提前预防问题。</span></p>
+<p style="margin-left:0; margin-right:0"><span>在分布式开发体验方面，通常在开发分布式应用时是需要启动多个进程的。这会让调试与排查问题变得非常困难，从而降低开发者的效率、增加工作量等，这也是很多框架都</span><strong><span>解决不了的问题</span></strong><span>，但 ioGame 做到了！ioGame 支持多服单进程的启动方式，这使得开发者在开发和调试分布式系统时更加简单。</span></p>
+<p style="margin-left:0; margin-right:0"><span>与前端对接联调方面，ioGame 提供了</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Firth38" target="_blank" rel="external nofollow noopener noreferrer"><span>游戏文档生成</span></a><span>的辅助功能，可以做到</span><strong><span>代码即对接文档</span></strong><span>。简单地说，当业务代码编写完后，框架会自动生成最新的文档。如果没有游戏文档的生成，那么你将要抽出一些时间来编写、维护对接文档的工作，而且当团队人数多了之后，文档就会很乱、不同步、不是最新的、忘记更新等情况就会出现。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#262626">在部署方面，ioGame 支持</span><strong><span style="color:#262626">多服单进程</span></strong><span style="color:#262626">的方式部署，也支持</span><strong><span style="color:#262626">多服多进程</span></strong><span style="color:#262626">多机器的方式部署；在部署方式上可以随意的切换而不需要更改代码。日常中我们可以按照单体思维开发，到了生产可以选择使用多进程的方式部署。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#262626">在安全方面，所有的游戏逻辑服</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fcklv8p%23NQ6Oc" target="_blank" rel="external nofollow noopener noreferrer"><span>不需要开放端口，天然地避免了扫描攻击</span></a><span style="color:#262626">。由于不需要为每个逻辑服分配独立的端口，那么我们在使用诸如云服务器之类的服务时，就不需要担心端口开放权限的问题了。别小看这一个环节，通常这些小细节最浪费开发者的时间。由于我们不需要管理这些 IP:Port，</span><strong><span style="color:#262626">这部分的工作量就自然地消失了</span></strong><span style="color:#262626">。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#333333">在模拟客户端测试方面，ioGame 提供了</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Ftc83ud" target="_blank" rel="external nofollow noopener noreferrer"><span>压测&amp;模拟客户端请求</span></a><span style="color:#333333">模块。此模块是用于模拟客户端，简化模拟工作量，只需要编写对应请求与回调。除了可以模拟简单的请求外，通常还可以做一些复杂的请求编排，并支持复杂业务的压测。</span><strong><span style="color:#333333">与单元测试不同的是，该模块可以模拟真实的网络环境，并且在模拟测试的过程中与服务器的交互是可持续的、可互动的，同时也是支持自动化的</span></strong><span style="color:#333333">。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#000000">在</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fzqgdv3g9if8w37vr" target="_blank" rel="external nofollow noopener noreferrer"><span>架构灵活性</span></a><span style="color:#000000">方面，ioGame 的架构由三部分组成：1.游戏对外服、2.Broker（游戏网关）、3.游戏逻辑服；三者既可相互独立，又可相互融合。这意味着使用 ioGame 可以</span><strong><span style="color:#df2a3f">适应任何类型的游戏</span></strong><span style="color:#000000">，因为只需通过调整部署方式，就可以满足不同类型的游戏需求。在 ioGame 中进行这些调整工作非常简单，而且不会对现有代码产生不良影响。</span></p>
+<p style="margin-left:0; margin-right:0"><span>开发者基于 ioGame 编写的项目模块，通常是条理清晰的，得益于框架对</span><strong><span>路由的合理设计</span></strong><span>，同时也为路由提供了优雅的</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fnap5y8p5fevhv99y" target="_blank" rel="external nofollow noopener noreferrer"><span>访问权限控制</span></a><span>。当我们整理好这些模块后，对于其他开发者接管项目或后续的维护中，会是一个不错的帮助（</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fruaqza%2F%23OBwXQ" target="_blank" rel="external nofollow noopener noreferrer"><span>模块的整理与建议</span></a><span>）。或许现阶段你感受不到这块的威力，随着你深入地使用实践就能体会到这么设计的诸多好处与优势。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#262626">开发者基于 ioGame 编写的项目，通常是语法简洁的、高性能的、低延迟的。框架最低要求使用 </span><strong><span style="color:#262626">JDK21</span></strong><span style="color:#262626">，这样即可以让项目享受到</span><strong><span style="color:#262626">分代 ZGC </span></strong><span style="color:#262626">带来的改进，还能享受语法上的简洁。分代 ZGC 远低于其</span><strong><span style="color:#262626">亚毫秒级</span></strong><span style="color:#262626">暂停时间的目标，</span><span>可以在不影响游戏速度的情况下，清理掉多余的内存；这样就不会出现卡顿或者崩溃的问题了，</span><span style="color:#262626">相当于在项目中变相的引入了一位 JVM 调优大师。</span></p>
+<p style="margin-left:0; margin-right:0"><span>综上所述，ioGame 是一个非常适合网络游戏开发的框架。可以让你轻松地创建高性能、低延迟、易扩展的游戏服务器，并且节省时间和资源。如果你想要快速地开发出令人惊艳的网络游戏，请不要犹豫，立即选择 ioGame 吧！框架</span><span style="color:#262626">屏蔽了很多复杂且重复性的工作，并可为项目中的功能模块结构、开发流程等进行</span><strong><span style="color:#262626">清晰的组织定义</span></strong><span style="color:#262626">，减少了后续的项目维护成本。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#333333">框架在开发、部署、压测&amp;模拟测试 ...等，各个阶段都提供了很好的支持。</span><span>相信你已经对 ioGame 有了一个初步的了解，虽然还有很多丰富的功能与特性没有介绍到，但你可以通过后续的实践过程中来深入了解。感谢你的阅读，并期待你使用 ioGame 来打造自己的游戏服务器。</span></p>
+</div>
+<hr>
+<div>
+<h2><span>ioGame 的组成</span></h2>
+<p style="margin-left:0; margin-right:0"><span>ioGame 由 [</span><span style="color:#e8323c">网络通信框架</span><span>] 和 [</span><span style="color:#e8323c">业务框架</span><span>] 组成</span></p>
+<ul>
+<li><span style="color:#333333">网络通信框架：职责是各服务器之间的网络通信</span></li>
+<li><span style="color:#333333">业务框架：职责是业务逻辑的处理方式和编写方式</span></li>
+</ul>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><strong><span style="color:#e8323c">网络通信框架</span></strong></p>
+<p style="margin-left:0; margin-right:0"><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.sofastack.tech%2Fprojects%2Fsofa-bolt%2Foverview%2F" target="_blank" rel="external nofollow noopener noreferrer"><span>SOFABolt</span></a><span> 是蚂蚁金融服务集团开发的一套基于 Netty 实现的网络通信框架。</span></p>
+<ul>
+<li><span>为了让 Java 程序员能将</span><span style="color:#e8323c">更多的精力放在</span><span>基于网络通信的</span><span style="color:#e8323c">业务逻辑实现上</span><span>，而不是过多的纠结于网络底层 NIO 的实现以及处理难以调试的网络问题，Netty 应运而生。</span></li>
+<li><span>为了让中间件开发者能将更多的精力放在产品功能特性实现上，而不是重复地一遍遍制造通信框架的轮子，SOFABolt 应运而生。</span></li>
+</ul>
+<p style="margin-left:0; margin-right:0"><span>Bolt 名字取自迪士尼动画-闪电狗，是一个基于 Netty 最佳实践的</span><span style="color:#e8323c">轻量、易用、高性能、易扩展</span><span>的通信框架。</span></p>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><strong><span style="color:#e8323c">业务框架</span></strong></p>
+<p style="margin-left:0; margin-right:0"><span>如果说 </span><span>sofa-bolt</span><span> 是为了让 Java 程序员能</span><span style="color:#000000">将更多的精力放在基于网络通信的业务逻辑实现上</span><span>。而业务框架正是</span><span style="color:#e8323c">解决</span><span>业务逻辑</span><span style="color:#e8323c">如何方便实现</span><span>这一问题上。业务框架是游戏框架的一部分，职责是简化程序员的业务逻辑实现，业务框架使程序员能够快速的开始编写游戏业务。</span></p>
+<p style="margin-left:0; margin-right:0"><span>业务框架对于每个 action （即业务的处理方法） 都是通过 </span><a href="https://www.oschina.net/p/reflectasm" target="_blank" rel="external nofollow noopener noreferrer"><span>asm</span></a><span> 与 Singleton、Flyweight 、Command 等设计模式结合，对 action 的获取上通过 array 来得到，是一种近原生的方式。</span></p>
+<hr>
+<div>
+<h2><span>架构简图</span></h2>
+<p><img class="lazy" alt height="387" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1708310869810934709/12963674_5475.jpeg" width="621"></p>
+<p style="margin-left:0px; margin-right:0px; text-align:center"> </p>
+<p style="margin-left:0; margin-right:0; text-align:center"><span style="color:#e8323c">通过 ioGame 你可以很容易的搭建出一个集群无中心节点、集群自动化、分布式的网络游戏服务器！</span></p>
+<p style="margin-left:0; margin-right:0; text-align:left"><span>从图中可以看出，游戏网关支持以集群方式启动多个实例。这个设计选择了集群的方式，因为游戏网关通常是无状态的，主要作用是解耦各逻辑服之间的关系、负载均衡、调度和转发任务。</span></p>
+<div>
+<p style="margin-left:0; margin-right:0"><span>而游戏对外服、游戏逻辑服使用分布式设计，支持启动多个相同类型的服务。这意味着，当玩家数量增加时，我们可以轻松增加相应类型的游戏逻辑服以处理更多请求。</span></p>
+<p style="margin-left:0; margin-right:0"><span>以游戏逻辑服为例，假设我们启动了两个 A 类型的游戏逻辑服，分别为 A-1 和 A-2。当玩家向 A 类型的游戏逻辑服发起多次请求时，游戏网关会使用默认的随机负载策略将请求分配给 A-1 和 A-2 来处理。</span></p>
+<p style="margin-left:0; margin-right:0"><span>现在我们明白，游戏对外服和游戏逻辑服都支持动态增加和减少。无论未来玩家数量增加或减少，我们都能够轻松应对。架构是支持玩家无感知更新的，这得益于分布式设计。举例来说，如果 A 类型的游戏逻辑服需要增加一些新功能，我们可以启动 A-3、A-4 等已经支持了新功能的服务器，然后逐步将之前的 A-1 和 A-2 下线，从而实现了无感知的更新。</span></p>
+<p style="margin-left:0; margin-right:0"><span>此外，框架还支持玩家</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fidl1wm" target="_blank" rel="external nofollow noopener noreferrer"><span>动态绑定游戏逻辑服</span></a><span>；玩家与游戏逻辑服绑定后，之后的请求都由该游戏逻辑服来处理。</span></p>
+<p style="margin-left:0; margin-right:0"><span>除了游戏之外，ioGame 也适用于物联网相关项目。只需将图中的玩家视为具体的设备，即使存在数亿个设备，ioGame 的架构也可以轻松支持。从 2022 年开始，已经有一些物联网公司开始采用这一解决方案，并得到了很好的体验。</span></p>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><span>ioGame 适用于</span><strong><span style="color:#df2a3f">网络游戏服务器、物联网、内部系统</span></strong><span>及各种需要长连接的场景；</span></p>
+</div>
+<table border="1" cellspacing="0" style="border-collapse:collapse; border:1px solid #d9d9d9; table-layout:fixed; width:583px">
+<tbody>
+<tr>
+<td style="background-color:#f4f5f5; border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>名称</span></p> </td>
+<td style="background-color:#f4f5f5; border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>扩展方式</span></p> </td>
+<td style="background-color:#f4f5f5; border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>职责</span></p> </td>
+</tr>
+<tr>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>游戏对外服</span></p> </td>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>分布式</span></p> </td>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>与玩家连接、交互</span></p> </td>
+</tr>
+<tr>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>游戏逻辑服</span></p> </td>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>分布式</span></p> </td>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>处理具体业务逻辑</span></p> </td>
+</tr>
+<tr>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>Broker（游戏网关）</span></p> </td>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>集群</span></p> </td>
+<td style="border-color:#d9d9d9; border-style:solid; border-width:1px; height:33px"> <p style="margin-left:0; margin-right:0"><span>调度和转发任务；</span></p> </td>
+</tr>
+</tbody>
+</table>
+<p style="margin-left:0; margin-right:0; text-align:left"> </p>
+<p style="margin-left:0; margin-right:0; text-align:left"><span>无锁异步化与事件驱动的架构设计、集群无中心节点、自带负载均衡、分布式支持、可动态增减机器、避免类爆炸的设计；</span></p>
+<hr>
+<h2>通过 ioGame 可以使得游戏编程变得简单，下面是一个业务示例</h2>
+<div>
+<p style="margin-left:0; margin-right:0"><strong><span style="color:#e8323c">协议文件定义</span></strong></p>
+<p style="margin-left:0; margin-right:0"><span>首先我们自定义一个协议文件，这个协议文件作为我们的业务载体描述。这个协议是纯java代码编写的，使用的是 jprotobuf，jprotobuf 是对 </span><span>google protobuf</span><span> 的简化使用，性能同等。</span></p>
+<p style="margin-left:0; margin-right:0"><span>可以把这理解成DTO、POJO、业务数据载体等，其主要目的是用于业务数据的传输；</span></p>
+<pre><code class="language-java">/** 请求 */
+@ProtobufClass
+@FieldDefaults(level = AccessLevel.PUBLIC)
+public class HelloReq &#123;
+    String name;
+&#125;</code></pre>
+<p> </p>
+</div>
+<div>
+<p style="margin-left:0; margin-right:0"><strong><span style="color:#e8323c">Action</span></strong></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#333333">游戏服务器的编程，游戏服务器接收业务数据后，对业务数据进行处理；下面这段代码可以同时支持 TCP、WebSocket、UDP 通信方式。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#333333">示例代码中展示了玩家的请求与响应处理，还展示了跨服（跨进程、跨机器）的请求处理的示例。</span><span style="background-color:#f5f5f5; color:#262626">无入侵的Java Bean。</span></p>
+</div>
+<pre><code class="language-java">@ActionController(1)
+public class DemoAction &#123;
+    @ActionMethod(0)
+    public HelloReq here(HelloReq helloReq) &#123;
+        // 业务数据
+        var newHelloReq = new HelloReq();
+        newHelloReq.name = helloReq.name + ", I'm here ";
+        return newHelloReq;
+    &#125;
+
+<pre><code>// 注意，这个方法只是为了演示而写的；（ioGame21 开始支持）
+// 效果与上面的方法一样，只不过是用广播（推送）的方式将数据返回给请求方
+</code></pre>
+<p>@ActionMethod(0)<br>    public void here(HelloReq helloReq, FlowContext flowContext) &amp;#123;<br>        &#x2F;&#x2F; 业务数据<br>        var newHelloReq &#x3D; new HelloReq();<br>        newHelloReq.name &#x3D; helloReq.name + “, I’m here “;</p>
+<pre><code>    flowContext.broadcastMe(newHelloReq);
+&amp;#125;
+
+// 跨服调用示例，下面分别展示了同步与异步回调的写法
+void testShowInvokeModule(FlowContext flowContext) &amp;#123;
+    /*
+     * 框架为跨服请求提供了同步、异步、异步回调的编码风格 api。（ioGame21 开始支持）
+     */
+    var cmdInfo = CmdInfo.of(1,0);
+    var yourData = ... 你的请求参数
+    
+    // 跨服请求（异步回调 - 无阻塞）-- 路由、请求参数、回调。
+    flowContext.invokeModuleMessageAsync(cmdInfo, yourData, responseMessage -&amp;gt; &amp;#123;
+        var helloReq = responseMessage.getData(HelloReq.class);
+         // --- 此异步回调，具备全链路调用日志跟踪 ---
+        log.info(&quot;异步回调 : &amp;#123;&amp;#125;&quot;, helloReq);
+    &amp;#125;);
+
+
+    // 跨服请求（同步 - 阻塞）-- 路由、请求参数。
+    ResponseMessage responseMessage = flowContext.invokeModuleMessage(cmdInfo, yourData);
+    var helloReq = responseMessage.getData(HelloReq.class);
+    log.info(&quot;同步调用 : &amp;#123;&amp;#125;&quot;, helloReq);
+&amp;#125;
+</code></pre>
+<p>&amp;#125;</p></code></pre><p></p>
+<div>
+<p style="margin-left:0; margin-right:0"><span>一个方法（here）在业务框架中表示一个 </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fsqcevl" target="_blank" rel="external nofollow noopener noreferrer"><span>Action</span></a><span>（一个业务动作）。</span></p>
+<p style="margin-left:0; margin-right:0"><span>方法声明的参数是用于接收前端传入的业务数据，在方法 return 时，数据就可以被游戏前端接收到。程序员可以不需要关心业务框架的内部细节。</span></p>
+<p style="margin-left:0; margin-right:0"><span>从上面的示例可以看出，这和普通的 java 类并无区别，同时这种设计方式</span><strong><span style="color:#fa8c16">避免了类爆炸</span></strong><span>。如果</span><span style="color:#e8323c">只负责编写游戏业务</span><span>，那么对于业务框架的学习可以</span><span style="color:#e8323c">到此为止</span><span>了。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#f5222d">游戏编程就是如此简单</span><span>！</span></p>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><strong><span>问：我可以开始游戏服务</span></strong><strong><span style="color:#333333">器</span></strong><strong><span>的编程了吗？</span></strong></p>
+<p style="margin-left:0; margin-right:0"><span>是的，你已经可以开始游戏服务</span><span style="color:#333333">器</span><span>的编程了。</span></p>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><strong><span>访问示例（控制台）</span></strong></p>
+<p style="margin-left:0; margin-right:0"><span>当我们访问 </span><span style="color:#e8323c">here </span><span>方法时（通常由游戏前端来请求），控制台将会打印</span></p>
+<pre><code>┏━━━━━ Debug. [(DemoAction.java:4).hello] ━━━━━ [cmd:1-0 65536] ━━━━━ [逻辑服 [xxx逻辑服] - id:[76526c134cc88232379167be83e4ddfc]]
+┣ userId: 1
+┣ 参数: active : HelloReq(id=101, name=塔姆)
+┣ 响应: HelloReq(name=塔姆, I'm here )
+┣ 时间: 1 ms (业务方法总耗时)
+┗━━━━━ [ioGameVersion] ━━━━━ [线程:User-8-2] ━━━━━━━ [traceId:956230991452569600] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code></pre>
+<p style="margin-left:0; margin-right:0"> </p>
+<p style="margin-left:0; margin-right:0"><strong><span>控制台打印说明</span></strong></p>
+<div>
+<blockquote>
+<p style="margin-left:0; margin-right:0"><span style="color:#e8323c">Debug. [(DemoAction.java:4).here]</span><span> : </span></p>
+<p style="margin-left:0; margin-right:0"><span>    表示执行业务的是 </span><span style="color:#000000">DemoAction</span><span> 类下的 </span><span style="color:#000000">here</span><span> 方法，</span><span style="color:#f5222d">4</span><span> 表示业务方法所在的代码行数。</span></p>
+<p style="margin-left:0; margin-right:0"><span>    在工具中点击控制台的 </span><span style="color:#000000">DemoAction.java:4</span><span> 这条信息，就可以跳转到对应的代码中（</span><span style="color:#52c41a">快速导航到对应的代码</span><span>），这是一个开发良好体验的开始！</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#f5222d">userId</span><span> : 当前发起请求的 用户 id。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#f5222d">参数</span><span> : 通常是游戏前端传入的值。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#f5222d">响应</span><span>：通常是业务方法返回的值 ，业务框架会把这个返回值推送到游戏前端。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#f5222d">时间</span><span>：执行业务方法总耗时，我们可根据业务方法总耗时的时长来优化业务。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#f5222d">路由信息</span><span>：[cmd - subCmd]</span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fsoxp4u" target="_blank" rel="external nofollow noopener noreferrer"><span>路由</span></a><span>是唯一的访问地址。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#df2a3f">ioGameVersion</span><span>：表示当前所使用的 ioGame 版本。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#df2a3f">线程</span><span>：当前执行 action 所使用的线程。</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#df2a3f">traceId</span><span>：全链路调用日志跟踪 id，每个请求唯一。（该特性在分布式下非常实用）</span></p>
+<p style="margin-left:0; margin-right:0"><span style="color:#df2a3f">逻辑服</span><span>：当前游戏逻辑服与其 id</span></p>
+</blockquote>
+</div>
+<p> </p>
+<p style="margin-left:0; margin-right:0"><span>有了以上信息，游戏开发者可以很快的定位问题。如果没有可视化的信息，开发中会浪费很多时间在前后端的沟通上。问题包括：</span></p>
+<ul>
+<li><span>是否传参问题 （游戏前端说传了）</span></li>
+<li><span>是否响应问题（游戏后端说返回了）</span></li>
+<li><span>业务执行时长问题 （游戏前端说没收到响应， 游戏后端说早就响应了）</span></li>
+</ul>
+<p style="margin-left:0; margin-right:0"><span>其中</span><span style="color:#f5222d">代码导航</span><span>可以让开发者快速的跳转到业务类对应代码中，在多人合作的项目中，可以快速的知道业务经过了哪些方法的执行，使得我们可以快速的进行阅读或修改；</span></p>
+<hr>
+<div>
+     
+   </div>
+<h2><span>框架内置的其他功能</span></h2>
+<p style="margin-left:0; margin-right:0; text-align:left"><strong><span>内置多种可选模块，可按需选择，以方便应用开发：</span></strong></p>
+<ul>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fgmfy1k" target="_blank" rel="external nofollow noopener noreferrer"><span>领域事件</span></a><span> （</span><span style="color:#333333">轻量级</span><span>单机最快MQ -- </span><strong><span style="color:#333333">disruptor</span></strong><span style="color:#333333">；通过</span><span>领域事件模块，可为你的系统实现类似 Guava-EventBus、Spring 事件驱动模型 ApplicationEvent、业务解耦、规避并发、不阻塞主线程...等，各种浪操作）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fniflk0" target="_blank" rel="external nofollow noopener noreferrer"><span>任务延时器</span></a><span> （将来某个时间可对任务进行执行、暂停、取消等操作，并不是类似 Quartz 的任务调度）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fekx6ve" target="_blank" rel="external nofollow noopener noreferrer"><span>多环境切换</span></a><span> （不同运行环境下的配置支持）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fvpe2t6" target="_blank" rel="external nofollow noopener noreferrer"><span>light-jprotobuf </span></a><span> （</span><span style="color:#333333">补足 jprotobuf 不能让多个对象在单个 .proto 源文件中生成的需求，并简化jprotobuf对源文件的注释</span><span>）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fwz7af5" target="_blank" rel="external nofollow noopener noreferrer"><span>分布式锁</span></a><span> (基于Redisson的简单实现)</span></li>
+</ul>
+<p style="margin-left:0; margin-right:0; text-align:left"> </p>
+<p style="margin-left:0; margin-right:0; text-align:left"><strong><span>内置的其他功能：</span></strong></p>
+<ul>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fuueq3i" target="_blank" rel="external nofollow noopener noreferrer"><span>心跳相关</span></a></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fhv5qqh" target="_blank" rel="external nofollow noopener noreferrer"><span>用户上线、离线相关的钩子方法</span></a></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fwg6lk7" target="_blank" rel="external nofollow noopener noreferrer"><span>UserSessions</span></a><span> （对所有用户UserSession的管理，统计在线用户等）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fwg6lk7" target="_blank" rel="external nofollow noopener noreferrer"><span>UserSession</span></a><span> (与 channel 是 1:1 的关系，可取到对应的 userId、channel 等信息。)</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Ftywkqv" target="_blank" rel="external nofollow noopener noreferrer"><span>登录相关</span></a><span>（提供重复登录、顶号等相关增强功能）</span></li>
+<li><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.yuque.com%2Fiohao%2Fgame%2Fieimzn" target="_blank" rel="external nofollow noopener noreferrer"><span>业务参数基础类型 自动装箱、拆箱</span></a><span>（解决协议碎片）</span></li>
+</ul>
+<hr>
+<h2><span>适合人群？</span></h2>
+<ol>
+<li><span style="color:#333333">长期从事 web 内部系统开发人员， 想了解游戏的</span></li>
+<li><span style="color:#333333">刚从事游戏开发的</span></li>
+<li><span style="color:#333333">未从事过游戏开发，但却对其感兴趣的</span></li>
+<li><span>对设计模式在实践中的应用和 sofa-bolt 有兴趣的学习者</span></li>
+<li><span>可以接受新鲜事物的</span></li>
+<li><span style="color:#40485b">想放弃祖传代码的</span></li>
+</ol>
+<p style="margin-left:0; margin-right:0; text-align:left"> </p>
+<p style="margin-left:0; margin-right:0; text-align:left"><span style="color:#333333">推荐实际编程经验一年以上的人员。</span></p>
+</div>
+<p><span style="background-color:#ffffff; color:#333333">ioGame </span><span style="background-color:#ffffff; color:#333333">提供了丰富的在线高质量使用文档，为你的团队助力，带上你们的小伙伴一起，这样就不用手把手的教了。</span></p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架" href="https://www.oschina.net/news/279153" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架</span><span class="cap link footnote">https://www.oschina.net/news/279153</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/15b1ee82.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/15b1ee82.html&title=ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://www.oschina.net&url=https://foruda.gitee.com/images/1707826063452005074/b4b96239_5475.png&summary=
+
+ioGame21 首发计划
+
+https://github.com/game-town/ioGame/releases/tag/21.0
+
+框架版本更新日志 (yuque.com)
+
+
+
+功能支持
+完成
+描述
+issu
+
+
+
+
+游..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=ioGame21 发布，史诗级增强，质的飞越；Java Netty 轻量级网络游戏服务器框架 - 果粉圈&amp;body=https://blog.g0f.cn/post/15b1ee82.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/15b1ee82.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/55ed2d4c.html">分析师：英伟达财报无论是好是坏，都会终结美股涨势</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/d2613e43.html">云南昭通彝良县已扑灭全部明火 未造成人员伤亡和其他财产损失</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/3aad60a.html" title="2023 年度 Rust 调查报告"><span class="title">2023 年度 Rust 调查报告</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">ioGame21 首发计划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">ioGame21 首发内容简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">游戏对外服相关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">FlowContext</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">线程相关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">日志相关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">分布式事件总线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">小结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">ioGame17 迁移到 ioGame21</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">ioGame 使用趋势数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">最小依赖</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">框架整体预览导图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">ioGame 网络游戏服务器框架简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">ioGame 的组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">架构简图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">通过 ioGame 可以使得游戏编程变得简单，下面是一个业务示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">框架内置的其他功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">适合人群？</span></a></li></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

@@ -1,0 +1,808 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>【如诗般写代码】你甚至连注释都没玩明白 - 果粉圈</title>
+
+  
+    <meta name="description" content="theme: smartblue 引言 要问我认为最难的事是什么，那只有维护前人的代码。 我经常能看见一个文件里，写上百行，没有几个函数，没有注释，没有换行， 一头扎进去，闷头写到天昏地暗的 什么修复bug，提升性能之类的都不是事，会用调试工具和分时渲染就够了 但是看屎山是真的难受  注释篇   利用注释在编辑器开启代码提示  看到区别了吗，左边用的是文档注释，鼠标悬浮能看到变量描述 右边用的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【如诗般写代码】你甚至连注释都没玩明白">
+<meta property="og:url" content="https://blog.g0f.cn/post/daf57a78.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="theme: smartblue 引言 要问我认为最难的事是什么，那只有维护前人的代码。 我经常能看见一个文件里，写上百行，没有几个函数，没有注释，没有换行， 一头扎进去，闷头写到天昏地暗的 什么修复bug，提升性能之类的都不是事，会用调试工具和分时渲染就够了 但是看屎山是真的难受  注释篇   利用注释在编辑器开启代码提示  看到区别了吗，左边用的是文档注释，鼠标悬浮能看到变量描述 右边用的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da9d51dcdb2d4d47a6f6b150692e5009~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=618&amp;h=330&amp;s=31076&amp;e=png&amp;b=1d1c19">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f4701d475b0341f3a398b5e367e6faa0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=277&amp;h=370&amp;s=33479&amp;e=gif&amp;f=54&amp;b=1a1816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e1043a953dd3475e9342bfcf1b2d7a70~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=311&amp;h=470&amp;s=21867&amp;e=png&amp;b=1d1b1a">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/654510100e314339bb2eda0d91bf8891~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=301&amp;h=330&amp;s=20145&amp;e=png&amp;b=1b1a17">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e335a2f077824647996a7795d102f5ec~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=266&amp;h=191&amp;s=8286&amp;e=png&amp;b=1e1d1c">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/26cb2b4b1b2f4f8aa606a9e922a0d034~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=285&amp;h=298&amp;s=19206&amp;e=png&amp;b=1c1b19">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fb7ba56e08624723b241fe1654da4ea3~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=468&amp;h=361&amp;s=22355&amp;e=png&amp;b=1c1b19">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ed3330ff11b44258932b644088d2b2a0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=672&amp;h=493&amp;s=46574&amp;e=png&amp;b=1d1c1a">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a80c7ad8dc08423e838886a42f4c6d31~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=539&amp;h=628&amp;s=39649&amp;e=png&amp;b=1d1b1a">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5cda57f5dc2a43e8a4bf04ae5fd6ace5~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=527&amp;h=376&amp;s=30848&amp;e=png&amp;b=1d1c1a">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c9fc6fa016dc46e382b624ae635f3104~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=913&amp;h=428&amp;s=101489&amp;e=png&amp;b=1d1c1a">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5b9670ae9abc41bfa8da1948bb421d4d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=303&amp;h=369&amp;s=20180&amp;e=png&amp;b=1c1b19">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3ccc2b37c2244bdab721578e21918983~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=371&amp;h=504&amp;s=36437&amp;e=png&amp;b=1c1b19">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2115e8ca856d4bf688adeb060e3fa806~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=455&amp;h=634&amp;s=42491&amp;e=png&amp;b=1b1a18">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7254a0a6382d4304b9fc5a79660a3bf8~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=473&amp;h=325&amp;s=18482&amp;e=png&amp;b=1b1a17">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5be365b5ca87413fa19b1290610b8d7b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=348&amp;h=471&amp;s=24032&amp;e=png&amp;b=191816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9a42ec27cb074e79bcf6e383886b062e~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=346&amp;h=303&amp;s=12587&amp;e=png&amp;b=191815">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5792e6ab29b04939acbbbb8f9c65e321~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=526&amp;h=890&amp;s=107647&amp;e=png&amp;b=191815">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/63d8ebe0f6c747fdb363e89a3c286b89~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=510&amp;h=805&amp;s=279464&amp;e=png&amp;b=191816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aacfc1cc46794f568d79653150ce3a98~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=391&amp;h=473&amp;s=22853&amp;e=png&amp;b=191816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d7e08433c9bc47ab99d66a1b3c069ec1~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=372&amp;h=296&amp;s=23535&amp;e=png&amp;b=191816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5a37a2c2ed8e4a079d97f309a1f8df2f~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=522&amp;h=469&amp;s=33703&amp;e=png&amp;b=191817">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac22d120be2440298b4fa746b1c296c4~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=322&amp;h=291&amp;s=14312&amp;e=png&amp;b=1a1916">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b40cdefc1216486296e1a53a59b70bc0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=329&amp;h=382&amp;s=21752&amp;e=png&amp;b=1a1917">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9179ff60a22e46aba0cdc9f3780b1196~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=280&amp;h=202&amp;s=8411&amp;e=png&amp;b=191817">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/89861cf1d82e486a99a2495c0cd05358~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=326&amp;h=247&amp;s=12213&amp;e=png&amp;b=191817">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/67fe647045b3446d973e1cdf672570c8~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=383&amp;h=292&amp;s=15031&amp;e=png&amp;b=191817">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/898eae045bf246c2bc429cac11d544f2~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=285&amp;h=342&amp;s=13574&amp;e=png&amp;b=191818">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b830a3660892478eb49d2942937217ed~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=557&amp;h=901&amp;s=58800&amp;e=png&amp;b=191815">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0f157e561b5c4829afe462cd6e11e762~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=241&amp;h=348&amp;s=12673&amp;e=png&amp;b=191815">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5c7771b0bbe24e5d929b5cf84aa6fccc~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=190&amp;h=191&amp;s=8035&amp;e=png&amp;b=191815">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f09b9ea381774dabbb82686fd3689bcf~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=199&amp;h=322&amp;s=11982&amp;e=png&amp;b=1a1916">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8c1effb258ad4ec1a1928293b02e3bf7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=909&amp;h=263&amp;s=56400&amp;e=png&amp;b=1b1a18">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/30cb2538ab1d4f6f87d75da49a15794b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=596&amp;h=462&amp;s=67036&amp;e=png&amp;b=1b1a18">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3cf25b52649b4773abe8d55062cddb41~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=579&amp;h=181&amp;s=12572&amp;e=png&amp;b=191816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4289807d43134fde82d36dbf2b6be395~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=897&amp;h=355&amp;s=33098&amp;e=png&amp;b=191816">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cb4273fe8bd3400381b3bbbaf71c62fe~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=720&amp;h=305&amp;s=30693&amp;e=png&amp;b=1a1917">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2f1b3747a21d42e3b2efbba98c2a404b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=615&amp;h=455&amp;s=66104&amp;e=png&amp;b=191816">
+<meta property="article:published_time" content="2024-02-16T09:23:37.000Z">
+<meta property="article:modified_time" content="2024-02-16T09:23:37.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da9d51dcdb2d4d47a6f6b150692e5009~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=618&amp;h=330&amp;s=31076&amp;e=png&amp;b=1d1c19">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-16T09:23:37.000Z">2024-02-16</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-16T09:23:37.000Z">2024-02-16</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>【如诗般写代码】你甚至连注释都没玩明白</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<hr>
+<h2>theme: smartblue</h2>
+<h1>引言</h1>
+<p>要问我认为最难的事是什么，那只有维护前人的代码。<br>
+我经常能看见一个文件里，写上百行，没有几个函数，没有注释，没有换行，<br>
+一头扎进去，闷头写到天昏地暗的</p>
+<p>什么修复<code>bug</code>，提升性能之类的都不是事，会用调试工具和分时渲染就够了<br>
+但是看屎山是真的难受</p>
+<hr>
+<h2>注释篇</h2>
+<ol>
+<li>
+<p>利用注释在编辑器开启代码提示</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da9d51dcdb2d4d47a6f6b150692e5009~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=618&amp;h=330&amp;s=31076&amp;e=png&amp;b=1d1c19"></p>
+<p>看到区别了吗，左边用的是<strong>文档注释</strong>，鼠标悬浮能看到变量描述<br>
+右边用的是行内注释，没有任何作用</p>
+<p>初步认识了文档注释的好处后，很多人可能还是不用，因为嫌麻烦。<br>
+所以编辑器也为你着想了，以 <em>VSCode</em>为例，输入 <code>/**</code>，就会自动生成文档注释<br>
+如果在函数上面，再按下回车，还能补齐函数参数文档，如下图所示</p>
+<p><img class="lazy" alt="comment.gif" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f4701d475b0341f3a398b5e367e6faa0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=277&amp;h=370&amp;s=33479&amp;e=gif&amp;f=54&amp;b=1a1816"></p>
+</li>
+</ol>
+<hr>
+<ol start="2">
+<li>
+<p>利用文档注释描述函数功能</p>
+<p>当我鼠标悬浮在函数上时，就能看到他的各种描述，从其他文件导入也有效<br>
+<img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e1043a953dd3475e9342bfcf1b2d7a70~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=311&amp;h=470&amp;s=21867&amp;e=png&amp;b=1d1b1a"></p>
+</li>
+</ol>
+<hr>
+<ol start="3">
+<li>
+<p>智能提示当前参数描述，以及类型等</p>
+<p>这里也能用快捷键呼出，详见我上篇文章<a target="_blank" rel="external nofollow noopener noreferrer" href="https://juejin.cn/post/7333157879862149146">：# 【最高效编码指南】也许你不会用VSCode | IDEA</a></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/654510100e314339bb2eda0d91bf8891~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=301&amp;h=330&amp;s=20145&amp;e=png&amp;b=1b1a17"></p>
+</li>
+</ol>
+<hr>
+<ol start="4">
+<li>
+<p>添加 <em>JS</em> 类型，实现类似 <em>TS</em> 的效果</p>
+<p>这里我呼出代码提示，但是他并没有给我补全任何方法，因为他不知道你的类型是什么</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e335a2f077824647996a7795d102f5ec~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=266&amp;h=191&amp;s=8286&amp;e=png&amp;b=1e1d1c"></p>
+<p>如果是强类型语言的话，那就会给你补全代码<br>
+那么动态类型如何实现呢？以 <em>JS</em> 为例，使用<strong>文档注释</strong>即可，也就是前阵子沸沸扬扬的<strong>利用 JSDoc 代替 TS</strong></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/26cb2b4b1b2f4f8aa606a9e922a0d034~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=285&amp;h=298&amp;s=19206&amp;e=png&amp;b=1c1b19"></p>
+<p>不仅于此，连枚举都能实现，反正 <em>TS</em> 有的，他应该都有，我没有详细研究</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fb7ba56e08624723b241fe1654da4ea3~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=468&amp;h=361&amp;s=22355&amp;e=png&amp;b=1c1b19"></p>
+</li>
+<li>
+<p>文档注释指令</p>
+<p>如下图所示，我想在文档注释里写上用法，但是他的格式十分丑陋，而且没有语法高亮</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ed3330ff11b44258932b644088d2b2a0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=672&amp;h=493&amp;s=46574&amp;e=png&amp;b=1d1c1a"></p>
+<p>于是我使用 <em>example</em> 指令，告诉他这是一个示例，这时就有语法高亮了</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a80c7ad8dc08423e838886a42f4c6d31~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=539&amp;h=628&amp;s=39649&amp;e=png&amp;b=1d1b1a"></p>
+<p>指令还有很多，你们输入 <strong>@</strong> 就会有提示了，比如 <strong>deprecated</strong>，标记已弃用<br>
+这时你使用它就会有个提示，并且划上一根线</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5cda57f5dc2a43e8a4bf04ae5fd6ace5~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=527&amp;h=376&amp;s=30848&amp;e=png&amp;b=1d1c1a"></p>
+</li>
+<li>
+<p>MarkDown 文档注释</p>
+<p>有时候，指令可能不够用，这时就可以使用 <em>MarkDown</em> 语法了</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c9fc6fa016dc46e382b624ae635f3104~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=913&amp;h=428&amp;s=101489&amp;e=png&amp;b=1d1c1a"></p>
+</li>
+<li>
+<p>结合 <em>TS</em></p>
+<p>定义类型时，写上文档注释，当你鼠标悬浮时，就能查看对应注释</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5b9670ae9abc41bfa8da1948bb421d4d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=303&amp;h=369&amp;s=20180&amp;e=png&amp;b=1c1b19"></p>
+<p>函数重载情况下，文档注释要写在类型上才行，下面这种无效</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3ccc2b37c2244bdab721578e21918983~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=371&amp;h=504&amp;s=36437&amp;e=png&amp;b=1c1b19"></p>
+<p>要写在类型定义的地方才行</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2115e8ca856d4bf688adeb060e3fa806~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=455&amp;h=634&amp;s=42491&amp;e=png&amp;b=1b1a18"></p>
+</li>
+<li>
+<p>总结</p>
+<p>如果你用的是变量、函数或是 <em>TS</em> 定义类型，你要写注释，那就一定要写 <strong>文档注释</strong>，我跪下来求求你了 😭</p>
+</li>
+</ol>
+<h2>减少条件分支语句</h2>
+<ol>
+<li>
+<p>策略模式，写个映射表即可。这个有一点开发经验的应该都知道吧</p>
+<p>如果遇到复杂情况，映射表里也可以写函数，执行后返回逻辑</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7254a0a6382d4304b9fc5a79660a3bf8~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=473&amp;h=325&amp;s=18482&amp;e=png&amp;b=1b1a17"></p>
+</li>
+<li>
+<p>提前返回</p>
+<p>这里第 <strong>2</strong> 种提前返回就减少了一层嵌套，实际开发中，能减少更多嵌套语句</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5be365b5ca87413fa19b1290610b8d7b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=348&amp;h=471&amp;s=24032&amp;e=png&amp;b=191816"></p>
+</li>
+<li>
+<p>多个相等判断，使用数组代替</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9a42ec27cb074e79bcf6e383886b062e~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=346&amp;h=303&amp;s=12587&amp;e=png&amp;b=191815"></p>
+</li>
+</ol>
+<h2>代码七宗罪</h2>
+<p>让我来细数一下这坨代码的罪行，然后引出另一个主题，<strong>美化代码</strong><br>
+下面这段，这简直是"甲级战犯"，</p>
+<ol>
+<li>一堆变量写了或者导入了不用，放那恶心谁呢</li>
+<li>注释了的代码不删 (虽然可能有用，但是真丑)</li>
+<li>都什么年代了，还在用<code>var</code> (<em>坏处下面说</em>)</li>
+<li>用行内注释和没写区别不大，要写就写文档注释 (<em>文档注释的优点上面解释了，不再赘述</em>)</li>
+<li>小学生流水账一般的代码，连个函数入口都没提供，想一句写一句</li>
+<li>连个代码格式化都不会，多按几个回车，你的键盘不会烂掉；每个分段加个注释，你的速度慢不了多少</li>
+<li>硬编码，所有类型用字符串直接区分，你万一要改怎么办？</li>
+</ol>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5792e6ab29b04939acbbbb8f9c65e321~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=526&amp;h=890&amp;s=107647&amp;e=png&amp;b=191815"></p>
+<h2>语义化</h2>
+<p>我经常能看见一个文件里，写上百行，没有几个函数，没有注释，没有换行<br>
+一头扎进去，闷头写到天昏地暗的，比如下面这种</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/63d8ebe0f6c747fdb363e89a3c286b89~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=510&amp;h=805&amp;s=279464&amp;e=png&amp;b=191816"></p>
+<p>这玩意要我一行一行看？我是真的被恶心坏了<br>
+写代码要突出一个重点，看个大概，然后才能快速排查，看第三方库源码也是如此</p>
+<p>我的习惯是写一个主入口，你叫 <strong>main | init | start</strong> 什么的都行，我只希望你能写上<br>
+然后主入口按照逻辑，给每个函数命名，这样一眼就能看出来你在干什么<br>
+如下图所示，这是我的偏好</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/aacfc1cc46794f568d79653150ce3a98~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=391&amp;h=473&amp;s=22853&amp;e=png&amp;b=191816"></p>
+<p>我喜欢利用函数全局提升，把初始化函数放在文件顶部。这样每次打开一个文件，就能立刻看到大概逻辑<br>
+所以我很少用匿名函数，像上面那种全部写一坨，还都是匿名函数，我真的很难看出来谁是函数，谁是变量</p>
+<p>这就引出一个新问题，函数的二义性</p>
+<h2>函数二义性</h2>
+<p>众所周知， <em>JS</em> 的类就是函数，里面有自己的 <em>this</em>，可以 <em>new</em> 一个函数</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d7e08433c9bc47ab99d66a1b3c069ec1~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=372&amp;h=296&amp;s=23535&amp;e=png&amp;b=191816"></p>
+<p>你要知道他是函数还是类，一般是通过首字母是否大写区分<br>
+但是这仅仅是弱规范，人家爱咋写咋写，所以后来出现了匿名函数(主要还是为了解决 <em>this</em>)</p>
+<p>匿名函数没有自己的 <em>this</em> 指向，没有 <em>arguments</em>，如下图</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5a37a2c2ed8e4a079d97f309a1f8df2f~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=522&amp;h=469&amp;s=33703&amp;e=png&amp;b=191817"></p>
+<p>而且用 <em>const</em> 定义，所以也就没了函数提升，严格来说，匿名函数才是真函数</p>
+<p>不过我觉得直接写匿名函数有点丑，而且写起来似乎繁琐一点，虽然我都是用代码片段生成的<br>
+如果用了匿名函数，那么我就没了函数提升了</p>
+<p>所以我仅仅在以下情况使用匿名函数</p>
+<ol>
+<li>作为回调函数</li>
+<li>不需要 <em>this</em></li>
+<li>函数重载</li>
+</ol>
+<p>函数重载我来说说吧，应该挺多人不知道。<br>
+比如下图，针对每一种情况，写一遍类型，这样就能更加清楚描述函数的所有参数情况</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac22d120be2440298b4fa746b1c296c4~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=322&amp;h=291&amp;s=14312&amp;e=png&amp;b=1a1916"></p>
+<p>不过这样好麻烦，而且好丑啊，于是可以用接口，这时你用 <em>function</em> 就实现不了了</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b40cdefc1216486296e1a53a59b70bc0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=329&amp;h=382&amp;s=21752&amp;e=png&amp;b=1a1917"></p>
+<h2>var 的坏处</h2>
+<ol>
+<li>
+<p><em>var</em> 会变量提升，你可能拿到 <em>undefined</em></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9179ff60a22e46aba0cdc9f3780b1196~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=280&amp;h=202&amp;s=8411&amp;e=png&amp;b=191817"></p>
+</li>
+<li>
+<p><em>var</em> 没有块级作用域，会导致变量共享</p>
+<p>按照常识，下面代码应该输出 0，1，2，3，4</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/89861cf1d82e486a99a2495c0cd05358~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=326&amp;h=247&amp;s=12213&amp;e=png&amp;b=191817"></p>
+<p>但是你里面是异步打印，于是等你打印时，i 以及加了5次了，又没有块级作用域，所以你拿到的是同一个东西</p>
+<p>在古时候，是用立即执行函数解决的，如下图。因为函数会把变量存起来传给内部</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/67fe647045b3446d973e1cdf672570c8~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=383&amp;h=292&amp;s=15031&amp;e=png&amp;b=191817"></p>
+<p>现在用 <em>let</em> 就行了</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/898eae045bf246c2bc429cac11d544f2~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=285&amp;h=342&amp;s=13574&amp;e=png&amp;b=191818"></p>
+<p>所以我求求你别用 <em>var</em> 了</p>
+</li>
+</ol>
+<h2>格式化</h2>
+<p>这里可能有争议性，仅仅是我个人喜欢，看着舒服</p>
+<p>大多数写前端的，基本人手一个 <em>Prettier</em> 插件自动格式化，再来个 <em>EsLint</em><br>
+然后也懒得看配置，默认就是 <strong>2</strong> 格缩进，回车多了会被删掉什么的</p>
+<p>这样下来，整个文件就相当臃肿，密密麻麻的，我看着很难受</p>
+<p>我的风格如下</p>
+<ul>
+<li>用 <strong>4</strong> 格缩进</li>
+<li>代码按照语义类型分块，写上块级文档注释</li>
+<li><em>import</em> 语句下面空两行，这样更加直观</li>
+<li>每一段，用独特醒目的文档注释划分</li>
+<li>定义变量优先使用 <em>const</em>，并且只写一个 <em>const</em></li>
+<li>函数参数过长，则一行放一个参数</li>
+<li>写行内样式以及较长字符串时( 比如函数作为字符串 )，用特殊的宽松格式书写，保持类似代码的格式化</li>
+<li><em>if</em> 分支语句，要多空一行，看着清爽</li>
+<li>三目运算，用三行来写</li>
+<li>条件判断尽量提前 <em>return</em>，减少分支缩进</li>
+</ul>
+<p>下面来用图演示一下，不然看着上面的描述抽象</p>
+<p><strong>代码按照语义类型分块，写上块级文档注释</strong></p>
+<p>每一段逻辑写完，用个醒目的、大块的文档注释分开。<br>
+全部执行的逻辑，放在一个 <strong>init</strong> 函数中</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b830a3660892478eb49d2942937217ed~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=557&amp;h=901&amp;s=58800&amp;e=png&amp;b=191815"></p>
+<p><strong>定义变量优先使用 <em>const</em>，并且只写一个 <em>const</em></strong></p>
+<p>比如声明变量，我喜欢这么写<br>
+按照分类，类型不同则换行，并且写上注释，仅用一个 <em>const</em></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0f157e561b5c4829afe462cd6e11e762~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=241&amp;h=348&amp;s=12673&amp;e=png&amp;b=191815"></p>
+<p>来看看大众写法，可以说 99.9878987%的人都这么写，这种我一看就难受</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5c7771b0bbe24e5d929b5cf84aa6fccc~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=190&amp;h=191&amp;s=8035&amp;e=png&amp;b=191815"></p>
+<p>如果你用 <em>let</em>，并且用 <em>4</em> 格缩进，那么你就刚好对齐了，能少写一个回车<br>
+不过尽量使用 <em>const</em></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f09b9ea381774dabbb82686fd3689bcf~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=199&amp;h=322&amp;s=11982&amp;e=png&amp;b=1a1916"></p>
+<p><strong>函数参数过长，则一行放一个参数</strong></p>
+<p>如果你这么写，那我看完会头晕眼花，属实是又臭又长的参数列表</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8c1effb258ad4ec1a1928293b02e3bf7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=909&amp;h=263&amp;s=56400&amp;e=png&amp;b=1b1a18"></p>
+<p>如果你这么写，我会夸你代码和人一样好看</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/30cb2538ab1d4f6f87d75da49a15794b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=596&amp;h=462&amp;s=67036&amp;e=png&amp;b=1b1a18"></p>
+<p><strong>三目运算格式化</strong></p>
+<p>这俩，你说谁的可读性高，肯定是分三行写的好看啊</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3cf25b52649b4773abe8d55062cddb41~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=579&amp;h=181&amp;s=12572&amp;e=png&amp;b=191816"></p>
+<p><strong>字符串以及对象格式化</strong></p>
+<p>这俩，你说谁看得舒服，那肯定是 <strong>2</strong> 啊<br>
+我看了身边的人和网上的很多代码，大多数都是 <strong>1</strong> 这种</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4289807d43134fde82d36dbf2b6be395~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=897&amp;h=355&amp;s=33098&amp;e=png&amp;b=191816"></p>
+<p>不管你是用字符串，还是对象等方式表达，你都应该写 <strong>2</strong> 这种样式</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cb4273fe8bd3400381b3bbbaf71c62fe~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=720&amp;h=305&amp;s=30693&amp;e=png&amp;b=1a1917"></p>
+<p><strong>分支语句</strong></p>
+<p>这俩哪种好看还用说吗，肯定是左边的好啊。但是你用 <em>Prettier</em> 格式化的话，应该就变成右边的了<br>
+同理 <em>try catch</em> 之类的也是一样</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/2f1b3747a21d42e3b2efbba98c2a404b~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=615&amp;h=455&amp;s=66104&amp;e=png&amp;b=191816"></p>
+<p>最后，<strong>多用换行</strong>，我跪下来求求你了 😭</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="【如诗般写代码】你甚至连注释都没玩明白" href="https://juejin.cn/post/7335277377621639219" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">【如诗般写代码】你甚至连注释都没玩明白</span><span class="cap link footnote">https://juejin.cn/post/7335277377621639219</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/daf57a78.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/daf57a78.html&title=【如诗般写代码】你甚至连注释都没玩明白 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/da9d51dcdb2d4d47a6f6b150692e5009~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=618&h=330&s=31076&e=png&b=1d1c19&summary=
+
+theme: smartblue
+引言
+要问我认为最难的事是什么，那只有维护前人的代码。
+我经常能看见一个文件里，写上百行，没有几个函数，没有注释，没有换行，
+一头扎进去，闷头写到天昏地暗的
+什么修复bug，提升性能之类的都不是事..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=【如诗般写代码】你甚至连注释都没玩明白 - 果粉圈&amp;body=https://blog.g0f.cn/post/daf57a78.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/daf57a78.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/7e0e4157.html">筹备《流浪地球 3》，导演郭帆 2024 开年现身视效大厂维塔工作室</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/8edebda3.html">国产大飞机国外首秀：一架 C919 抵达新加坡，参加 2024 新加坡航空展</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">theme: smartblue</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">注释篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">减少条件分支语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">代码七宗罪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">语义化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">函数二义性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">var 的坏处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">格式化</span></a></li></ol></li></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

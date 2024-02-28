@@ -1,0 +1,785 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>DevOps 选型指南：Zadig / 云效 / Coding/Jenkins/GitLab/Argo/Tekton - 果粉圈</title>
+
+  
+    <meta name="description" content="打造一个功能全面、稳定且用户体验友好的 DevOps 平台对于推动持续集成、持续交付、团队协作和效率提升至关重要。企业在选择 DevOps 平台时，有的倾向于采用平台类产品，如 Zadig、云效、Coding 等；而另一些企业则基于企业文化和项目需求，在已有的 CI&#x2F;CD 工具（如 Jenkins、GitLab、Argo、Tekton）基础上自建 DevOps 平台，以实现对企业内部 Dev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DevOps 选型指南：Zadig &#x2F; 云效 &#x2F; Coding&#x2F;Jenkins&#x2F;GitLab&#x2F;Argo&#x2F;Tekton">
+<meta property="og:url" content="https://blog.g0f.cn/post/644afb8.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="打造一个功能全面、稳定且用户体验友好的 DevOps 平台对于推动持续集成、持续交付、团队协作和效率提升至关重要。企业在选择 DevOps 平台时，有的倾向于采用平台类产品，如 Zadig、云效、Coding 等；而另一些企业则基于企业文化和项目需求，在已有的 CI&#x2F;CD 工具（如 Jenkins、GitLab、Argo、Tekton）基础上自建 DevOps 平台，以实现对企业内部 Dev">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://oscimg.oschina.net/oscnet/up-b31aff555046a4c349e6e088370a204b798.png">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://pic1.zhimg.com/80/v2-5bae69be9f8a1aa5fe51311b1f0fd99c_1440w.webp">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://oscimg.oschina.net/oscnet/up-16e6b25cd9b3c92bc711c17b21e99e9b040.png">
+<meta property="article:published_time" content="2024-02-10T02:53:48.000Z">
+<meta property="article:modified_time" content="2024-02-10T02:53:48.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="开源中国">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://oscimg.oschina.net/oscnet/up-b31aff555046a4c349e6e088370a204b798.png">
+  
+  
+  
+  <meta name="keywords" content="媒体,开源中国">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD/">开源中国</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-10T02:53:48.000Z">2024-02-10</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-10T02:53:48.000Z">2024-02-10</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>DevOps 选型指南：Zadig / 云效 / Coding/Jenkins/GitLab/Argo/Tekton</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<div class="content">
+<p style="color:#191b1f; margin-left:0px; margin-right:0px; text-align:center"><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://oscimg.oschina.net/oscnet/up-b31aff555046a4c349e6e088370a204b798.png"></p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">打造一个功能全面、稳定且用户体验友好的 DevOps 平台对于推动持续集成、持续交付、团队协作和效率提升至关重要。企业在选择 DevOps 平台时，有的倾向于采用平台类产品，如 Zadig、云效、Coding 等；而另一些企业则基于企业文化和项目需求，在已有的 CI/CD 工具（如 Jenkins、GitLab、Argo、Tekton）基础上自建 DevOps 平台，以实现对企业内部 DevOps 方案的定制。无论是选择平台类产品还是自建平台，都需要在搭建之前进行充分的规划和评估，以确保满足企业的需求并提升 DevOps 实践的效率。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">本文将详细分析各个 DevOps 平台和工具的设计理念、特点、局限性等，并从多个维度（团队规模和业务复杂度、多云策略和厂商关联、使用场景和业务需求等）出发，结合企业实际的业务需求给出建议，为企业 DevOps 选型指明方向。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h2_1"></span>
+<h2><strong>DevOps 平台类产品</strong></h2>
+<span id="OSC_h3_2"></span>
+<h3><em><strong>Zadig</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Zadig 是由 KodeRover 公司基于 Kubernetes 研发的自助式云原生 DevOps 平台，服务端源码 100% 开放。Zadig 提供灵活可扩展的工作流支持、多种发布策略编排以及一键安全审核等特性。该平台还支持定制的企业级 XOps 敏捷效能看板，深度集成多种企业级平台，并通过项目模板化批量快速接入，实现数千个服务的一键纳管治理。其主要目标是帮助企业实现产研的数字化转型，使工程师成为创新引擎，并为数字经济的无限价值链接提供支持<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fdocs.koderover.com" target="_blank" rel="external nofollow noopener noreferrer">[1]</a>。</p>
+<span id="OSC_h4_3"></span>
+<h4><strong>01-Zadig 具有以下几个核心特性：</strong></h4>
+<ul>
+<li>灵活易用的高并发工作流</li>
+<li>面向开发者的云原生环境</li>
+<li>高效协同的测试管理</li>
+<li>强大免运维的模板库</li>
+<li>安全可靠的发布管理</li>
+<li>稳定高效的客户交付</li>
+<li>客观精确的效能度量</li>
+<li>云原生 IDE 插件</li>
+</ul>
+<span id="OSC_h4_4"></span>
+<h4><strong>02-Zadig 的核心优势：</strong></h4>
+<ul>
+<li>设计理念：产品级交付，包含代码、配置、数据全要素的交付</li>
+<li>底座真云原生架构：Zadig 基于 k8s 底座，支持较高规模的构建部署并发、多个微服务同时交付场景</li>
+<li>用户接入难度低：Zadig 支持导入和托管现有服务，并对现有流程几乎无侵入极简、开放，易于企业内落地，不需要改变用户行为</li>
+<li>产品可用性较强：3 年开源、大量一线真实场景高频使用打磨，积众家之所长，积累 15 万企业开发者，全球累计部署 50 万应用，2000 家企业高频使用，稳定可靠保证，内置众多最佳实践工作模式</li>
+<li>产品开放性较强：天生支持企业私有化部署，支持全球多地部署、分布式交付分发，针对具有全球化战略的企业更为友好</li>
+</ul>
+<span id="OSC_h4_5"></span>
+<h4><strong>03-Zadig 的局限性：</strong></h4>
+<ul>
+<li>设计理念和其他 DevOps 平台存在不同，初次接触的用户需要一定时间学习和掌握</li>
+<li>系统依赖 K8s，对于对于未采用 K8s、完全处于传统主机环境的企业项目而言并不适用</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h3_6"></span>
+<h3><em><strong>云效</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">云效是阿里云提供的一站式 DevOps 平台，提供涵盖软件研发全生命周期的研发工具链和研发管理服务，并支持公共云、专有云多种部署形态。通过云原生新技术和研发新模式，助力创新创业和数字化转型企业快速实现研发敏捷和组织敏捷，打造“双敏”组织，实现多倍效能提升<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F153739.html" target="_blank" rel="external nofollow noopener noreferrer">[2]</a>。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">云效具有项目协作、代码管理、流水线、制品仓库、测试管理、应用交付平台、效能洞察等核心能力。</p>
+<span id="OSC_h4_7"></span>
+<h4><strong>01-云效主要特点：</strong></h4>
+<ul>
+<li>开箱即用</li>
+<li>企业级安全保障</li>
+<li>实践经验模板化沉淀</li>
+<li>无缝对接阿里云产品</li>
+</ul>
+<span id="OSC_h4_8"></span>
+<h4><strong>02-云效的局限性：</strong></h4>
+<ul>
+<li>系统比较厚重，迁移成本比较高</li>
+<li>耦合度较高，跟阿里云产品深度绑定，对于多云架构的支持不够友好</li>
+<li>对于非阿里云工具链的扩展较困难</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">云效与其他平台在设计理念上存在显著差异，云效专注于单应用的交付，将环境管理能力主要集中在应用维度。云效流水线以代码库为主要视角，随着业务增长，流水线数量迅速增加，配置管理难度加大，所以云效更适用于初期快速启动 DevOps 的场景。云效天然亲和阿里云资源和产品，对于多云需求或全球交付需求的企业而言，接入云效可能面临一定的适应难度。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h3_9"></span>
+<h3><em><strong>Coding</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Coding DevOps 是面向软件研发团队的一站式研发协作管理平台，提供从需求到设计、开发、构建、测试、发布到部署的全流程协同及研发工具支撑<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fcoding.net%2Fhelp%2Fdocs%2Fstart%2Fnew.html" target="_blank" rel="external nofollow noopener noreferrer">[3]</a>。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Coding 具有团队管理、项目协同、代码仓库、代码扫描、持续集成、持续部署、应用管理等核心能力</p>
+<span id="OSC_h4_10"></span>
+<h4><strong>01-Coding 主要特点：</strong></h4>
+<ul>
+<li>一站式协作平台及研发工具链</li>
+<li>支持双态研发体系建设（瀑布模型、敏捷模型）</li>
+<li>项目度量数据可视化</li>
+<li>无缝集成第三方平台</li>
+</ul>
+<span id="OSC_h4_11"></span>
+<h4><strong>02-Coding 的局限性：</strong></h4>
+<ul>
+<li>以代码库为核心的工作流，管理成本较高</li>
+<li>现有工程体系迁移有一定的成本</li>
+<li>耦合度较高，跟腾讯云产品深度绑定，对于多云架构的支持不够友好</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">和其他平台的定位上存在不同，Coding 是流程协同平台，一站式为开发者提供完整的 DevOps 工具链。由于其天然亲和腾讯云资源和产品，对于存在多云架构以及现有业务由其他云平台支撑的场景不够友好。在接入 Coding 过程中，需要做服务的初始化，有一定迁移成本。此外，Coding 构建和部署为两个单独的模块，对于习惯在一条工作流走完所有流程（构建、部署、测试、配置变更、数据变更等）的用户，可能需要重新适应或者调整使用方式。</p>
+<span id="OSC_h2_12"></span>
+<h2> </h2>
+<span id="OSC_h2_13"></span>
+<h2><strong>DevOps 工具类产品</strong></h2>
+<span id="OSC_h3_14"></span>
+<h3><em><strong>Jenkins</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Jenkins 是一款开源、可扩展的自动化构建和交付工具。其设计初衷是为了满足不同团队和项目的需求，提供高度可扩展和灵活的平台。通过插件和扩展，Jenkins 赋予开发团队持续集成和交付的能力，帮助实现软件开发的自动化、协作和快速交付<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.jenkins.io%2Fdoc" target="_blank" rel="external nofollow noopener noreferrer">[4]</a>。</p>
+<span id="OSC_h4_15"></span>
+<h4><strong>01-Jenkins 的主要特点：</strong></h4>
+<ul>
+<li>扩展性非常强，有大量的插件支持</li>
+<li>分布式构建</li>
+<li>流水线项目 pipeline as code 支持在代码仓库中管理</li>
+</ul>
+<span id="OSC_h4_16"></span>
+<h4><strong>02-Jenkins 的局限性：</strong></h4>
+<ul>
+<li>系统本身安装过程不复杂，但对于插件管理非常繁琐</li>
+<li>项目实施难度大，所有任务都需要写脚本，维护成本高</li>
+<li>Jenkinsfile 分散到不同的工程中，对于后期维护成本比较高</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">对用户而言，Jenkins 需依赖众多插件和大量脚本来解决业务交付过程中的构建、部署、测试和自动化流程串接的难题。对于云原生的场景而言需要通过脚本的方式来操作集群，对脚本维护和管理要求比较高。此外 Jenkins 通过插件来管理工作流的权限，权限管理负担较重。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Zadig 和 Jenkins 的比对请参阅 「<a href="https://www.oschina.net/action/GoToLink?url=http%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247490637%26idx%3D1%26sn%3D6e0498b37fb15f8b8903c4997e5611d8%26chksm%3Dcfb450edf8c3d9fb758d691081f09fd85d91dbb17534ba9c18c2300725462d3806581efbd237%26scene%3D21%23wechat_redirect" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">Zadig vs. Jenkins 详细比对：时代的选择与开发者之选</span></a>」一文。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h3_17"></span>
+<h3><em><strong>GitLab CI/CD</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">GitLab 是一个基于 Git 的版本控制和协作平台。它提供了一套强大的工具，支持团队协作、代码托管、持续集成、持续交付等软件开发过程中的多个方面<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fdocs.gitlab.com%2Fee" target="_blank" rel="external nofollow noopener noreferrer">[5]</a>。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">GitLab 具有代码仓库管理、CI/CD 流水线、效能管理、敏捷项目管理、集成其他工具等核心能力。</p>
+<span id="OSC_h4_18"></span>
+<h4><strong>01-GitLab 的主要特点：</strong></h4>
+<ul>
+<li>一站式管理 DevOps 工具</li>
+<li>自动化工作流程加速软件交付</li>
+<li>与云厂商解耦</li>
+</ul>
+<span id="OSC_h4_19"></span>
+<h4><strong>02-GitLab 的局限性：</strong></h4>
+<ul>
+<li>As code 工作流配置不直观，学习和维护成本较高</li>
+<li>缺少基本环境管理能力，需另外搭建其他平台观测服务的情况</li>
+<li>多角色协同过程中，权限管理比较难，需要给运维测试代码仓库权限才能做 CI/CD，风险较大</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">GitLab CI/CD 设计理念是以代码仓库为核心，对于小型项目、单仓库顺序交付的场景较为友好，而对于更为复杂的项目和团队多角色协作，使用方面和管理上存在一定局限性。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h3_20"></span>
+<h3><em><strong>Argo</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Argo 是一个基于 Kubernetes CRD 实现的一个开源工具，基于 Kubernetes 的调度能力实现了工作流的控制和任务的运行。同时提供了一个 UI 方便用户查看任务的详情<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fargoproj.github.io" target="_blank" rel="external nofollow noopener noreferrer">[6]</a>。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Argo 有三个核心产品 Workflows 、CD、Rollouts，为持续集成、持续交付、持续部署提供底层能力。</p>
+<ul>
+<li>Workflows：云原生工作流引擎，支持编排构建、测试、部署等场景，支持声明式地管理复杂任务的执行流程</li>
+<li>CD：基于 GitOps 的理念实现自动化部署、回滚和版本管理</li>
+<li>Rollouts：用于实现 Kubernetes 上的蓝绿发布、金丝雀发布、渐进式发布等发布策略，确保生产发布的稳定性</li>
+</ul>
+<span id="OSC_h4_21"></span>
+<h4><strong>01-Argo 的局限性：</strong></h4>
+<ul>
+<li>声明式的配置，维护和管理成本较高</li>
+<li>本身提供的 Web UI 无法企业级安全性和合规性要求</li>
+<li>适用 K8s 场景，对于传统主机场景并不适用</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">尽管 Argo 在云原生工作流引擎方面表现卓越，但对于完整的 DevOps 解决方案仍有欠缺，缺乏一系列企业管理功能，如环境管理、测试管理和权限控制，因此企业可能需要二次开发以建设相应的管理能力，以满足多角色协作的需求。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h3_22"></span>
+<h3><em><strong>Tekton</strong></em></h3>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Tekton 是一个谷歌开源的基于 Kubernetes 的云原生 CI/CD 框架，通过定义 CRD 的方式，让用户可以灵活的自定义流水线以满足自身 CI/CD 需求<span> </span><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Ftekton.dev%2Fdocs" target="_blank" rel="external nofollow noopener noreferrer">[7]</a>。</p>
+<span id="OSC_h4_23"></span>
+<h4><strong>01-Tekton 的主要特点：</strong></h4>
+<ul>
+<li>高度抽象底层，方便企业定制工作流程</li>
+<li>与云原生环境无缝对接</li>
+<li>跨云厂商、技术栈和部署环境，帮助实现标准化的 CI/CD</li>
+</ul>
+<span id="OSC_h4_24"></span>
+<h4><strong>02-Tekton 的局限性：</strong></h4>
+<ul>
+<li style="color: rgb(25, 27, 31); margin-left: 0px; margin-right: 0px; text-align: start;">适用 K8s 场景，对于传统主机场景并不适用</li>
+<li style="color: rgb(25, 27, 31); margin-left: 0px; margin-right: 0px; text-align: start;">自定义资源，有一定的学习成本</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">Tekton 注重底层灵活性，尽管灵活性强，但也显著增加了使用的难度。因此，要在 Tekton 上实现完整的 CI/CD 过程，就必须进行二次开发，门槛高，需要消耗一定建设成本。</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h2_25"></span>
+<h2><strong>各平台和工具之间的比较</strong></h2>
+<div>
+<img class="lazy" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://pic1.zhimg.com/80/v2-5bae69be9f8a1aa5fe51311b1f0fd99c_1440w.webp">
+</div>
+<span id="OSC_h2_26"></span>
+<h2> </h2>
+<span id="OSC_h2_27"></span>
+<h2><strong>DevOps 体系选型建议</strong></h2>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">企业在选择 DevOps 平台时，可以从多个角度进行考量，具体选择取决于企业的需求、文化和项目特点。以下是一些建议：</p>
+<span id="OSC_h4_28"></span>
+<h4><strong>01-团队规模和业务复杂度：</strong></h4>
+<ul>
+<li><strong>小型团队：</strong>适用于业务相对简单，研发为主的团队，可考虑选择 GitLab 方案，以代码管理作为入口，开启 GitLab CI/CD 功能，适用于强调全方位版本控制的企业。</li>
+<li><strong>中型企业：</strong>对于复杂业务、多角色协作的情况，可选择一站式平台，如云效、Coding、Zadig，提供开箱即用的协作工具链。</li>
+<li><strong>大型团队：</strong><span> </span>针对复杂场景、历史负担重的团队，建议选择功能全面、灵活可扩展的平台，如 Zadig，适用于复杂的异构环境交付流程和大规模的微服务架构。</li>
+</ul>
+<span id="OSC_h4_29"></span>
+<h4><strong>02-多云架构及全球化战略需求：</strong></h4>
+<ul>
+<li><strong>多云架构需求：</strong>若企业有多云和全球化战略，首选 Zadig。它天然支持企业私有化部署，厂商中立，友好支持多云架构，并满足国际化政策需求（i18n、出海合规等）。</li>
+<li><strong>特定云服务需求：</strong><span> </span>对于已深度关联某一云厂商的企业，可考虑选择该厂商提供的平台，如云效（阿里云关联）或 Coding（腾讯云关联）。</li>
+</ul>
+<span id="OSC_h4_30"></span>
+<h4><strong>03-使用场景和业务需求：</strong></h4>
+<ul>
+<li><strong>全生命周期管理需求：</strong>若企业需全面管理全流程，可选择 Coding、云效提供的一站式协作平台。Zadig 平台侧重于研发和发布侧的一站式协同，需结合第三方实现业务到研发的衔接。</li>
+<li><strong>云原生和微服务需求：</strong><span> </span>针对云原生和微服务架构，Zadig 提供灵活可扩展的工作流支持，适合大规模的构建、部署并发和产品级交付。</li>
+<li><strong>传统单体业务：</strong>对于传统的单体业务，Jenkins 是一个灵活且支持强大插件的选择，满足基本的构建部署需求。</li>
+<li><strong>K8s 生态需求：</strong>Argo 是专注于 Kubernetes GitOps 持续交付工具，适用于新兴企业没有历史负担的情况。</li>
+</ul>
+<span id="OSC_h4_31"></span>
+<h4><strong>04-DevOps 平台建设成本考量：</strong></h4>
+<ul>
+<li><strong>围绕 CI/CD 工具自建平台成本估算：</strong>围绕 Jenkins、Tekton、Argo 工具搭建 DevOps 流程串接管理平台，需要组建跨职能、有丰富 DevOps 经验的团队，人力成本预估至少 300 万元/每年。</li>
+<li><strong>直接购买商业 DevOps 平台成本估算：</strong>直接使用云厂商公有云或采用 Zadig 私有化 DevOps 平台。成本根据团队规模不同在 5 万元-20 万元/每年，可与供应商商谈获取更有竞争力的报价。</li>
+<li><strong>开源商业产品与自研结合成本估算：</strong>针对 200 人以上团队，推荐选择 Zadig 作为自研平台的底层“平台工程”框架，结合自身业务进行定制开发。总体成本预估在 50 万元/每年左右，相较于从零开始搭建团队，采用 Zadig 可在成本上更具优势，同时满足企业特定需求。</li>
+</ul>
+<span id="OSC_h4_32"></span>
+<h4><strong>05-数据的安全与合规考量：</strong></h4>
+<ul>
+<li><strong>下公有云、上行业云：</strong>随着技术发展和政企数字化的深入，数据已成为组织中最核心的资产。数据的安全与合规已经成为国内越来越多组织的核心关注点。在这个背景下，将核心的生产过程及数据从公有云转移到行业私有云，已成为刻不容缓的时代需求。Zadig 作为提供标准私有模式的 DevOps 平台可以直接对接自建云、私有云，通过云原生技术架构迭代业务的同时又能满足数据本地化安全管理的诉求。</li>
+</ul>
+<span id="OSC_h4_33"></span>
+<h4><strong>06-原厂实施考虑因素：</strong></h4>
+<ul>
+<li><strong>专业支持和最佳实践需求：</strong>如果企业注重由产品开发者提供的专业支持和最佳实践，以降低试错成本和减少建设周期，可优先考虑 Zadig 作为原厂实施的选择。云效和 Coding 生态伙伴实施，提供的技术支持和最佳实践可能受制于生态伙伴的服务范围和能力。</li>
+</ul>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start">后续将推出云效、Coding 等平台与 Zadig 之间详细对比文章，提供更全面的选型分析。敬请期待！</p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<span id="OSC_h2_34"></span>
+<h2>参考链接：</h2>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[1] Zadig 官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fdocs.koderover.com" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://docs.koderover.com</span></a></p>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[2] 云效官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F153739.html" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://help.aliyun.com/document_detail/153739.html</span></a></p>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[3] Coding 官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fcoding.net%2Fhelp%2Fdocs%2Fstart%2Fnew.html" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://coding.net/help/docs/start/new.html</span></a></p>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[4] Jenkins 官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fwww.jenkins.io%2Fdoc" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://www.jenkins.io/doc</span></a></p>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[5] GitLab 官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fdocs.gitlab.com%2Fee" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://docs.gitlab.com/ee</span></a></p>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[6] Argo 官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fargoproj.github.io" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://argoproj.github.io</span></a></p>
+<p style="color:rgba(0, 0, 0, 0.9); margin-left:0; margin-right:0; text-align:left">[7] Tekton 官方资料：<a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Ftekton.dev%2Fdocs" target="_blank" rel="external nofollow noopener noreferrer"><span style="color:#5f9cef">https://tekton.dev/docs</span></a></p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+<p style="color:#333333; margin-left:0; margin-right:0; text-align:center"><span style="background-color:#ffffff; color:rgba(0, 0, 0, 0.9)">立即体验 Zadig V2.0 新架构，开启高效交付之旅！🚀 </span></p>
+<p style="color:#333333; margin-left:0; margin-right:0; text-align:center"><strong><span style="color:#ff2968">Zadig，让工程师更加专注创造</span></strong></p>
+<p style="color:#333333; margin-left:0; margin-right:0; text-align:center"><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://oscimg.oschina.net/oscnet/up-16e6b25cd9b3c92bc711c17b21e99e9b040.png"></p>
+<p style="color:#333333; margin-left:0; margin-right:0; text-align:center"><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247491542%26idx%3D1%26sn%3D007a0329060f75cd6daa225fb4c3ed0e%26chksm%3Dcfb45376f8c3da6052fc628ed3083e2c27aa6f64b0b4efb8ee6473e663d62b91de05d7d067c4%26token%3D2032062673%26lang%3Dzh_CN%23rd" target="_blank" rel="external nofollow noopener noreferrer">阅读原文</a> / <a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2Fkoderover%2Fzadig" target="_blank" rel="external nofollow noopener noreferrer">Zadig 在 Github</a> / <a target="_blank" rel="external nofollow noopener noreferrer" href="https://gitee.com/koderover/zadig">Zadig 在 Gitee</a></p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"><strong>推荐阅读 : </strong><a href="https://www.oschina.net/action/GoToLink?url=http%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247491527%26idx%3D1%26sn%3D6024fc78adfb92892c170ecc41704e3a%26chksm%3Dcfb45367f8c3da71eff88b1220aef48e5de6ff54788bff81012906443f135e77a99df07f265a%26scene%3D21%23wechat_redirect" target="_blank" rel="external nofollow noopener noreferrer">Zadig v2.1.0 版本发布：工作流与环境全面协同升级！</a> / <a href="https://www.oschina.net/action/GoToLink?url=http%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247490637%26idx%3D1%26sn%3D6e0498b37fb15f8b8903c4997e5611d8%26chksm%3Dcfb450edf8c3d9fb758d691081f09fd85d91dbb17534ba9c18c2300725462d3806581efbd237%26scene%3D21%23wechat_redirect" target="_blank" rel="external nofollow noopener noreferrer">Zadig vs. Jenkins 详细比对：时代的选择与开发者之选</a> / <a href="https://www.oschina.net/action/GoToLink?url=http%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247491499%26idx%3D1%26sn%3D0bf38f5bde35f9f0aec0cedca79d74b4%26chksm%3Dcfb4530bf8c3da1d9e9aad6af00d150be6ffd231a3e7801512cb8b749746e3c8ceca2feafadd%26scene%3D21%23wechat_redirect" target="_blank" rel="external nofollow noopener noreferrer">探索 Zadig 自测模式，一套环境多人协同，释开发者创造力！</a> / <a href="https://www.oschina.net/action/GoToLink?url=http%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247491474%26idx%3D1%26sn%3D5f7c40d430e16fcbfa69104c4a46a797%26chksm%3Dcfb45332f8c3da247c792998c84b0885a3b40a534cfd2011e0e7ea30a51cadeeabb37fdba14d%26scene%3D21%23wechat_redirect" target="_blank" rel="external nofollow noopener noreferrer">阿里云 MSE + Zadig，面向开发者的全链路灰度发布解决方案</a> / <a href="https://www.oschina.net/action/GoToLink?url=http%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzg4NDY0NTMyNw%3D%3D%26mid%3D2247491336%26idx%3D1%26sn%3D805f7d2c44c96cab529ffef120d84ca0%26chksm%3Dcfb453a8f8c3dabe83163a873135f2a72cdddcb9faeecefe5e40f20a358681304484c56cce51%26scene%3D21%23wechat_redirect" target="_blank" rel="external nofollow noopener noreferrer">ZADIG 专家版倾情上线：一键高效发布，119元/人月起，社区老友享年终福利！</a></p>
+<p style="color:#191b1f; margin-left:0; margin-right:0; text-align:start"> </p>
+</div>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="DevOps 选型指南：Zadig / 云效 / Coding/Jenkins/GitLab/Argo/Tekton" href="https://my.oschina.net/koderover/blog/10926966" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">DevOps 选型指南：Zadig / 云效 / Coding/Jenkins/GitLab/Argo/Tekton</span><span class="cap link footnote">https://my.oschina.net/koderover/blog/10926966</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/644afb8.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/644afb8.html&title=DevOps 选型指南：Zadig / 云效 / Coding/Jenkins/GitLab/Argo/Tekton - 果粉圈&pics=https://cdn.g0f.cn//?r=https://my.oschina.net&url=https://oscimg.oschina.net/oscnet/up-b31aff555046a4c349e6e088370a204b798.png&summary=
+
+
+打造一个功能全面、稳定且用户体验友好的 DevOps 平台对于推动持续集成、持续交付、团队协作和效率提升至关重要。企业在选择 DevOps 平台时，有的倾向于采用平台类产品，如 Zadig、云效、Coding 等；而另一些企业则..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=DevOps 选型指南：Zadig / 云效 / Coding/Jenkins/GitLab/Argo/Tekton - 果粉圈&amp;body=https://blog.g0f.cn/post/644afb8.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/644afb8.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/fb1c12c0.html">东方风韵</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/d656438b.html">CubeFS 2023 年度总结</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/3aad60a.html" title="2023 年度 Rust 调查报告"><span class="title">2023 年度 Rust 调查报告</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">DevOps 平台类产品</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">Zadig</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-Zadig 具有以下几个核心特性：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-Zadig 的核心优势：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">03-Zadig 的局限性：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">云效</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-云效主要特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-云效的局限性：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">Coding</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-Coding 主要特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-Coding 的局限性：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text"> </span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">DevOps 工具类产品</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">Jenkins</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-Jenkins 的主要特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-Jenkins 的局限性：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">GitLab CI&#x2F;CD</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-GitLab 的主要特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-GitLab 的局限性：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">Argo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-Argo 的局限性：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">Tekton</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-Tekton 的主要特点：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-Tekton 的局限性：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">各平台和工具之间的比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text"> </span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">DevOps 体系选型建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">01-团队规模和业务复杂度：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">02-多云架构及全球化战略需求：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">03-使用场景和业务需求：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">04-DevOps 平台建设成本考量：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">05-数据的安全与合规考量：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">06-原厂实施考虑因素：</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">参考链接：</span></a></li></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

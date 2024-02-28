@@ -1,0 +1,757 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>基于 Fluid+JindoCache 加速大模型训练的实践 - 果粉圈</title>
+
+  
+    <meta name="description" content="作者：王涛(扬礼)、陈裘凯(求索)、徐之浩(东伝) 背景 时间步入了 2024 年，新的技术趋势，如大模型&#x2F;AIGC&#x2F;多模态等技术，已经开始与实际业务相结合，并开始生产落地。这些新的技术趋势不仅提高了算力的需求，也给底层基础设施带来了更大的挑战。 在计算方面，以 GPU 和 FPGA 等异构硬件为例，他们通过短周期的迭代和演进来适应不断变化的需求。阿里集团通过统一调度、统一资源池以及全面弹性等调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 Fluid+JindoCache 加速大模型训练的实践">
+<meta property="og:url" content="https://blog.g0f.cn/post/b7cb3a72.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="作者：王涛(扬礼)、陈裘凯(求索)、徐之浩(东伝) 背景 时间步入了 2024 年，新的技术趋势，如大模型&#x2F;AIGC&#x2F;多模态等技术，已经开始与实际业务相结合，并开始生产落地。这些新的技术趋势不仅提高了算力的需求，也给底层基础设施带来了更大的挑战。 在计算方面，以 GPU 和 FPGA 等异构硬件为例，他们通过短周期的迭代和演进来适应不断变化的需求。阿里集团通过统一调度、统一资源池以及全面弹性等调">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b211811a6097462f8b1773272de2e181~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=541&amp;s=197729&amp;e=png&amp;a=1&amp;b=fdfdfd">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/115c193c8149472abc0677f3620610a7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=664&amp;s=309109&amp;e=png&amp;b=faf7f7">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c6f125a40ba04c9a86d4c0d6b144b287~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=1157&amp;s=443205&amp;e=png&amp;b=fefefe">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac1e748726e64c0397074ba2a8234822~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1028&amp;h=367&amp;s=149773&amp;e=png&amp;b=1a1e22">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f355c215d4014f0395d7c30d034f035a~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=400&amp;s=257369&amp;e=png&amp;b=191d21">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a54e781de042497195c57a8ca9e74776~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=393&amp;s=292004&amp;e=png&amp;b=1a1e22">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9182490180c54ea3adca3aa9e7407684~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=989&amp;h=377&amp;s=31834&amp;e=png&amp;b=1a1d21">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/003fd4e8c4f249d9b85e684177f6f549~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=423&amp;s=166523&amp;e=png&amp;b=191c20">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c56efaa612f6435482c34cb135697979~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=263&amp;s=143848&amp;e=png&amp;b=2e2e2e">
+<meta property="article:published_time" content="2024-02-22T03:52:50.000Z">
+<meta property="article:modified_time" content="2024-02-22T03:52:50.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b211811a6097462f8b1773272de2e181~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=541&amp;s=197729&amp;e=png&amp;a=1&amp;b=fdfdfd">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-22T03:52:50.000Z">2024-02-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-22T03:52:50.000Z">2024-02-22</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>基于 Fluid+JindoCache 加速大模型训练的实践</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<p><em>作者：王涛(扬礼)、陈裘凯(求索)、徐之浩(东伝)</em></p>
+<h2>背景</h2>
+<p>时间步入了 2024 年，新的技术趋势，如大模型/AIGC/多模态等技术，已经开始与实际业务相结合，并开始生产落地。这些新的技术趋势不仅提高了算力的需求，也给底层基础设施带来了更大的挑战。</p>
+<p>在计算方面，以 GPU 和 FPGA 等异构硬件为例，他们通过短周期的迭代和演进来适应不断变化的需求。阿里集团通过统一调度、统一资源池以及全面弹性等调度手段满足了复杂的计算需求。</p>
+<p>在存储方面，经典的微服务应用通过云原生化的方式，兼顾了性能和效率。但对于计算量增量最大的分布式 AI 训练、大数据等计算密集型应用，data locality 直接影响了计算作业的运行效率与吞吐，网络 I/O 的消耗还间接拉高了带宽成本，且在可预见的场景中，数据集规模还会以较高的速率保持增长，如何通过合理的数据缓存亲和性技术加速数据访问，将是提升计算任务运行效率的同时降成本的关键。</p>
+<p>大模型训练/多媒体等场景的数据集以图片和音频文件为主，天然适合将数据托管在 OSS 对象存储上，也是目前线上大多数计算作业的存储选型，以训练场景为例，具有以下读数据的特征：1）数据集顺序的随机化处理造成传统的单机缓存策略失效；2) 多个 epoch 会对数据集进行多轮读取；3) 作业间可能复用同个数据集；</p>
+<p>综上，阿里巴巴集团内部多个 AI 平台业务面临的现状中，天然适合用分布式缓存/文件系统的形式进行 I/O 层面的加速。</p>
+<h2>面临的挑战</h2>
+<ol>
+<li>
+<p>计算存储分离架构提升了数据访问与计算水平扩展的灵活度，但导致了数据访问高延时，对于训练等对数据缓存亲和性有显著诉求的场景延迟不友好：业务团队使用的机器学习任务在训练过程中要实时频繁访问 OSS 上的数据（以样本数据集与 checkpoint 为主），在 OSS 带宽受限或者压力较大时，访问 OSS 上数据速度比访问本地文件速度要慢 1~2 个数量级，且占据了用户大量的带宽成本；</p>
+</li>
+<li>
+<p>Kubernetes 调度器数据缓存无感知，同一数据源多次运行访问依旧慢：在现实应用中深度学习任务运行会不断重复访问同一数据，包括相同模型不同超参的任务、微调模型相同输入的任务、以及 AutoML 任务等。这种深度学习任务的重复数据访问就产生了可以复用的数据缓存。然而，由于原生 Kubernetes 调度器无法感知缓存，导致应用调度的结果不佳，缓存无法重用，性能难以提升；</p>
+</li>
+<li>
+<p>OSS 成为数据并发访问的瓶颈点，稳定性挑战大：大量机器学习任务在同时训练时都会并发访问后端 OSS 存储。这种并发机器学习训练造成的 IO 压力比较大，OSS 服务成为了性能单点，一旦 OSS 带宽出现瓶颈则会影响所有机器学习任务；</p>
+</li>
+<li>
+<p>训练文件分散，元数据压力：机器学习任务的训练数据文件通常会分散在不同路径下，读取文件需要耗费大量的时间在 list 操作上。对象存储的 list 操作性能较差，在进行大规模 list 时对 OSS 元数据压力很大，经常出现超时或者 list 失败的情况。</p>
+</li>
+<li>
+<p>IO 稳定性对业务运行有直接影响：导致业务表现不稳定，甚至造成任务失败。基于 FUSE 的存储客户端更容易发生这样的问题，一旦这些问题无法自动修复，则可能中断集群训练任务。时刻保持 IO 的稳定性是保证业务顺利运行的关键途径之一。</p>
+</li>
+</ol>
+<p>在现实应用中，通过对于以上典型数据访问 pattern 的分析，我们发现 IO 性能问题会导致 GPU 等昂贵计算资源不能被充分利用。机器学习自身训练的特点导致了数据文件访问较分散，元数据压力较大。如果能够精细化地缓存元数据和文件数据，那么一方面可以提高缓存效率和磁盘利用率，另一方面也可以解决文件查找操作带来的元数据损耗。</p>
+<h2>面向深度学习任务的高效缓存调度加速系统</h2>
+<p>为了能更好地满足集团大规模机器学习模型训练的高效性需求，模型训练过程中需要对数据访问取得更好的数据本地化效果。因此，我们希望达到以下目标：</p>
+<ul>
+<li>
+<p><strong>计算能够充分利用本地化数据访问</strong></p>
+<p>避免通过网络反复读取，尽量减少 I/O 在计算流水线中的耗时，从而加速机器学习模型的训练速度，并提升集群的 GPU 使用率。</p>
+</li>
+<li>
+<p><strong>降低 OSS 负载压力</strong></p>
+<p>通过应用对于部分数据的本地读取，减小数据访问延时和降低对底层 OSS 的带宽压力。</p>
+</li>
+<li>
+<p><strong>充分发挥热点数据集的缓存节点优势</strong></p>
+<p>在对用户无感知的前提下，智能地将任务调度到数据缓存节点上，从而使得常用模型训练程序越来越快。</p>
+</li>
+<li>
+<p><strong>元数据缓存和数据缓存分离</strong></p>
+<p>可单独对文件进行元数据缓存，缓存策略定制化。</p>
+</li>
+<li>
+<p><strong>通过 POSIX 接口读取数据</strong></p>
+<p>这样无需在模型开发和训练阶段使用不同的数据访问接口，降低开发机器学习模型程序的成本。</p>
+</li>
+</ul>
+<h3>3.1 架构组件介绍</h3>
+<h4>Fluid</h4>
+<p>Fluid <strong>[</strong> <strong>1]</strong> 是一个开源可扩展的分布式数据编排和加速系统，以 Kubernetes 标准和对用户透明的方式为 AI 和大数据等数据密集型应用提供数据访问能力，其目标为构建云原生环境下数据密集型应用的高效支撑平台。</p>
+<p>Fluid 通过 Kubernetes 服务提供的数据层抽象，可以让数据像流体一样在诸如 HDFS、OSS、Ceph 等存储源和 Kubernetes 上层云原生应用计算之间灵活高效地移动、复制、驱逐、转换和管理。而具体数据操作对用户透明，用户不必再担心访问远端数据的效率、管理数据源的便捷性，以及如何帮助 Kuberntes 做出运维调度决策等问题。用户只需以最自然的 Kubernetes 原生数据卷方式（PV/PVC）直接访问抽象出来的数据，剩余任务和底层细节全部交给 Fluid 处理。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b211811a6097462f8b1773272de2e181~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=541&amp;s=197729&amp;e=png&amp;a=1&amp;b=fdfdfd"></p>
+<p>Fluid 支持多种 Runtime，包括 Jindo，Alluxio，JuiceFS 和 GooseFS；其中能力、性能和稳定性比较突出的是 JindoRuntime，有比较多的真实落地场景。JindoRuntime <strong>[</strong> <strong>2]</strong> 是 Fluid 一种分布式缓存 Runtime 的实现，基于 JindoCache 分布式缓存加速引擎。</p>
+<h4>JindoCache</h4>
+<p>JindoCache（前身为 JindoFSx）是阿里云数据湖管理提供的云原生数据湖加速产品，支持数据缓存、元数据缓存等加速功能。JindoCache 能够为不同文件路径使用不同的 CacheSet 从而提供不同的读写策略，满足数据湖的不同使用场景对访问加速的需求。</p>
+<p>JindoCache 可以用于如下场景：</p>
+<ul>
+<li>OLAP（Presto查询），提高查询性能，减少查询时间。</li>
+<li>DataServing（HBase），显著降低 P99 延迟，减少 request 费用。</li>
+<li>大数据分析（Hive/Spark 报表），减少报表产出时间，优化计算集群成本。</li>
+<li>湖仓一体，减少 request 费用，优化 catalog 延迟。</li>
+<li>AI，加速训练等场景，减少 AI 集群使用成本，提供更全面的能力支持。</li>
+</ul>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/115c193c8149472abc0677f3620610a7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=664&amp;s=309109&amp;e=png&amp;b=faf7f7"></p>
+<h4>KubeDL</h4>
+<p>一套基于 K8S（ASI）的 AI 工作负载编排系统，负责管理分布式 AI 工作负载的生命周期、与一层调度的交互、容错与故障恢复、数据集、运行时加速等，高效支撑了集团统一资源池中不同平台的 AI 训练任务，包括但不限于淘系、阿里妈妈、达摩院等业务域，日均支撑 1w+ 训练任务的稳定运行；KubeDL 开源版本 <strong>[</strong> <strong>3]</strong> 。</p>
+<h4>项目整体架构图</h4>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c6f125a40ba04c9a86d4c0d6b144b287~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=1157&amp;s=443205&amp;e=png&amp;b=fefefe"></p>
+<h3>3.2 使用基于 JindoCache 的 Fluid 的原因</h3>
+<ol>
+<li>
+<p>Fluid 可以将数据集编排在 Kubernetes 集群中，实现数据和计算的同置，并且提供基于 Persistent Volume Claim 接口，实现 Kubernetes 上应用的无缝对接。同时 JindoRuntime 提供对 OSS 上数据的访问和缓存加速能力，并且可以利用 FUSE 的 POSIX 文件系统接口实现可以像本地磁盘一样轻松使用 OSS 上的海量文件，pytorch 等深度学习训练工具可利用 POSIX 文件接口读取训练数据。</p>
+</li>
+<li>
+<p>提供元数据和数据分布式缓存，可单独进行元数据缓存预热。</p>
+</li>
+<li>
+<p>提供元数据缓存预热，避免训练文件在 OSS 上大量元数据操作、提供数据预热机制，避免在训练时刻拉取数据造成的数据访问竞争。</p>
+</li>
+<li>
+<p>通过 KubeDL 调用 Fluid 数据亲和性调度能力，用户无需感知缓存存放的节点位置，以及弹性场景中不断随时可能迁移的节点环境，将有数据依赖的任务和已缓存的节点进行感知调度，实现尽可能的短路 short-circuit 读，最大化性能优势；</p>
+</li>
+<li>
+<p>JindoCache 提供多种分布式缓存能力，可以根据业务需要选择合适的缓存策略。在当前场景中我们选择 Cache-Aside (Lazy Loading) 的读缓存策略：当应用程序需要读取数据时，它首先检查缓存以确定数据是否可用。如果数据可用（缓存命中），则返回缓存的数据。如果数据不可用（缓存未命中），则会在底层存储查询数据，然后用从底层读取的数据填充缓存，并将数据返回给调用者。写缓存策略选择 Write-Through 即写时落缓存策略，应用程序向底层文件系统写入的文件，同时也会被写入缓存系统中，好处是下一次读取这部分数据的时候就可以直接从缓存系统中读取，大大提升了读取效率。</p>
+</li>
+<li>
+<p>Fluid 支持 FUSE 挂载点自愈能力，可以自动检查并恢复因 OOM 等异常原因导致的 FUSE 挂载点断裂问题，避免数据访问异常，保障 AI 平台在线业务稳定运行。</p>
+</li>
+</ol>
+<h3>3.3 落地实践</h3>
+<p>在集团场景的实践中，我们基于 KubeDL 的作业编排能力，结合 Fluid+JindoRuntime 的缓存引擎能力，同时充分利用了集团庞大异构计算资源池中闲置的内存/高性能磁盘等本地资源，端到端地为 AI 平台提供了数据 I/O 的加速能力。</p>
+<ol>
+<li>
+<p>集团庞大的统一异构资源池提供了差异化 SLO 的资源售卖等级，运行着高保障、Spot Instance、潮汐离线、普通离线 等多种不同等级的资源，以及搭配了多种代系的机型、SSD、高性能网卡等硬件，通过合理搭配 JindoCache 的多级缓存介质，我们能充分利用好统一资源池的闲置资源；</p>
+</li>
+<li>
+<p>结合 JindoCache 缓存集群的组成特点，我们使用高保障的计算资源运行元数据服务，利用弹性的离线资源来运行 Cache 缓存节点服务（IO  Bound 类型），在充分结合了集团资源池调度特点的同时最小化了用户成本；</p>
+</li>
+<li>
+<p>结合 KubeDL 的分布式训练任务管理与 Fluid 数据集管理能力，我们针对不同用户的相同数据源自动进行数据集的跨作业复用，甚至不同平台的相同数据源也可以在统一资源池中自动复用，并且基于作业的引用计数，KubeDL 可以自动回收闲置的数据集以帮助用户主动节约成本。</p>
+</li>
+</ol>
+<h3>3.4 经验分享</h3>
+<p>根据实践，我们总结了以下五个方面的经验供大家参考。</p>
+<p><strong>1. 选择合适的缓存节点</strong></p>
+<p>使用 JindoRuntime 可以获得更好的数据本地性能，在实际生产中我们发现不是所有节点都来做缓存性能就比较好。原因是有些节点的磁盘和网络 IO 性能不是很好，这个时候需要我们能够把缓存节点尽量选择到一些大容量磁盘和网络较好的节点上。Fluid 支持 dataset 的可调度性，换言之，就是缓存节点的可调度性，我们通过指定 dataset 的 nodeAffinity 来进行数据集缓存节点的调度，从而保证缓存节点可高效的提供缓存服务。</p>
+<p><strong>2. 配置缓存容量与路径</strong></p>
+<p>通过 dataset 的 Mounts 和 JindoRuntime 的 tieredstore 可以设定数据的挂载目录。同时，为避免数据量过多而导致缓存量过于庞大，可手动配置 JindoRuntime 的 tieredstore 来约束缓存的最大容量与水位线（超过水位线的数据会被自动丢弃），tieredstore 也包含对缓存存放路径的设定与存储层（SSD/MEM/HDD）的设定，以满足各种场景的需要。对于多节点的场景，使用dataset 的 replacement 可以支持在同一集群上部署多个 dataset。</p>
+<p><strong>3. 设定缓存安全策略</strong></p>
+<p>在 Fluid 中创建 Dataset 时，有时候我们需要在 mounts 中配置一些敏感信息，如 OSS 账号的 accessKeyId、accessKeySecret 。为了保证安全，Fluid 提供使用 Secret 来配置这些敏感信息的能力。通过创建 Secret，dataset 以 EncryptOptions 字段指定 Secret 的 name，实现对敏感信息的绑定。</p>
+<p><strong>4. 数据预加载</strong></p>
+<p>对于已经创建完成的 dataset 和 jindoruntime，第一次访问挂载的数据会经历一次下载数据目录下全部文件的过程，这就产生了一个问题：若数据所在的目录存在无需使用的其他数据，会造成无意义的空间资源与网络资源浪费。为避免这种问题，Fluid 既支持对数据的预加载，同时也支持元数据缓存。通过创建 dataload 读取所要预加载数据路径信息，可以动态将数据注入。dataload 支持缓存元数据与屏蔽非预加载数据的访问，这样就大大降低的数据访问效率。</p>
+<p><strong>5. 启用 Fluid FUSE 挂载点自愈能力</strong></p>
+<p>在线业务运行过程中，FUSE 进程可能因为内存资源不足以及其他原因崩溃重启，造成业务容器内 FUSE 挂载点断联，出现数据访问异常并影响在线业务可用性。通过启用 Fluid FUSE 挂载点自愈能力，Fluid 自动检测并修复此类断联挂载点，持续保障在线业务稳定运行。</p>
+<h3>3.5 实践结果</h3>
+<h4>读样本加速</h4>
+<p>以生产环境中的真实用户作业为基础，我们对 JindoCache 的效果进行了一次端到端的验证。</p>
+<ul>
+<li><strong>目标任务：</strong> LLAMA 13B 的预训练任务</li>
+<li><strong>实验环境：</strong></li>
+<li>集群&amp;机型：高性能网络集群 A800 服务器，搭载 RDMA 网卡与 Nvme 高速硬盘；</li>
+<li>JindoCache 规格：默认值为 24*32Gi Cache Worker，以 Nvme 盘为存储介质（相对内存的性价比更高）。</li>
+</ul>
+<p><strong>实验结论：</strong></p>
+<h4>LLaMa 13B 预训练模型</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">I/O访问模式</th>
+<th style="text-align:left">GPU Util</th>
+<th style="text-align:left">SM Util</th>
+<th style="text-align:left">TFLops（log）</th>
+<th style="text-align:left">TFLops（amperf）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">直连</td>
+<td style="text-align:left">100%</td>
+<td style="text-align:left">~60%</td>
+<td style="text-align:left">~135</td>
+<td style="text-align:left">~60（avg 10m）</td>
+</tr>
+<tr>
+<td style="text-align:left">JindoCache缓存</td>
+<td style="text-align:left">100%</td>
+<td style="text-align:left">~80%（↑33%）</td>
+<td style="text-align:left">~160（↑18%）</td>
+<td style="text-align:left">~72（avg 10m）（↑20%）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>监控数据-无缓存直连</strong></p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ac1e748726e64c0397074ba2a8234822~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1028&amp;h=367&amp;s=149773&amp;e=png&amp;b=1a1e22"></p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f355c215d4014f0395d7c30d034f035a~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=400&amp;s=257369&amp;e=png&amp;b=191d21"></p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a54e781de042497195c57a8ca9e74776~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=393&amp;s=292004&amp;e=png&amp;b=1a1e22"></p>
+<p><strong>监控数据-开启缓存</strong></p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9182490180c54ea3adca3aa9e7407684~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=989&amp;h=377&amp;s=31834&amp;e=png&amp;b=1a1d21"></p>
+<p>整机的平均 GPU 利用率同样接近 100%，但是各卡的负载较为均匀，都接近 100%。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/003fd4e8c4f249d9b85e684177f6f549~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=423&amp;s=166523&amp;e=png&amp;b=191c20"></p>
+<h4>Checkpoint 加速</h4>
+<p><strong>训练/离线推理场景</strong></p>
+<p>分布式训练任务在每次重启任务时都会 load checkpoint 模型文件以继续训练，模型大小从几百 MB 到几十 GB 不等；除此之外还有大量的离线推理任务，大量使用了统一资源池中的 Spot Instance 弹性 GPU 资源，每个推理任务都会随时被抢占，并在 FailOver 之后重新加载模型做离线推理，因此会有大量 Job 在“生生灭灭”中加载同一个 Checkpoint 文件。</p>
+<p>通过 JindoCache 的分布式缓存加速，我们将“多次远端读”变成了“单次本地读”，极大加速了 Job FailOver 速度的同时还为用户节约了多次反复读的带宽成本，在典型的大模型场景中，7b 参数量搭配 fp16 精度，模型文件的体积约 20Gb，通过 JindoCache 加速我们将用户每次加载模型的耗时从 10min 缩短到了约 30s。</p>
+<p><img class="lazy" alt="图片" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c56efaa612f6435482c34cb135697979~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&amp;h=263&amp;s=143848&amp;e=png&amp;b=2e2e2e"></p>
+<p><strong>训练 Spot 场景（写时落缓存）</strong></p>
+<p>分布式训练的 Spot 场景中，同步训练任务通常会在被抢占之后 FailOver 重新全局重启并续跑，KubeDL 会与一层调度配合，以交互式抢占的方式通知到训练任务的 Rank 0 节点做一次 on-demand checkpoint 以保存最新的训练进度，并能够在重启后 reload 最新的 checkpoint 及时续跑，享受 Spot 弹性低成本的同时最小化训练中断的代价。</p>
+<p>通过最新版本的 JindoCache 写时落缓存能力，原先重新后从远端重新被动 load 最新的模型文件，变成了重启后即时从本地缓存集群 load 最新的模型文件，端到端 FailOver 的中止时间从平均 10min 缩短到了平均 2min，<strong>节约了 80% 的闲置宝贵算力损失。</strong></p>
+<h2>总结与展望</h2>
+<p>综上，使用基于 JindoRuntime 的 Fluid 在集团大规模机器学习模型训练中发挥了重要作用。在读样本加速场景中，通过使用 JindoCacheEngine，我们大大提升了系统的吞吐，使得 GPU 负载利用更加均衡。同时，JindoRuntime 的抽象层屏蔽了不同 JindoCache 版本之间的差异，从而实现了无缝的升级。在 CheckPoint 加速环节，端到端模型加载速度显著提升，我们以较低成本实现了性能的大幅提升。</p>
+<p>未来，我们将继续通过 Fluid 进行更多场景的尝试，以及对现有功能的拓展，例如：</p>
+<ol>
+<li>
+<p>基于引用计数，自动回收闲置数据集（DataSet），实现多数据集的智能管理。</p>
+</li>
+<li>
+<p>智能数据预热，基于任务访问数据模式的自动预热，按目录优先级预热/驱逐，并进行并行预热（按目录拆解预热任务)。</p>
+</li>
+<li>
+<p>启用 RDMA 技术来加速集群内的 worker 传输吞吐，从而充分利用集群的高性能网络基础设施。</p>
+</li>
+</ol>
+<p>最后，在充分利用 JindoCache 缓存加速能力和 Fluid 的多 JindoCache 编排能力的基础上，我们将对使用方式和上层系统的接入进行优化，推动硬件和软件协同，进一步提升性能并支持新硬件。</p>
+<p><strong>相关链接：</strong></p>
+<p>[1] Fluid</p>
+<p><em>https://github.com/fluid-cloudnative/fluid</em></p>
+<p>[2] JindoCache</p>
+<p><em>https://github.com/aliyun/alibabacloud-jindodata/blob/master/docs/user/6.x/6.2.0/jindo_fluid/jindo_fluid_overview.md</em></p>
+<p>[3] KubeDL 开源版本</p>
+<p><em>https://github.com/kubedl-io/kubedl</em></p>
+<p>如果你对 Fluid 项目感兴趣，欢迎点击<a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/fluid-cloudnative/fluid">此处</a>了解更多。</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="基于 Fluid+JindoCache 加速大模型训练的实践" href="https://juejin.cn/post/7337987315893174287" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">基于 Fluid+JindoCache 加速大模型训练的实践</span><span class="cap link footnote">https://juejin.cn/post/7337987315893174287</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/b7cb3a72.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/b7cb3a72.html&title=基于 Fluid+JindoCache 加速大模型训练的实践 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b211811a6097462f8b1773272de2e181~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1080&h=541&s=197729&e=png&a=1&b=fdfdfd&summary=
+作者：王涛(扬礼)、陈裘凯(求索)、徐之浩(东伝)
+背景
+时间步入了 2024 年，新的技术趋势，如大模型/AIGC/多模态等技术，已经开始与实际业务相结合，并开始生产落地。这些新的技术趋势不仅提高了算力的需求，也给底层基础设施带来..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=基于 Fluid+JindoCache 加速大模型训练的实践 - 果粉圈&amp;body=https://blog.g0f.cn/post/b7cb3a72.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/b7cb3a72.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/47daa5f5.html">李楠曝光魅族 21 Pro 手机真机照片：原定 2 月 29 日发布，定价 5000 元以上</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/59a3aa39.html">电影《第二十条》中的“铁盖”茅台，现实中价值几何？</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">面临的挑战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">面向深度学习任务的高效缓存调度加速系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.1 架构组件介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">Fluid</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">JindoCache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">KubeDL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">项目整体架构图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.2 使用基于 JindoCache 的 Fluid 的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.3 落地实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.4 经验分享</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.5 实践结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">读样本加速</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">LLaMa 13B 预训练模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">Checkpoint 加速</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">总结与展望</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

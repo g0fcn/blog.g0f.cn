@@ -1,0 +1,833 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了 - 果粉圈</title>
+
+  
+    <meta name="description" content="昨天白天，「现实不存在了」开始全网刷屏。    「我们这么快就步入下一个时代了？Sora简直太炸裂了」。  「这就是电影制作的未来」！  谷歌的Gemini Pro 1.5还没出几个小时的风头，天一亮，全世界的聚光灯就集中在了OpenAI的Sora身上。 Sora一出，众视频模型臣服。  就在几小时后，OpenAI Sora的技术报告也发布了！ 其中，「里程碑」也成为报告中的关键词。  报">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了">
+<meta property="og:url" content="https://blog.g0f.cn/post/c778a4cb.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="昨天白天，「现实不存在了」开始全网刷屏。    「我们这么快就步入下一个时代了？Sora简直太炸裂了」。  「这就是电影制作的未来」！  谷歌的Gemini Pro 1.5还没出几个小时的风头，天一亮，全世界的聚光灯就集中在了OpenAI的Sora身上。 Sora一出，众视频模型臣服。  就在几小时后，OpenAI Sora的技术报告也发布了！ 其中，「里程碑」也成为报告中的关键词。  报">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp2WNUNFGJkOCOHR2vD2ZNTSib1y4Yiczm0MBqwwibVNw3ibHXUDweR6bBFA/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpoqibVQ92cgLGmD3ibswQUtqXOAyhHHtjFE7uUNJsGYtZEiaVXicFcBpeRQ/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_jpg/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpicQ35z5N5b6RR4ZOab36icf2yVia8lI24bKXXceKYSRA7NsiaAZaUqapicQ/640?wx_fmt=jpeg&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpnRqcYUytd0sgtUeXrKJqYkbZgH8SiaxoXkovtZ1QRBmxjgmgia6dBHoQ/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpMxQMPHdy8E3K0jeUzQ4r8Id0UxaK6dibiaMDm66x0hLTGg7S5nm93dIQ/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp4rvvEUodF4tcwSkKDRWbq5WxQqJDAnv86VB57iaqAseCdz6Ejib4JwKw/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpfhxWEqNLiaygdlZMEJsmhRSblNiaPYbLicF8fvfMick5fhMJ95GdXPnr4g/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpYn1ogBGrskvNjQ1XUGPiaQ5k7qBRxauXy48ZiaTmBVYicic8CgxYrXejcA/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpLMibyfnZwfn5GLsV25icPDMERvblrrYwHlf08rAlhSDfkxclr8fl2qtQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpcOaormu9hVUyvOHUSWpW2olDDBZQNmku3aRHgq8BIQ4KfZG7dJnznQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpEKibWiargHu4Hfb9hz2e5iaKdAicevRWdw409ncS1fHmfLd6tdmibnvj6FA/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpnIO1UO6aM9u1k1o5UXuzA49ayrezvwia8bfZTwic23IqPPeLSfsUUcVA/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpGndqHh9LZmBKmGfQsUPNV4kUrCAsSxpYVT1MVr2kcvic2SVNuPe6icWg/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpAFKa976PHoyaG5Psw1Wzgd45Pd2tNqqtuTBLw5ic0YpCvrgjbFLddqg/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpTzkxBmiaKHYaYabyUN1MoUo4qBOiaQNVc8FpOhnsyHDhm4Dy1b6XZ1eQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpvicKqRo1HWswsIlv27iaNqmJBVibmicOshdsMic1ssfuphzZpLUHtw2E8JQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp0piciaNkd1C5HzS5meCDL4d8SNgoTjo4WD0HEqSHQtIMusdmcKLQQRrA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp1kVu9y0dlr1SYfH9KQhvQTR1HbneDjqPxls1Vkk5xm7hyIiaAr9F2Ww/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpUJNREkqBEqCjkfcyJ8FHNtltNRfBnvrvwPgq2ibY4B6WVpttOZQkl7Q/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpjeiaKhkJv5pw5MvEt7qeJObYxKoQia9K3Cy2VeqZySGXSibHZOJhGJkYQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpaQBnyw9CMibXwX86zTMmIBuD8stXdiaprZ6IRqFHVDhiaibiczBVSDVO9VA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpLz9GA5pjqAbicia7cicpvDmia4iaACjQSlFWicKN52YicWsezEGAr2yrLnbTA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpNC5Ytspkncrgg280FyibcHPq7OibhapY6fXzm8KH5NaMuSOeWjq6l76A/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpCte6D8ia6XlB7wicv91lj2dOZdx1BQcnfUoia2n654TvlPTzVWlrRbYuA/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpGdXJovhrSRLxSbgOEbn3MQMpdMmGGMXosam0MCibmWibahqAARX1a1kg/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpWMG2tWibRVGo0gzugIUDgOaY0TJSKYClJHyLibV7tzl83xm4icnE32DpA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpP4TMfMnqRGtRxoqnyeBtnUJzBXBKweTC6s7zQQPjx7gPzXrsCqKXgg/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpO17DLb2XZCE2ykGntuy9b0yt5N6SzjFib0zwjtdIiaEOc67I050Z7Dog/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp6SCYTyWTMSdibIKSK7kqKD4flAWAWeC4ppkYeTnSvGF3PVWlPjxL8bg/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRptiaRCk6NLrYN9RZY65I9YMBvvYIAeFvyiaibRIVu40KSP4zDRPGcpRKvg/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpHab4IGn9gicqpU9GsehuLVLdhkibzZ6RlmnMHw9XiaIauPUNdib7NnBFkQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp0fLXoaxa14iconFibYKqWbuI5wvamHjwUurBjcgglF5LluQPn2nmBevQ/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpb6317fL7GxRt4dicfT38xplh5zesJwAB6QVok5Gl7J8QhzsTVZzHung/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpodxgibQALSUojWOAprFHtMM8WXvfBLosicYSm1Xeun32ibTqq5qE5UGLA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpLZFseXQJE6WUMKVYgctlqt6JibrmSXiasd0pquYz5sKqMsQ9NcDm90gA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp2KnkNRPB6VMfMratRtaOiblVEZHn7DLpvEf3g37sMtOXOFFofIUmNEQ/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpl7Y6E9OreLggk1FeyQFgoDJDiaaZbxzFbdlHRLoYAl8Irdu6UTIUggw/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpoZiaoRibTNSIjpkU5UZYtppibm68iaVGaAfUCVJ8JsNYblbEXfGdxX2WicA/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpG7uMrduwiamsJrmVwHYp7nZicfyoOASo5Fl0y9klseIFicNtrvibtibJddg/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpicM8t39GWFo8Ptrz9XaDu0kO4ia2icvKlxmKtTeJGHiagNgVSgW3IErlNw/640?wx_fmt=gif&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpNnPvdCictO3iboJIyW87Y6ak5RYkt2aKscl5YoOHVRuUW3TmiaCXNNFyg/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpHrcUEKfAPuTuacQ1qVbicfeGQ0Wm2qeulBz1nIFTkFoajiaPnYTYUAgg/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpsJ4X7wQE8dsxd9uNI2fyG5JFjFIJzItgqbLibJIGouWDicKdNWRM12Aw/640?wx_fmt=png&amp;from=appmsg">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpguibWXQncyeNSOXPaThfJ03cTLFJiaJgGgeIzyDeEH2ViaZpG5Ts0raxg/640?wx_fmt=png&amp;from=appmsg">
+<meta property="article:published_time" content="2024-02-17T01:16:01.000Z">
+<meta property="article:modified_time" content="2024-02-17T01:16:01.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="华尔街见闻">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp2WNUNFGJkOCOHR2vD2ZNTSib1y4Yiczm0MBqwwibVNw3ibHXUDweR6bBFA/640?wx_fmt=png&amp;from=appmsg">
+  
+  
+  
+  <meta name="keywords" content="媒体,华尔街见闻">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E5%8D%8E%E5%B0%94%E8%A1%97%E8%A7%81%E9%97%BB/">华尔街见闻</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-17T01:16:01.000Z">2024-02-17</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-17T01:16:01.000Z">2024-02-17</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<section>
+<section>
+<section>
+<h5><span style="font-size: 16px; text-align: justify; color: #333333;">昨天白天，「现实不存在了」开始全网刷屏。</span></h5>
+</section>
+</section>
+</section>
+<p>「我们这么快就步入下一个时代了？Sora简直太炸裂了」。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="89" data-backw="562" data-height="186" data-imgfileid="504960828" data-ratio="0.15833333333333333" data-type="png" data-w="1080" data-width="1174" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp2WNUNFGJkOCOHR2vD2ZNTSib1y4Yiczm0MBqwwibVNw3ibHXUDweR6bBFA/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>「这就是电影制作的未来」！</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="90" data-backw="562" data-height="188" data-imgfileid="504960827" data-ratio="0.16018518518518518" data-type="png" data-w="1080" data-width="1174" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpoqibVQ92cgLGmD3ibswQUtqXOAyhHHtjFE7uUNJsGYtZEiaVXicFcBpeRQ/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>谷歌的Gemini Pro 1.5还没出几个小时的风头，天一亮，全世界的聚光灯就集中在了OpenAI的Sora身上。</p>
+<p>Sora一出，众视频模型臣服。</p>
+<p><img class="rich_pages wxw-img lazy" data-height="863" data-imgfileid="504960829" data-ratio="1.726" data-type="jpeg" data-w="500" data-width="500" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_jpg/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpicQ35z5N5b6RR4ZOab36icf2yVia8lI24bKXXceKYSRA7NsiaAZaUqapicQ/640?wx_fmt=jpeg&amp;from=appmsg"></p>
+<p>就在几小时后，OpenAI Sora的技术报告也发布了！</p>
+<p>其中，「里程碑」也成为报告中的关键词。</p>
+<section><img class="rich_pages wxw-img lazy" data-backh="226" data-backw="562" data-height="948" data-imgfileid="504960830" data-ratio="0.40185185185185185" data-type="png" data-w="1080" data-width="2360" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpnRqcYUytd0sgtUeXrKJqYkbZgH8SiaxoXkovtZ1QRBmxjgmgia6dBHoQ/640?wx_fmt=png&amp;from=appmsg"></section>
+<p>报告地址：https://openai.com/research/video-generation-models-as-world-simulators</p>
+<p>技术报告主要介绍了两个方面：</p>
+<p>（1）如何将不同类型的视觉数据转化为统一的格式，以便于对生成模型进行大规模训练的方法；</p>
+<p>（2）对Sora的能力和局限性的定性评价。</p>
+<p>不过遗憾的是，报告不包括模型和实现细节。嗯，OpenAI还是那个「OpenAI」。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="486" data-backw="562" data-height="1002" data-imgfileid="504960831" data-ratio="0.8638888888888889" data-type="png" data-w="1080" data-width="1160" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpMxQMPHdy8E3K0jeUzQ4r8Id0UxaK6dibiaMDm66x0hLTGg7S5nm93dIQ/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>就连马斯克都被Sora生成效果震撼到，并表示「gg人类」。</p>
+<section><img class="rich_pages wxw-img lazy" data-galleryid data-imgfileid="504960885" data-ratio="0.1852589641434263" data-s="300,640" data-type="png" data-w="1004" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp4rvvEUodF4tcwSkKDRWbq5WxQqJDAnv86VB57iaqAseCdz6Ejib4JwKw/640?wx_fmt=png&amp;from=appmsg"></section>
+<h2>打造虚拟世界模拟器</h2>
+<p>此前，OpenAI的研究者一直在探索的一个难题就是，究竟怎样在视频数据上，应用大规模训练的生成模型？</p>
+<p>为此，研究者同时对对持续时间、分辨率和宽高比各不相同的视频和图片进行了训练，而这一过程正是基于文本条件的扩散模型。</p>
+<p>他们采用了Transformer架构，这种架构能够处理视频和图片中时空片段的潜代码。</p>
+<p>随之诞生的最强大模型Sora，也就具备了生成一分钟高质量视频的能力。</p>
+<p>OpenAI研究者发现了令人惊喜的一点：扩展视频生成模型的规模，是构建模拟物理世界通用模拟器的非常有希望的方向。</p>
+<p>也就是说，顺着这个方向发展，或许LLM真的能够成为世界模型！</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="351" data-backw="562" data-imgfileid="504960850" data-ratio="0.625" data-s="300,640" data-type="png" data-w="1080" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpfhxWEqNLiaygdlZMEJsmhRSblNiaPYbLicF8fvfMick5fhMJ95GdXPnr4g/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>Sora的独到之处在于哪里？</p>
+<p>要知道，以前的许多研究，都是通过各种技术对视频数据进行生成模型建模，比如循环网络、生成对抗网络、自回归Transformer和扩散模型等方法。</p>
+<p>它们往往只关注于特定类型的视觉数据、较短的视频或者固定尺寸的视频。</p>
+<p>而Sora与它们不同，它是一种通用的视觉数据模型，能够生成各种持续时间、宽高比和分辨率的视频和图片，甚至长达一分钟的高清视频。</p>
+<p>有网友表示，「Sora虽然有一些不完美之处（可以检测出来），例如从物理效果可以看出它是人工合成的。但是，它将会革命性地改变许多行业。</p>
+<p>想象一下可以生成动态的、个性化的广告视频进行精准定位，这将是一个万亿美元的产业」！</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="157" data-backw="562" data-height="330" data-imgfileid="504960832" data-ratio="0.2796296296296296" data-type="png" data-w="1080" data-width="1182" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpYn1ogBGrskvNjQ1XUGPiaQ5k7qBRxauXy48ZiaTmBVYicic8CgxYrXejcA/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>为了验证SORA的效果，业界大佬Gabor Cselle把它和Pika、RunwayML和Stable Video进行了对比。</p>
+<p>首先，他采用了与OpenAI示例中相同的Prompt。</p>
+<p>结果显示，其他主流工具生成的视频都大约只有5秒钟，而SORA可以在一段长达17秒视频场景中，保持动作和画面一致性。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960851" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpLMibyfnZwfn5GLsV25icPDMERvblrrYwHlf08rAlhSDfkxclr8fl2qtQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>随后，他将SORA的起始画面用作参照，努力通过调整命令提示和控制相机动作，尝试使其他模型产出与SORA类似的效果。</p>
+<p>相比之下，SORA在处理较长视频场景方面的表现显著更出色。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960852" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpcOaormu9hVUyvOHUSWpW2olDDBZQNmku3aRHgq8BIQ4KfZG7dJnznQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>看到如此震撼的效果，也难怪业内人士都在感叹，SORA在AI视频制作领域确实具有革命性意义。</p>
+<h2>将视觉数据转化为patch</h2>
+<p>LLM之所以会成功，就是因为它们在互联网规模的数据上进行了训练，获得了广泛能力。</p>
+<p>它成功的一大关键，就是使用了token，这样，文本的多种形态——代码、数学公式以及各种自然语言，就优雅地统一了起来。</p>
+<p>OpenAI的研究者，正是从中找到了灵感。</p>
+<p>该如何让视觉数据的生成模型继承token的这种优势？</p>
+<p>注意，不同于LLM使用的文本token，Sora使用的是视觉patch。</p>
+<p>此前已有研究表明，patch对视觉数据建模非常有效。</p>
+<p>OpenAI研究者惊喜地发现，patch这种高度可扩展的有效表征形式，正适用于训练能处理多种类型视频和图片的生成模型。</p>
+<p>从宏观角度来看，研究者首先将视频压缩到一个低维潜空间中，随后把这种表征分解为时空patch，这样就实现了从视频到patch的转换。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="105" data-backw="562" data-height="378" data-imgfileid="504960833" data-ratio="0.18611111111111112" data-type="png" data-w="1080" data-width="2031" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpEKibWiargHu4Hfb9hz2e5iaKdAicevRWdw409ncS1fHmfLd6tdmibnvj6FA/640?wx_fmt=png&amp;from=appmsg"></p>
+<h2>视频压缩网络</h2>
+<p>研究者开发了一个网络，来减少视觉数据的维度。</p>
+<p>这个网络可以接受原始视频作为输入，并输出一个在时间上和空间上都进行了压缩的潜表征。</p>
+<p>Sora在这个压缩后的潜空间中进行训练，之后用于生成视频。</p>
+<p>另外，研究者还设计了一个对应的解码器模型，用于将生成的潜数据转换回像素空间。</p>
+<h2>潜空间patch</h2>
+<p>对于一个压缩后的输入视频，研究者提取看一系列空间patch，作为Transformer的token使用。</p>
+<p>这个方案同样适用于图像，因为图像可以被视为只有一帧的视频。</p>
+<p>基于patch的表征方法，研究者使得Sora能够处理不同分辨率、持续时间和纵横比的视频和图像。</p>
+<p>在推理时，可以通过在一个合适大小的网格中适当排列随机初始化的patch，从而控制生成视频的大小。</p>
+<h2>扩展Transformer</h2>
+<p>因此，视频模型Sora是一个扩散模型；它能够接受带有噪声的patch（和条件信息，如文本提示）作为输入，随后被训练，来预测原始的「干净」patch。</p>
+<p>重要的是，Sora是基于Transformer的扩散模型。在以往，Transformer在语言模型、计算机视觉和图像生成等多个领域，都表现出卓越的扩展能力。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="139" data-backw="562" data-height="312" data-imgfileid="504960834" data-ratio="0.24722222222222223" data-type="png" data-w="1080" data-width="1261" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpnIO1UO6aM9u1k1o5UXuzA49ayrezvwia8bfZTwic23IqPPeLSfsUUcVA/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>令人惊喜的是，在这项工作中，研究者发现作为视频模型的扩散Transformer，也能有效地扩展。</p>
+<p>下图展示了训练过程中使用固定种子和输入的视频样本比较。</p>
+<p>随着训练计算资源的增加，样本质量显著提升。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="192" data-backw="562" data-height="219" data-imgfileid="504960835" data-ratio="0.3421875" data-type="gif" data-w="640" data-width="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpGndqHh9LZmBKmGfQsUPNV4kUrCAsSxpYVT1MVr2kcvic2SVNuPe6icWg/640?wx_fmt=gif&amp;from=appmsg"></p>
+<h2>视频的多样化表现</h2>
+<p>传统上，图像和视频的生成技术往往会将视频统一调整到一个标准尺寸，比如4秒钟、分辨率256x256的视频。</p>
+<p>然而，OpenAI研究者发现，直接在视频的原始尺寸上进行训练，能带来诸多好处。</p>
+<p><strong>灵活的视频制作</strong></p>
+<p>Sora能够制作各种尺寸的视频，从宽屏的1920x1080到竖屏的1080x1920，应有尽有。</p>
+<p>这也就意味着，Sora能够为各种设备制作适配屏幕比例的内容！</p>
+<p>它还可以先以较低分辨率快速制作出视频原型，再用相同的模型制作出全分辨率的视频。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="167" data-backw="562" data-imgfileid="504960853" data-ratio="0.296875" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpAFKa976PHoyaG5Psw1Wzgd45Pd2tNqqtuTBLw5ic0YpCvrgjbFLddqg/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p><strong>更优的画面表现</strong></p>
+<p>实验发现，直接在视频原始比例上训练，能够显著提升视频的画面表现和构图效果。</p>
+<p>因此，研究者将Sora与另一个版本的模型进行了比较，后者会将所有训练视频裁剪为正方形，这是生成模型训练中的常见做法。</p>
+<p>与之相比，Sora生成的视频（右侧）在画面构成上则有了明显的改进。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="278" data-backw="562" data-imgfileid="504960854" data-ratio="0.4953125" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpTzkxBmiaKHYaYabyUN1MoUo4qBOiaQNVc8FpOhnsyHDhm4Dy1b6XZ1eQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<h2>深入的语言理解</h2>
+<p>训练文本到视频的生成系统，需要大量配有文本说明的视频。</p>
+<p>研究者采用了DALL·E 3中的重新标注技术，应用在了视频上。</p>
+<p>首先，研究者训练了一个能生成详细描述的标注模型，然后用它为训练集中的所有视频，生成文本说明。</p>
+<p>他们发现，使用详细的视频说明进行训练，不仅能提高文本的准确性，还能提升视频的整体质量。</p>
+<p>类似于DALL·E 3，研究者也使用了GPT，把用户的简短提示转化为详细的说明，然后这些说明会被输入到视频模型中。</p>
+<p>这样，Sora就能根据用户的具体要求，生成高质量、准确无误的视频。</p>
+<h2>图像和视频的多样化提示</h2>
+<p>虽然展示的案例，都是Sora将文本转换为视频的demo，但其实，Sora的能力不止于此。</p>
+<p>它还可以接受图像或视频等其他形式的输入。</p>
+<p>这就让Sora能够完成一系列图像和视频编辑任务，比如制作无缝循环视频、给静态图片添加动态、在时间线上扩展视频的长度等等。</p>
+<p><strong>为DALL·E图像赋予生命</strong></p>
+<p>Sora能够接受一张图像和文本提示，然后基于这些输入生成视频。</p>
+<p>下面即是Sora基于DALL·E 2和DALL·E 3图像生成的视频。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="302" data-backw="562" data-height="344" data-imgfileid="504960836" data-ratio="0.5375" data-type="gif" data-w="640" data-width="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpvicKqRo1HWswsIlv27iaNqmJBVibmicOshdsMic1ssfuphzZpLUHtw2E8JQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<blockquote data-type="quote_container">
+<p>一只戴贝雷帽和黑高领衫的柴犬</p>
+</blockquote>
+<section></section>
+<p><img class="rich_pages wxw-img lazy" data-backh="195" data-backw="562" data-height="222" data-imgfileid="504960838" data-ratio="0.346875" data-type="gif" data-w="640" data-width="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp0piciaNkd1C5HzS5meCDL4d8SNgoTjo4WD0HEqSHQtIMusdmcKLQQRrA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<blockquote data-type="quote_container">
+<p>一家五口怪物的插画，采用了简洁明快的扁平设计风格。其中包括一只毛茸茸的棕色怪物，一只光滑的黑色怪物长着天线，还有一只绿色的带斑点怪物和一只小巧的带波点怪物，它们在一个欢快的场景中相互玩耍。</p>
+</blockquote>
+<section></section>
+<p><img class="rich_pages wxw-img lazy" data-backh="179" data-backw="562" data-height="204" data-imgfileid="504960837" data-ratio="0.31875" data-type="gif" data-w="640" data-width="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp1kVu9y0dlr1SYfH9KQhvQTR1HbneDjqPxls1Vkk5xm7hyIiaAr9F2Ww/640?wx_fmt=gif&amp;from=appmsg"></p>
+<blockquote data-type="quote_container">
+<p>一张逼真的云朵照片，上面写着「SORA」。</p>
+</blockquote>
+<section></section>
+<p><img class="rich_pages wxw-img lazy" data-backh="196" data-backw="562" data-height="223" data-imgfileid="504960840" data-ratio="0.3484375" data-type="gif" data-w="640" data-width="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpUJNREkqBEqCjkfcyJ8FHNtltNRfBnvrvwPgq2ibY4B6WVpttOZQkl7Q/640?wx_fmt=gif&amp;from=appmsg"></p>
+<blockquote data-type="quote_container">
+<p>在一个典雅古老的大厅内，一道巨浪滔天，正要破浪而下。两位冲浪者把握时机，巧妙地滑行在浪尖上。</p>
+</blockquote>
+<p><strong>视频时间线的灵活扩展</strong></p>
+<p>Sora不仅能生成视频，还能将视频沿时间线向前或向后扩展。</p>
+<p>可以看到，demo中的视频都是从同一个视频片段开始，向时间线的过去延伸。尽管开头各不相同，但它们最终都汇聚于同一个结尾。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960857" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpjeiaKhkJv5pw5MvEt7qeJObYxKoQia9K3Cy2VeqZySGXSibHZOJhGJkYQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960858" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpaQBnyw9CMibXwX86zTMmIBuD8stXdiaprZ6IRqFHVDhiaibiczBVSDVO9VA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>而通过这种方法，我们就能将视频向两个方向延伸，创造出一个无缝的循环视频。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960859" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpLz9GA5pjqAbicia7cicpvDmia4iaACjQSlFWicKN52YicWsezEGAr2yrLnbTA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<h2>图像的生成能力</h2>
+<p>同样，Sora也拥有生成图像的能力。</p>
+<p>为此，研究者将高斯噪声patch排列在空间网格中，时间范围为一帧。</p>
+<p>该模型可生成不同大小的图像，分辨率最高可达2048x2048像素。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="310" data-backw="562" data-height="782" data-imgfileid="504960839" data-ratio="0.5509259259259259" data-type="png" data-w="1080" data-width="1420" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpNC5Ytspkncrgg280FyibcHPq7OibhapY6fXzm8KH5NaMuSOeWjq6l76A/640?wx_fmt=png&amp;from=appmsg"></p>
+<blockquote data-type="quote_container">
+<p>左：一位女士在秋季的特写照片，细节丰富，背景模糊。</p>
+<p>右：一个生机勃勃的珊瑚礁，居住着五颜六色的鱼类和海洋生物。</p>
+</blockquote>
+<section></section>
+<p><img class="rich_pages wxw-img lazy" data-height="792" data-imgfileid="504960841" data-ratio="0.5574074074074075" data-type="png" data-w="1080" data-width="1420" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpCte6D8ia6XlB7wicv91lj2dOZdx1BQcnfUoia2n654TvlPTzVWlrRbYuA/640?wx_fmt=png&amp;from=appmsg"></p>
+<blockquote data-type="quote_container">
+<p>左：一幅数字绘画，描绘了一只幼年老虎在苹果树下，采用了精美的哑光画风。</p>
+<p>右：一个被雪覆盖的山村，温馨的小屋和壮丽的北极光相映成趣，画面细腻逼真，采用了50mm f/1.2镜头拍摄。</p>
+</blockquote>
+<p><strong>视频风格和环境的变换</strong></p>
+<p>利用扩散模型，就能通过文本提示来编辑图像和视频。</p>
+<p>在这里，研究者将一种名为SDEdit的技术应用于Sora，使其能够不需要任何先验样本，即可改变视频的风格和环境。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960860" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpGdXJovhrSRLxSbgOEbn3MQMpdMmGGMXosam0MCibmWibahqAARX1a1kg/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p><strong>视频之间的无缝连接</strong></p>
+<p>另外，还可以利用Sora在两个不同的视频之间创建平滑的过渡效果，即使这两个视频的主题和场景完全不同。</p>
+<p>在下面的demo中，中间的视频就实现了从左侧到右侧视频的平滑过渡。</p>
+<p>一个是城堡，一个是雪中小屋，非常自然地融进一个画面中。</p>
+<section>
+<p><strong>涌现的模拟能力</strong></p>
+</section>
+<p>随着大规模训练的深入，可以发现视频模型展现出了许多令人兴奋的新能力。</p>
+<p>Sora利用这些能力，能够在不需要专门针对3D空间、物体等设置特定规则的情况下，就模拟出人类、动物以及自然环境的某些特征。</p>
+<p>这些能力的出现，完全得益于模型规模的扩大。</p>
+<p><strong>3D空间的真实感</strong></p>
+<p>Sora能创造出带有动态视角变化的视频，让人物和场景元素在三维空间中的移动，看起来十分自然。</p>
+<p>如下，一对情侣漫步在雪天中的东京，视频的生成和真实的运镜效果大差不差了。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960861" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpWMG2tWibRVGo0gzugIUDgOaY0TJSKYClJHyLibV7tzl83xm4icnE32DpA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>再比如，Sora拥有更加辽阔的视野，生成山水风景与人徒步爬山的视频，有种无人机拍摄出的巨制赶脚。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960862" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpP4TMfMnqRGtRxoqnyeBtnUJzBXBKweTC6s7zQQPjx7gPzXrsCqKXgg/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p><strong>视频的一致性和物体的持续存在</strong></p>
+<p>在生成长视频时，保持场景和物体随时间的连续性一直是个挑战。</p>
+<p>Sora能够较好地处理这一问题，即便在物体被遮挡或离开画面时，也能保持其存在感。</p>
+<p>下面例子中，窗台前的花斑狗，即便中途有多个路人经过，它的样子依旧保持一致。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960863" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpO17DLb2XZCE2ykGntuy9b0yt5N6SzjFib0zwjtdIiaEOc67I050Z7Dog/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>例如，它可以在一个视频中多次展示同一个角色，而且角色的外观在整个视频中保持一致。</p>
+<p>赛博风格的机器人，从前到后旋转一圈，都没有跳帧。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960864" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp6SCYTyWTMSdibIKSK7kqKD4flAWAWeC4ppkYeTnSvGF3PVWlPjxL8bg/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p><strong>与世界的互动</strong></p>
+<p>甚至，Sora能模拟出影响世界状态的简单行为。</p>
+<p>比如，画家画的樱花树，水彩纸上留下了持久的笔触。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="316" data-backw="562" data-height="360" data-imgfileid="504960842" data-ratio="0.5625" data-type="gif" data-w="640" data-width="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRptiaRCk6NLrYN9RZY65I9YMBvvYIAeFvyiaibRIVu40KSP4zDRPGcpRKvg/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>又或是，人吃汉堡时留下的咬痕清晰可见，Sora的生成符合物理世界的规则。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960865" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpHab4IGn9gicqpU9GsehuLVLdhkibzZ6RlmnMHw9XiaIauPUNdib7NnBFkQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p><strong>数字世界的模拟</strong></p>
+<p>Sora不仅能模拟现实世界，还能够模拟数字世界，比如视频游戏。</p>
+<p>以「Minecraft」为例，Sora能够在控制玩家角色的同时，以高度逼真的方式渲染游戏世界和动态变化。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960867" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp0fLXoaxa14iconFibYKqWbuI5wvamHjwUurBjcgglF5LluQPn2nmBevQ/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>而且，只需通过简单的提示，如提及「Minecraft」，Sora就能展现这些能力。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960868" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpb6317fL7GxRt4dicfT38xplh5zesJwAB6QVok5Gl7J8QhzsTVZzHung/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>这些新能力显示出，持续扩大视频模型规模是一个极有希望的方向，让模型向着精准模拟物理世界和数字世界、以及其中的生物和物体的高级模拟器发展。</p>
+<h2>局限性</h2>
+<p>当然，作为一个模拟器，Sora目前还存在不少的局限。</p>
+<p>比如，它虽然能模拟一些基础物理互动，比如玻璃的碎裂，但还不够精确。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960869" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpodxgibQALSUojWOAprFHtMM8WXvfBLosicYSm1Xeun32ibTqq5qE5UGLA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>模拟吃食物的过程，也并不总是能准确反映物体状态的改变。</p>
+<p>在网站首页上，OpenAI详细列出了模型的常见问题，比如在长视频中出现的逻辑不连贯，或者物体会无缘无故地出现。</p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960870" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpLZFseXQJE6WUMKVYgctlqt6JibrmSXiasd0pquYz5sKqMsQ9NcDm90gA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>最后，OpenAI表示，Sora目前所展现出的能力，证明了不但提升视频模式的规模是一个令人振奋的方向。</p>
+<p>沿这个方向走下去，或许有一天，世界模型就会应运而生。</p>
+<h2>网友：未来游戏动嘴做</h2>
+<p>OpenAI给出众多的官方演示，看得出Sora似乎可以为更逼真的游戏生成铺路——仅凭文字描述就能生成程序游戏。</p>
+<p>这既令人兴奋，又令人恐惧。</p>
+<p>FutureHouseSF的联合创始人猜测，「或许Sora可以模拟我的世界。也许下一代游戏机将是「Sora box」，游戏将以2-3段文字的形式发布」。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="128" data-backw="562" data-height="270" data-imgfileid="504960844" data-ratio="0.22777777777777777" data-type="png" data-w="1080" data-width="1184" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp2KnkNRPB6VMfMratRtaOiblVEZHn7DLpvEf3g37sMtOXOFFofIUmNEQ/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>OpenAI技术人员Evan Morikawa称，「在OpenAI发布的Sora视频中，如下的视频让我大开眼界。通过经典渲染器渲染这个场景是非常困难的。Sora模拟物理的方式和我们不同。它肯定仍然会出错，但是我之前没有预测到它能做得这么逼真」。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="154" data-backw="562" data-height="272" data-imgfileid="504960843" data-ratio="0.27419354838709675" data-type="png" data-w="992" data-width="992" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpl7Y6E9OreLggk1FeyQFgoDJDiaaZbxzFbdlHRLoYAl8Irdu6UTIUggw/640?wx_fmt=png&amp;from=appmsg"></p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960871" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpoZiaoRibTNSIjpkU5UZYtppibm68iaVGaAfUCVJ8JsNYblbEXfGdxX2WicA/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>有网友称，「人们没有把『每个人都会成为电影制作人』这句话当回事」。</p>
+<p>我在15分钟内制作了这部20年代的预告片，使用了OpenAI Sora的片段，David Attenborough在Eleven Labs上的配音，并在iMovie上从YouTube上采样了一些自然音乐。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="185" data-backw="562" data-height="330" data-imgfileid="504960847" data-ratio="0.33" data-type="png" data-w="1000" data-width="1000" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpG7uMrduwiamsJrmVwHYp7nZicfyoOASo5Fl0y9klseIFicNtrvibtibJddg/640?wx_fmt=png&amp;from=appmsg"></p>
+<p><img class="rich_pages wxw-img js_insertlocalimg lazy" data-backh="316" data-backw="562" data-imgfileid="504960872" data-ratio="0.5625" data-s="300,640" data-type="gif" data-w="640" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_gif/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpicM8t39GWFo8Ptrz9XaDu0kO4ia2icvKlxmKtTeJGHiagNgVSgW3IErlNw/640?wx_fmt=gif&amp;from=appmsg"></p>
+<p>还有人称，「5年后，你将能够生成完全沉浸式的世界，并实时体验它们，「全息甲板」即将变成现实」！</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="205" data-backw="562" data-height="428" data-imgfileid="504960848" data-ratio="0.3638888888888889" data-type="png" data-w="1080" data-width="1176" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpNnPvdCictO3iboJIyW87Y6ak5RYkt2aKscl5YoOHVRuUW3TmiaCXNNFyg/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>有人甚至表示，自己完全被Sora的AI视频生成的出色效果惊呆了。</p>
+<p>「它让现有的视频模型看起来像是愚蠢的玩具。每个人都将成为一名电影制作人」。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="111" data-backw="562" data-height="232" data-imgfileid="504960845" data-ratio="0.19722222222222222" data-type="png" data-w="1080" data-width="1174" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpHrcUEKfAPuTuacQ1qVbicfeGQ0Wm2qeulBz1nIFTkFoajiaPnYTYUAgg/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>「新一代电影制作人即将与OpenAI的Sora一起涌现。再过10年，这将是一场有趣的比赛」！</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="70" data-backw="562" data-height="146" data-imgfileid="504960846" data-ratio="0.12407407407407407" data-type="png" data-w="1080" data-width="1174" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpsJ4X7wQE8dsxd9uNI2fyG5JFjFIJzItgqbLibJIGouWDicKdNWRM12Aw/640?wx_fmt=png&amp;from=appmsg"></p>
+<p>「OpenAI的Sora暂不会取代好莱坞。它将为好莱坞以及个人电影制作者和内容创作者，带来巨大的推动力。</p>
+<p>想象一下，只需3人团队，就能在一周内，完成一部120分钟的A级故事片的初稿创作和观众测试。这就是我们的目标」。</p>
+<p><img class="rich_pages wxw-img lazy" data-backh="186" data-backw="562" data-height="386" data-imgfileid="504960849" data-ratio="0.3314814814814815" data-type="png" data-w="1080" data-width="1164" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRpguibWXQncyeNSOXPaThfJ03cTLFJiaJgGgeIzyDeEH2ViaZpG5Ts0raxg/640?wx_fmt=png&amp;from=appmsg"></p>
+<section>参考资料：</section>
+<p>https://openai.com/research/video-generation-models-as-world-simulators?ref=upstract.com</p>
+<section class="channels_iframe_wrp wxw_wechannel_card_not_horizontal"></section>
+<section></section>
+<section></section>
+<section></section>
+<p><span style="color: #b3b3b3;">文章来源：<a href="https://mp.weixin.qq.com/s/ODsebK3fEc-adRDwRVDhQA" rel="external nofollow noopener noreferrer" target="_blank">新智元</a>，原文标题：《一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了》。</span></p><div style="color: #666; margin-bottom: 15px;">风险提示及免责条款</div>
+<div style="font-size: 12px;font-family: 黑体;color: #666;line-height: 20px;">
+            市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。
+          </div>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了" href="https://wallstreetcn.com/articles/3708441" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了</span><span class="cap link footnote">https://wallstreetcn.com/articles/3708441</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/c778a4cb.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/c778a4cb.html&title=一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://wallstreetcn.com&url=https://mmbiz-qpic.wallstcn.com/sz_mmbiz_png/UicQ7HgWiaUb0fv72OYTcSusNqeDMP1IRp2WNUNFGJkOCOHR2vD2ZNTSib1y4Yiczm0MBqwwibVNw3ibHXUDweR6bBFA/640?wx_fmt=png&from=appmsg&summary=
+
+
+
+昨天白天，「现实不存在了」开始全网刷屏。
+
+
+
+「我们这么快就步入下一个时代了？Sora简直太炸裂了」。
+
+「这就是电影制作的未来」！
+
+谷歌的Gemini Pro 1.5还没出几个小时的风头，天一亮，全世界的聚光灯就集中在了..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=一锤降维！解密OpenAI超级视频模型Sora技术报告，虚拟世界涌现了 - 果粉圈&amp;body=https://blog.g0f.cn/post/c778a4cb.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/c778a4cb.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/ba9a0b03.html">第一个百亿达成!2024年度中国电影总票房破100亿</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/7af8894e.html">游泳世锦赛|中国游泳队再夺两金 两小将最后时刻上演强势逆转</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/faea6d1c.html" title="胡塞武装称袭击英国船只并击落美军无人机"><span class="title">胡塞武装称袭击英国船只并击落美军无人机</span></a><a class="item" href="/post/29974a4a.html" title="乌武装部队总司令称乌军已由进攻转向防御"><span class="title">乌武装部队总司令称乌军已由进攻转向防御</span></a><a class="item" href="/post/9dd4e954.html" title="回去才知道，现在老家县城都这么猛了"><span class="title">回去才知道，现在老家县城都这么猛了</span></a><a class="item" href="/post/7575002e.html" title="14天退货期满前，第一批果粉退货Vision Pro"><span class="title">14天退货期满前，第一批果粉退货Vision Pro</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link"><span class="toc-text">昨天白天，「现实不存在了」开始全网刷屏。</span></a></li></ol><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">打造虚拟世界模拟器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">将视觉数据转化为patch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">视频压缩网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">潜空间patch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">扩展Transformer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">视频的多样化表现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">深入的语言理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">图像和视频的多样化提示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">图像的生成能力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">局限性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">网友：未来游戏动嘴做</span></a></li></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

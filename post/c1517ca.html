@@ -1,0 +1,767 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>《操作系统导论》小结 - 果粉圈</title>
+
+  
+    <meta name="description" content="前记 这本书的英文名字是《Operating Systems：Three Easy Pieces》(吐槽下中文翻译，很不搭的感觉)，作者是Remzi H.Arpaci-Dusseau.英文起名还有一个梗：Remzi希望这本书可以像理查德·费曼写过一些物理学的讲义，他把一些基本内容汇集成一本书，叫做《Six Easy Pieces》。这本书探讨的又正好是操作系统的3个简单部分，所以取名很合适，因为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《操作系统导论》小结">
+<meta property="og:url" content="https://blog.g0f.cn/post/c1517ca.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="前记 这本书的英文名字是《Operating Systems：Three Easy Pieces》(吐槽下中文翻译，很不搭的感觉)，作者是Remzi H.Arpaci-Dusseau.英文起名还有一个梗：Remzi希望这本书可以像理查德·费曼写过一些物理学的讲义，他把一些基本内容汇集成一本书，叫做《Six Easy Pieces》。这本书探讨的又正好是操作系统的3个简单部分，所以取名很合适，因为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e3b6c50c08d040dfab0f16e0ce017d6d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=786&amp;h=504&amp;s=92429&amp;e=png&amp;b=fafafa">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/10165d1b168b49168a3cdccf80d875eb~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=415&amp;h=451&amp;s=27685&amp;e=png&amp;b=fefefe">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3305c24995e54e1dad3cb05da7f631c9~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=650&amp;h=349&amp;s=39520&amp;e=png&amp;b=eaeaea">
+<meta property="article:published_time" content="2024-02-08T10:15:16.000Z">
+<meta property="article:modified_time" content="2024-02-08T10:15:16.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e3b6c50c08d040dfab0f16e0ce017d6d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=786&amp;h=504&amp;s=92429&amp;e=png&amp;b=fafafa">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-08T10:15:16.000Z">2024-02-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-08T10:15:16.000Z">2024-02-08</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>《操作系统导论》小结</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<h1>前记</h1>
+<p>这本书的英文名字是《Operating Systems：Three Easy Pieces》(吐槽下中文翻译，很不搭的感觉)，作者是Remzi H.Arpaci-Dusseau.英文起名还有一个梗：Remzi希望这本书可以像理查德·费曼写过一些物理学的讲义，他把一些基本内容汇集成一本书，叫做《Six Easy Pieces》。这本书探讨的又正好是操作系统的3个简单部分，所以取名很合适，因为操作系统的难度差不多是物理学的一半。这本书的英文电子版是免费的，Remzi说这本书之所以免费，是因为曾经他有一个学生因为买不起书而向他求助，这让他很受触动，从此他决定公开此书资源，Remzi人真的很好！</p>
+<h1>概述和理念</h1>
+<p>整本书围绕虚拟化、并发和持久性这三个主要概念展开，介绍了所有操作系统的主要组件。这本书并不是一股脑的把一些结论性质的东西放出来，而是从引出问题出发，一步步引导读者去思考操作系统是如何发展到现在这样的。</p>
+<p>这本书的每一个章节都配套了习题，都是完全开源免费的，我们只需要跟着readme照葫芦画瓢就好，链接我放在这里： https://github.com/remzi-arpacidusseau/ostep-homework
+代码需要在Linux环境下运行，Windows电脑的朋友可以下个虚拟机，我是用Oracle VM VirtualBox装的Ubuntu。</p>
+<p>我在看书之前听了一遍清华的操作系统原理课程，课程的很多内容和这本书是很像的，b站就可以看到课程，这里也推荐给读者：https://www.bilibili.com/video/BV1uW411f72n/</p>
+<p>书中作者写给读者的话让我深受触动：</p>
+<blockquote>
+<p>叶芝有一句名言：“教育不是注满一桶水，而是点燃一把火。”他说的既对也错。你必须“给桶注一点水”，这本书当然可以帮助你完成这部分的教育。毕竟，当你去Google面试时，他们会问你一个关于如何使用信号量的技巧问题，确切地知道信号量是什么感觉真好，对吧？</p>
+</blockquote>
+<blockquote>
+<p>但是叶芝的主要观点显而易见：教育的真正要点是让你对某些事情感兴趣，可以独立学习更多关于这个主题的东西，而不仅仅是你需要消化什么才能在某些课程上取得好成绩。正如我们的父亲（Remzi的父亲Vedat Arpaci）曾经说过的，“在课堂以外学习。”</p>
+</blockquote>
+<p>今天想要写一篇小结，大致总结下自己学到的知识并且分享一些常见的笔试面试题，也顺便分享这个理念。</p>
+<h1>正文小结</h1>
+<h2>虚拟化</h2>
+<p>我们为什么要进行虚拟化呢？其实很简单，因为计算机的硬件资源是有限的，而通过操作系统，我们可以更加有效的利用物理资源。本书中的虚拟化过程，就是在竭尽所能的达到这个目的。前几章是在引入进程的概念，简单的介绍了几个常用API：fork()、exec()、wait()，读者可以根据自己兴趣或者课后习题，写一些简单的程序熟悉它们。然后就来到了**虚拟化部分的第一个大件：<strong>CPU</strong>**。</p>
+<blockquote>
+<p>为了虚拟化CPU，操作系统需要以某种方式让许多任务共享物理CPU，让它们看起来像是同时运行。基本思想很简单，运行一个进程一段时间，然后运行另一个进程，如此轮换。通过这种方式时分共享CPU，就实现了虚拟化。</p>
+</blockquote>
+<p>想象一下，运行程序最快的方式是不是直接把程序放到CPU当中运行？当然是！但问题是，如果这个程序做了一些很离谱的事情，我们该怎么让它停下来？以及出于虚拟化CPU的目的，已经运行的程序（也就是进程），操作系统如何让它停下来，切换到另一个进程？为此，便引申了出来一些底层机制，读者可根据关键词做进一步了解（<strong>用户模式和内核模式、协作方式和非协作方式、时钟中断</strong>），这部分是比较概念性的东西，逻辑难度并不大，主要是为了适应专业词汇。</p>
+<p>了解了底层机制，我们便开始学习操作系统的上层策略了，接下来这本书介绍了一系列的调度策略，这部分也是面试当中常被问到的：<strong>先进先出（FIFO）、最短任务优先（SJF）、最短完成时间优先（STCF），多级反馈队列（MLFQ）、单队列多处理器调度和多队列多处理器调度（当然也是有单队列单处理器调度和多队列单处理器调度的哈哈）</strong>。调度策略并非只有这几种，设计人员可以根据不同的指标去设计不同的策略。这本书还引入了比例份额调度的概念，简单讨论了两种实现：<strong>彩票调度和步长调度</strong>，简单来说，前者是随机的，后者是确定的。</p>
+<blockquote>
+<p>其中单队列的方式（SQMS）比较容易构建，负载均衡较好，但在扩展性和缓存亲和度方面有着固有的缺陷。多队列的方式（MQMS）有很好的扩展性和缓存亲和度，但实现负载均衡却很困难，也更复杂。</p>
+</blockquote>
+<p>这部分的话，理解它们的机理以后是可以很自然的用自己的方式表述出来的。然后因为我上学期喜欢刷力扣学习，所以这里也推荐读者结合一些具体场景的代码，问题导向的话，很多抽象的概念就显得简单了一些。比如下面这个是力扣的621题，我暂时也只写了这个，同理还有力扣的1834题、636题，还有些别的场景，也很类似，比如第10题和第993题。下面这个是我第621题的解法：</p>
+<pre><code>class Solution &#123;
+public:
+    int leastInterval(vector&lt;char&gt;&amp; tasks, int n) &#123;
+        if(n == 0)&#123;
+            return tasks.size();
+        &#125;
+        vector&lt;int&gt; freq(26,0);
+        for(char task:tasks)&#123;
+            freq[task - 'A']++;
+        &#125;
+
+<pre><code>    sort(freq.begin(),freq.end());
+    int max_freq = freq[25];
+    int idle_slots = (max_freq-1)*n;
+    for(int i= 24; i&amp;gt;=0 &amp;amp;&amp;amp; idle_slots&amp;gt;0;--i)&amp;#123;
+        idle_slots -= min(max_freq - 1, freq[i]);
+    &amp;#125;
+    idle_slots = max(0,idle_slots);
+
+    return tasks.size() + idle_slots;
+&amp;#125;
+</code></pre>
+<p>&amp;#125;;<br></p></code></pre><p></p>
+<p>CPU虚拟化的部分到这里就结束了，<strong>接下来是另一个大件：内存虚拟化</strong>。</p>
+<p>如上所说，我们的物理资源是有限的，物理内存自然也是有限的，我们通过虚拟内存技术，可以更加有效的利用实际物理内存，形成一种“内存”（地址空间）比物理内存大很多的现象，这个过程需要操作系统和硬件配合完成。</p>
+<blockquote>
+<p>实际上，作为用户级的程序员，可以看到的任何地址都是虚拟地址。</p>
+</blockquote>
+<p>本书简单介绍了一些内存操作的API，malloc1()、free()等等，而后开始介绍地址转换机制的发展历程。从简单的思想出发，<strong>基址和界限</strong>开始，然后慢慢增加复杂性，<strong>分段、分页，TLB、混合分段和分页、多级页表、反向页表等等</strong>。这一部分的关键之处是设计合适的映射方式，多个进程或者同一进程的不同虚拟页面可以映射到同一块物理内存，从而实现了一种形式的内存共享。这种映射关系是动态的，可以根据应用程序的需要进行调整。</p>
+<p>在了解基本机制后，这本书介绍了几种常见的缓存策略：<strong>最优替换策略、先入先出策略、随机、利用历史数据（LRU）</strong>。同样缓存策略也可以在力扣里找到练习题，第146题的LRU和第460题的LFU，LRU要简单些，我暂时只写了LRU：</p>
+<pre><code>class LRUCache &#123;
+public:
+    struct Node&#123;
+        int key, value;
+        Node * prev;
+        Node * next;
+        Node(int k, int v)&#123;
+            this-&gt;key = k;
+            this-&gt;value = v;
+        &#125;
+    &#125;;
+    int cap;
+    Node* head = new Node(-1,-1);
+    Node* tail = new Node(-1,-1);
+
+<pre><code>unordered_map&amp;lt;int,Node*&amp;gt; map;
+LRUCache(int capacity) &amp;#123;
+    cap = capacity;
+    head-&amp;gt;next = tail;
+    tail -&amp;gt; prev = head;
+&amp;#125;
+void addNode(Node* newnode)&amp;#123;
+    Node* temp = head -&amp;gt; next;
+
+    newnode -&amp;gt; next = temp;
+    newnode -&amp;gt; prev = head;
+
+    head -&amp;gt; next = newnode;
+    temp -&amp;gt; prev = newnode;
+&amp;#125;
+
+void deltNode(Node* delnode)&amp;#123;
+    Node* prevv = delnode -&amp;gt; prev;
+    Node* nextt = delnode -&amp;gt; next;
+
+    prevv -&amp;gt; next = nextt;
+    nextt -&amp;gt; prev = prevv;    
+&amp;#125;
+
+int get(int key) &amp;#123;
+   if(map.find(key)!=map.end())&amp;#123;
+       Node* resultNode = map[key];
+       int result = resultNode-&amp;gt;value;
+       deltNode(resultNode);
+       addNode(resultNode);
+       
+       map[key] = head-&amp;gt;next;
+       return result;
+   &amp;#125;
+   return -1;
+&amp;#125;
+
+void put(int key, int value) &amp;#123;
+    if(map.find(key)!= map.end())&amp;#123;
+        Node* current = map[key];
+        map.erase(key);
+        deltNode(current);
+    &amp;#125;
+    if(map.size()==cap)&amp;#123;
+        map.erase(tail-&amp;gt;prev-&amp;gt;key);
+        deltNode(tail-&amp;gt;prev);
+
+    &amp;#125;
+    addNode(new Node(key,value));
+    map[key] = head -&amp;gt;next;
+&amp;#125;
+</code></pre>
+<p>&amp;#125;;</p>
+<p>&#x2F;**</p>
+<ul>
+<li>Your LRUCache object will be instantiated and called as such:</li>
+<li>LRUCache* obj &#x3D; new LRUCache(capacity);</li>
+<li>int param_1 &#x3D; obj-&gt;get(key);</li>
+<li>obj-&gt;put(key,value);</li>
+</ul>
+<p> *&#x2F;<br></p></code></pre><p></p>
+<p>这是我习惯用的方法，但是时间复杂度不能击败100％，欢迎看到这篇文章的朋友分享更好的方式。</p>
+<p>最后这本书在简单介绍了VAX/VMS虚拟内存系统之后，虚拟化部分就结束了。当然，在本书的最后还做了一部分补充知识，简单介绍了<strong>虚拟机管理程序</strong>，我们可以将其理解成操作系统之下的操作系统，它是介于操作系统和硬件之间的。</p>
+<h2>并发</h2>
+<p>接下来是第二部分：并发，这部分从表面的问题来看，和数据库的进程事务管理很像。当然，虽然在表面上看起来相似，但是操作系统和数据库系统的目标和关注点不一样，处理并发问题的具体机制和策略可能会有所不同。</p>
+<p>之前我们已经知道，进程就是一个正在运行的程序，在这里我们需要引入一个新的概念，叫做<strong>线程</strong>。这里也有一个常见的面试题，<strong>进程和线程的区别？</strong> 这里直接引用原文：</p>
+<blockquote>
+<p>经典观点是一个程序只有一个执行点（一个程序计数器，用来存放要执行的指令），但多线程（multi-threaded）程序会有多个执行点（多个程序计数器，每个都用于取指令和执行）。换一个角度来看，每个线
+程类似于独立的进程，只有一点区别：它们共享地址空间，从而能够访问相同的数据。</p>
+</blockquote>
+<blockquote>
+<p>因此，单个线程的状态与进程状态非常类似。线程有一个程序计数器，记录程序从哪里获取指令。每个线程有自己的一组用于计算的寄存器。所以，如果有两个线程运行在一个处理器上，从运行一个线程（T1）切换到另一个线程（T2）时，必定发生上下文切换。线程之间的上下文切换类似于进程间的上下文切换。对于进程，我们将状态保存到进程控制块。现在，我们需要一个或多个线程控制，保存每个线程的状态。但是，与进程相比，线程之间的上下文切换有一主要区别：地址空间保持不变（即不需要切换当前使用的页表）。线程和进程之间的另一个主要区别在于栈。在简单的传统进程地址空间模型【我们现在可以称之为单线程（single-threaded）进程】中，只有一个栈，通常位于地址空间的底部（见图 26.1 左图）。</p>
+</blockquote>
+<p><img class="lazy" alt="微信图片_20240208112743.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e3b6c50c08d040dfab0f16e0ce017d6d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=786&amp;h=504&amp;s=92429&amp;e=png&amp;b=fafafa"></p>
+<blockquote>
+<p>然而，在多线程的进程中，每个线程独立运行，当然可以调用各种例程来完成正在执行的任何工作。不是地址空间中只有一个栈，而是每个线程都有一个栈。假设有一个多线程的进程，它有两个线程，结果地址空间看起来不同（见图26.1右图）。</p>
+</blockquote>
+<p>可能在不同的地方会给这些问题不同的定义，但其实本质都类似这样的场景：有一个变量a = 1，进程T1执行a=a+1, 进程T2也执行a=a+1，进程T1执行这个操作的时候a=1，执行a+1后a等于2，这时候a=2的结果还没有返回，进程T2突然抢断了进程T1，这个时候a依然是等于1的，执行a=a+1,返回结果a=2。T1继续执行操作，返回a=2。问题就出现了，经历了T1和T2，按理说a应该等于3的，结果等于2。</p>
+<p>这一整个章节都是在结合具体的场景，给出相应的解决方案，关键之处在于设计合理的数据结构和函数，以及在正确的地方调用相应函数，这也是这一章<strong>最难的地方</strong>。</p>
+<p>本书一开始还是介绍了一些线程的API，然后介绍了<strong>锁、临界区、互斥、条件变量</strong>，然后引入<strong>信号量</strong>的概念。我们可以看一个经典的<strong>生产者-消费者</strong>例子：</p>
+<pre><code>sem_t empty;
+sem_t full;
+sem_t mutex;
+
+<p>void *producer(void *arg) &amp;#123;<br>int i;<br>for (i &#x3D; 0; i &lt; loops; i++) &amp;#123;<br>sem_wait(&amp;mutex); &#x2F;&#x2F; line p0 (NEW LINE)<br>sem_wait(&amp;empty); &#x2F;&#x2F; line p1<br>put(i); &#x2F;&#x2F; line p2<br>sem_post(&amp;full); &#x2F;&#x2F; line p3<br>sem_post(&amp;mutex); &#x2F;&#x2F; line p4 (NEW LINE)<br>&amp;#125;<br>&amp;#125;</p>
+<p>void *consumer(void *arg) &amp;#123;<br>int i;<br>for (i &#x3D; 0; i &lt; loops; i++) &amp;#123;<br>sem_wait(&amp;mutex); &#x2F;&#x2F; line c0 (NEW LINE)<br>sem_wait(&amp;full); &#x2F;&#x2F; line c1<br>int tmp &#x3D; get(); &#x2F;&#x2F; line c2<br>sem_post(&amp;empty); &#x2F;&#x2F; line c3<br>sem_post(&amp;mutex); &#x2F;&#x2F; line c4 (NEW LINE)<br>printf(“%d\n”, tmp);<br>&amp;#125;<br>&amp;#125;</p>
+<p>int main(int argc, char *argv[]) &amp;#123;<br>&#x2F;&#x2F; …<br>sem_init(&amp;empty, 0, MAX); &#x2F;&#x2F; MAX buffers are empty to begin with…<br>sem_init(&amp;full, 0, 0); &#x2F;&#x2F; … and 0 are full<br>sem_init(&amp;mutex, 0, 1); &#x2F;&#x2F; mutex&#x3D;1 because it is a lock (NEW LINE)<br>&#x2F;&#x2F; …<br>&amp;#125;<br></p></code></pre><p></p>
+<p>整个场景是这样的：生产者只有在某个区域“空了”（empty）的情况下才能继续执行，然后它会在这个区域“生产”（put），直到生产“满了”（full），添加这个条件（sem_post(&amp;full)），然后不再占用锁（sem_post(&amp;mutex)）。</p>
+<p>消费者只有在某个区域“满了”（full）的情况下才能继续执行，然后它会把这个区域“消费”（get），直到消费“空了”（empty），添加这个条件（sem_post(&amp;empty)），然后不再占用锁（sem_post(&amp;mutex)）。</p>
+<p>这里就出现了典型的<strong>死锁</strong>情况：</p>
+<blockquote>
+<p>假设有两个线程，一个生产者和一个消费者。消费者首先运行，获得锁（c0 行），然后对 full 信号量执行 sem_wait() （c1 行）。因为还没有数据，所以消费者阻塞，让出 CPU。但是，重要的是，此时消费者仍然持有锁。</p>
+</blockquote>
+<blockquote>
+<p>然后生产者运行。假如生产者能够运行，它就能生产数据并唤醒消费者线程。遗憾的是，它首先对二值互斥信号量调用 sem_wait()（p0 行）。锁已经被持有，因此生产者也被卡住。</p>
+</blockquote>
+<blockquote>
+<p>这里出现了一个循环等待。消费者持有互斥量，等待在 full 信号量上。生产者可以发送full 信号，却在等待互斥量。因此，生产者和消费者互相等待对方——典型的死锁。</p>
+</blockquote>
+<p>正确做法是这样的：</p>
+<pre><code>sem_t empty;
+sem_t full;
+sem_t mutex;
+
+<p>void *producer(void *arg) &amp;#123;<br>int i;<br>for (i &#x3D; 0; i &lt; loops; i++) &amp;#123;<br>sem_wait(&amp;empty); &#x2F;&#x2F; line p1<br>sem_wait(&amp;mutex); &#x2F;&#x2F; line p1.5 (MOVED MUTEX HERE…)<br>put(i); &#x2F;&#x2F; line p2<br>sem_post(&amp;mutex); &#x2F;&#x2F; line p2.5 (… AND HERE)<br>sem_post(&amp;full); &#x2F;&#x2F; line p3<br>&amp;#125;<br>&amp;#125;</p>
+<p>void *consumer(void *arg) &amp;#123;<br>int i;<br>for (i &#x3D; 0; i &lt; loops; i++) &amp;#123;<br>sem_wait(&amp;full); &#x2F;&#x2F; line c1<br>sem_wait(&amp;mutex); &#x2F;&#x2F; line c1.5 (MOVED MUTEX HERE…)<br>int tmp &#x3D; get(); &#x2F;&#x2F; line c2<br>sem_post(&amp;mutex); &#x2F;&#x2F; line c2.5 (… AND HERE)<br>sem_post(&amp;empty); &#x2F;&#x2F; line c3<br>printf(“%d\n”, tmp);<br>&amp;#125;<br>&amp;#125;</p>
+<p>int main(int argc, char *argv[]) &amp;#123;<br>&#x2F;&#x2F; …<br>sem_init(&amp;empty, 0, MAX); &#x2F;&#x2F; MAX buffers are empty to begin with…<br>sem_init(&amp;full, 0, 0); &#x2F;&#x2F; … and 0 are full<br>sem_init(&amp;mutex, 0, 1); &#x2F;&#x2F; mutex&#x3D;1 because it is a lock (NEW LINE)<br>&#x2F;&#x2F; …<br>&amp;#125;<br></p></code></pre><p></p>
+<p>还有一个经典的<strong>哲学家就餐问题</strong>，读者可以参考力扣1226题。简单来说，好的做法是隔一个哲学家同时进餐，如何设计呢？然后本书介绍了一些常见的并发问题，这个死锁依赖图给我感觉也很nice哈哈：</p>
+<p><img class="lazy" alt="微信图片_20240208164655.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/10165d1b168b49168a3cdccf80d875eb~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=415&amp;h=451&amp;s=27685&amp;e=png&amp;b=fefefe"></p>
+<p>接着总结了<strong>产生死锁的四个条件</strong>，这部分也是常出现的面试题。最后是进阶课程：基于事件的并发。并发性这一章节也就结束了。</p>
+<p>其实读下来可以也可以感觉到，这一章节重要的是熟悉各种概念，然后如何设计数据结构和函数去解决相应的问题，这才是真正不断发挥创造力的地方。</p>
+<h2>持久性</h2>
+<p>最后一个章节是持久性的问题，核心问题是如何长久保存数据。这一部分我们可以学到一些硬件知识，可以了解相应过程中，<strong>操作系统是如何同硬件打交道的，再往后可以看到操作系统是如何同网络进行交互的</strong>。我个人希望在对组成和网络理解更多的时候再回过头来看，这里也只是对其有个初步认识，细节的实现才是真正棘手的地方。</p>
+<p>这一章节和计算机组成原理是有很多重叠部分的，这里也让我初步理解了一个困扰了我很久的问题：操作系统是如何与设备进行交互的。</p>
+<blockquote>
+<p>这个问题可以通过古老的抽象技术来解决。在最底层，操作系统的一部分软件清楚地知道设备如何工作，我们将这部分软件称为设备驱动程序。</p>
+</blockquote>
+<p>书中这个图粗略展示了Linux软件的组织方式：</p>
+<p><img class="lazy" alt="微信图片_20240208171540.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3305c24995e54e1dad3cb05da7f631c9~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=650&amp;h=349&amp;s=39520&amp;e=png&amp;b=eaeaea"></p>
+<p>在学习这部分知识的时候，要关注一些硬件的实现，这部分可以在计算机组成原理当中补齐。</p>
+<p><strong>寄存器</strong>的实现，懂得利用中断减少CPU开销，当然这也是需要就具体问题而定的：</p>
+<blockquote>
+<p>注意，使用中断并非总是最佳方案。假如有一个非常高性能的设备，它处理请求很快：通常在CPU第一次轮询时就可以返回结果。此时如果使用中断，反而会让系统变慢：切换到其它进程，处理中断，再切换回之前的进程代价不小。因此，如果设备非常快，那么最好的办法反而是轮询。如果设备比较慢，那么采用允许发生重叠的中断更好。如果设备的速度未知，或者时快时慢，可以考虑使用混合策略，先尝试轮询一段时间，如果设备没有完成操作，此时再使用中断。这种两阶段的办法可以实现两种方法的好处。</p>
+</blockquote>
+<blockquote>
+<p>另一个最好不要使用中断的场景是网络。网络端收到大量数据包，如果每一个包都发生一次中断，那么有可能导致操作系统发生活锁，即不断处理中断而无法处理用户层 请求。例如，假设一个Web服务器因为“电杆效应”而突然承受很重的负载。这种情况下，偶尔使用轮询的方式可以更好的控制系统的行为，并允许Web服务器先服务一些用户请求，再回去检查网卡设备是否有更多数据包到达。</p>
+</blockquote>
+<blockquote>
+<p>另一个基于中断的优化是合并。设备在抛出中断之前往往会等待一小段时间，在此期间，其它请求可能很快完成，因此多次中断可以合并为一次中断抛出，从而降低处理中断的代价。当然，等待太长会增加请求的延迟，这是系统中常见的折中。</p>
+</blockquote>
+<p><strong>磁盘驱动器</strong>，这需要一点数学知识，但是很简单，不超过高中难度。</p>
+<p>I/O的成本很高，所以操作系统专门有个磁盘调度程序来检查请求并决定下一个要调度的请求。和任务调度不一样的地方在于，每个任务的长度是不知道的。书里介绍了一些方式：<strong>最短寻道时间优先（SSTF）、电梯（又称SCAN或C-SCAN）、最短定位时间优先（SPTF）</strong>。</p>
+<p><strong>廉价冗余磁盘阵列（RAID）</strong>，为了解决下面这个问题引入的一种存储虚拟化技术：如果磁盘出现故障，而数据没有备份，那么所有有价值的数据都没了。</p>
+<p>本书插叙了一章文件和目录，介绍了一些常用的指令。而后简单介绍了文件系统的实现思路，以及出现断电或者系统崩溃的情况时，更新持久数据结构的方式。还有网络文件系统、分布式系统、Andrew文件系统等等。</p>
+<p>通过阅读，可以大致理解操作系统是如何与网络进行交互的，也可以引出来通信原理的知识。到这里，这本书就大致结束了。</p>
+<h1>写在最后</h1>
+<p>我读这本书主要带着这个目的：在理解操作系统大致如何运行基础上，应对学校考试和笔试面试题，以及理解操作系统作为计算机组成和计算机网络的中间件是如何实现接口的。书里还有很多细节没有出现在这篇文章里，我写下来的，主要是我需要的和我感兴趣的。</p>
+<p>对待知识，我总是希望在形成初步认知后，找到自己真正感兴趣的点，让自己有足够的热情去研究细节。若是横跨整个人生时间区间，我希望余生都可以做自己喜欢的事。也希望在前进的路上，可以遇到更多志同道合的人。</p>
+<p>感谢阅读。</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="《操作系统导论》小结" href="https://juejin.cn/post/7332672563720306699" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">《操作系统导论》小结</span><span class="cap link footnote">https://juejin.cn/post/7332672563720306699</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/c1517ca.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/c1517ca.html&title=《操作系统导论》小结 - 果粉圈&pics=https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e3b6c50c08d040dfab0f16e0ce017d6d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=786&h=504&s=92429&e=png&b=fafafa&summary=
+前记
+这本书的英文名字是《Operating Systems：Three Easy Pieces》(吐槽下中文翻译，很不搭的感觉)，作者是Remzi H.Arpaci-Dusseau.英文起名还有一个梗：Remzi希望这本书可以像理..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=《操作系统导论》小结 - 果粉圈&amp;body=https://blog.g0f.cn/post/c1517ca.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/c1517ca.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/8ed29268.html">Happy #ChineseNewYear of the Dragon (Lóong)! Wishing You Health, Wealth & Happiness! 🐉🧧🧨 #Huawei #BetterTogether #StayConnectedStayTogether ...</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/86690999.html">We Wish You All Health, Wealth, and Happiness This #ChineseNewYear of the Dragon (Lóong)! Which Traditions Will You Follow to Celebrate #CNY? Leave y...</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">前记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">概述和理念</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">正文小结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">虚拟化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">持久性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">写在最后</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

@@ -1,0 +1,672 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>揭秘统计数据：如何用数据魔法揭示生活中的奥秘？ - 果粉圈</title>
+
+  
+    <meta name="description" content="theme: channing-cyan 前言 你有没有遇到过，某天报表的数据突显异常，排查后发现原来是单位弄错了。 你有没有遇到过，某组数据看起来没啥感觉，但做成报表组合到一起看问题则会非常明显。 你有没有遇到过，有些凭直觉来感受的统计信息与仔细验算后的统计信息，最终得出的结论截然相反。 你有没有遇到过，某些根据统计结果得出的结论看起来没问题，但总觉得哪里不对劲。 我相信，只要你常看一些数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="揭秘统计数据：如何用数据魔法揭示生活中的奥秘？">
+<meta property="og:url" content="https://blog.g0f.cn/post/76c36d06.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="theme: channing-cyan 前言 你有没有遇到过，某天报表的数据突显异常，排查后发现原来是单位弄错了。 你有没有遇到过，某组数据看起来没啥感觉，但做成报表组合到一起看问题则会非常明显。 你有没有遇到过，有些凭直觉来感受的统计信息与仔细验算后的统计信息，最终得出的结论截然相反。 你有没有遇到过，某些根据统计结果得出的结论看起来没问题，但总觉得哪里不对劲。 我相信，只要你常看一些数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d2eab3bca324ce99a84d0a491d1d1a7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=468&amp;h=450&amp;s=313822&amp;e=png&amp;b=ed8a07">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fc2f6ebf465a425a810831ac952ecdd4~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=894&amp;s=527113&amp;e=png&amp;b=fdfcfc">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/91034c436a0940f38d4f30d5f7a3b371~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=643&amp;s=162206&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a911d602a801493c9f7f0b6bed474727~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1231&amp;h=859&amp;s=86722&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c91b9d3975e44868651c5d7415d33e7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1228&amp;h=1126&amp;s=82865&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3cfc5b48cbd4e4a8c411f22f5b08df0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=921&amp;h=591&amp;s=24531&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3efede21356e42529403a879eeceef73~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=786&amp;h=589&amp;s=26252&amp;e=png&amp;b=fefefe">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6c5b5b49404a43718b176de7b135047e~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=719&amp;h=681&amp;s=15213&amp;e=png&amp;b=fefefe">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/743642b469714d71b74a4bf98b14c179~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=719&amp;h=681&amp;s=18785&amp;e=png&amp;b=fefefe">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4cbfa25745845788e07a0bc9bf7874d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=737&amp;s=55679&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/69495c17c8ef4584a51d945fd1a02c44~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=737&amp;s=52848&amp;e=png&amp;b=fefefe">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6318b2a4d0c84b629e294740091e8d27~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=316&amp;h=385&amp;s=9849&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/34962401532941f7a12e11c14e224e8e~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=318&amp;h=388&amp;s=10805&amp;e=png&amp;b=ffffff">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e30dffbe22744a82ab8929ab473cbe25~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=640&amp;h=382&amp;s=275128&amp;e=png&amp;b=f8f1f0">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2d701a31d914bd9851b7b3c7b9d9ac6~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=585&amp;h=1059&amp;s=42501&amp;e=png&amp;b=fffdfd">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/25366ffc02ca4c91a56d016c62c68a37~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1369&amp;h=397&amp;s=39457&amp;e=png&amp;b=fefcfc">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b659e2fc73b144a3ad58687539b1c712~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1138&amp;h=711&amp;s=26561&amp;e=png&amp;b=f3f3f6">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1772059bfa5e4171b3b15e38b4931b23~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1138&amp;h=709&amp;s=31994&amp;e=png&amp;b=f3f3f6">
+<meta property="article:published_time" content="2024-02-21T11:12:12.000Z">
+<meta property="article:modified_time" content="2024-02-21T11:12:12.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d2eab3bca324ce99a84d0a491d1d1a7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=468&amp;h=450&amp;s=313822&amp;e=png&amp;b=ed8a07">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-21T11:12:12.000Z">2024-02-21</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-21T11:12:12.000Z">2024-02-21</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>揭秘统计数据：如何用数据魔法揭示生活中的奥秘？</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<hr>
+<h2>theme: channing-cyan</h2>
+<h1>前言</h1>
+<p>你有没有遇到过，某天报表的数据突显异常，排查后发现原来是单位弄错了。<br>
+你有没有遇到过，某组数据看起来没啥感觉，但做成报表组合到一起看问题则会非常明显。<br>
+你有没有遇到过，有些凭直觉来感受的统计信息与仔细验算后的统计信息，最终得出的结论截然相反。<br>
+你有没有遇到过，某些根据统计结果得出的结论看起来没问题，但总觉得哪里不对劲。</p>
+<p>我相信，只要你常看一些数据统计报表，或者会常做一些数据统计方面的工作，那你一定遇到过，大家常说数据不会骗人，但真的是这样吗？本篇文章主要就来揭秘一些既有趣、又能迷惑人的常见手段。</p>
+<h1><a href></a>中奖率1%，那是不是连续抽100次就一定会中奖呢？</h1>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d2eab3bca324ce99a84d0a491d1d1a7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=468&amp;h=450&amp;s=313822&amp;e=png&amp;b=ed8a07">
+这是一个典型的反直觉现象，换句话说，抛硬币得到正面的概率为50%，显然不等于连续抛两次就一定会有一次为正面！实际上中奖率1%，也就意味着不中奖率为99/100，所以即使连续抽100次，不中奖率依然高达36%，实际上如果你连续抽400次还没中奖，那就真的是有作弊嫌疑了，因为连续抽400次还未中奖的概率大概只有1%。</p>
+<h1><a href></a>幸存者偏差</h1>
+<p>来自百度百科解释：1941年，第二次世界大战中，美国哥伦比亚大学统计学瓦尔德教授(Abraham Wald)应军方要求，利用其在统计方面的专业知识来提供关于《飞机应该如何加强防护，才能降低被炮火击落的几率》的相关建议。沃德教授针对联军的轰炸机遭受攻击后返回营地的轰炸机数据，进行研究后发现：机翼是最容易被击中的位置，机尾则是最少被击中的位置。沃德教授的结论是“我们应该强化机尾的防护”，而军方指挥官认为“应该加强机翼的防护，因为这是最容易被击中的位置”。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fc2f6ebf465a425a810831ac952ecdd4~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=894&amp;s=527113&amp;e=png&amp;b=fdfcfc">
+实际上这也可以看作是一种反直觉现象，统计的样本也许不会骗人，但却忽视了样本只涵盖了能平安返回轰炸机，所以并不是机尾不容易被击中，而是被击中机尾的往往都无法返回了。</p>
+<p>生活中要特别当心因为忽视了幸存者偏差而导致的问题，曾经有人对兽医院接收的从高层坠落的115只猫咪进行了调查，发现从9层及以上楼层坠落的猫咪的死亡率为5%，从不足9层的楼层坠落的猫咪死亡率为10%。所以推测，这是因为从较高楼层坠落的猫咪能够将身体伸展开，形成一种降落伞效应。显然，这个调查没有把那些从9层及以上坠落的已经奄奄一息没有被送到兽医院的猫咪考虑进来。</p>
+<p><strong>当然，还有一些调查统计，也会因为避开了幸存者偏差，最终出具了一些看似比较美好统计结果。</strong><br>
+美国运通和法国旅游局的一项研究发现，大多数过去两年对法国进行过一次以上休闲旅游的美国人并不认为法国人不友好。他们究竟是如何得到这个结论的呢？<br>
+一项简单的调查如下：</p>
+<ol>
+<li>过去两年你对法国进行过几次商务旅行？</li>
+<li>过去两年你对法国进行过几次休闲（非商务）旅行？</li>
+<li>你是否认为法国人不友好？</li>
+</ol>
+<p>从研究人员得出的结论可以发现，他们将过去两年只去过一次的商务旅行的人，或将过去两年只去过一次休闲旅行的人，或从未去过法国的人，过滤掉了！<br>
+单从研究的结论上来看它是正确的，但它却具有欺骗性，它存在幸存者偏差。</p>
+<h1><a href></a>有意思的反直觉场景</h1>
+<h2><a href></a>蒙提霍尔悖论</h2>
+<p>蒙提霍尔悖论又称三门问题，出自美国的电视游戏节目Let’s Make a Deal。问题的名字来自该节目的主持人蒙提·霍尔（Monty Hall）。<br>
+这个游戏的玩法是：你被要求在三扇门中选择一扇，其中一扇后面有一辆车；其余两扇后面则是山羊。你选择了一道门，假设是一号门，然后知道门后面有什么的主持人，开启了另一扇后面有山羊的门，假设是三号门。他然后问你：“你想选择二号门吗？”<br>
+那么，转换你的选择对你来说是一种优势吗？你会选择换门，还是保持不变？</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/91034c436a0940f38d4f30d5f7a3b371~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=643&amp;s=162206&amp;e=png&amp;b=ffffff">
+这个游戏的关键就在于，此时大多人凭直觉都会认为换不换概率都是50%，所以会选择相信第一直觉（心理学上的第一印象效应）。</p>
+<p><strong>我们可以分为下面三种情况进行分析</strong></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a911d602a801493c9f7f0b6bed474727~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1231&amp;h=859&amp;s=86722&amp;e=png&amp;b=ffffff"></p>
+<h2><a href></a>三个囚徒问题</h2>
+<p><strong>与蒙提霍尔悖论类似的还有三个囚徒问题。</strong></p>
+<p>问题是这样的：监狱里有三个死刑犯，假设分别为A、B、C，现在典狱长决定赦免其中一名死刑犯，看守死刑犯的守卫知道赦免的是谁，但他不能直接说。</p>
+<p><strong>假设A死刑犯问看守，他们三个之间谁会被执行死刑，看守只能按照下面三种情况来回答：</strong></p>
+<ol>
+<li>如果B被赦免，看守就会说C被执行死刑了。</li>
+<li>如果C被赦免，看守就会说B被执行死刑了。</li>
+<li>如果A自己被赦免，看守就会在B和C中随机说一个被执行死刑了。</li>
+</ol>
+<p>好了，假设现在看守人员告诉A，B将被执行死刑，A犯人听了以后非常高兴，因为他觉得他被赦免的概率一下从1/3提升到了1/2，而看守却告诉他你被赦免的概率依然是1/3，高兴的应该是C，因为他被赦免的概率提升到了2/3。</p>
+<p><strong>我们依然可以分为三种情况进行分析</strong></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0c91b9d3975e44868651c5d7415d33e7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1228&amp;h=1126&amp;s=82865&amp;e=png&amp;b=ffffff">
+如果是这种情况，看守只能说B被执行死刑，A原本被赦免的概率是1/3，所以整体概率就变成了1/3 * 1 = 1/3，可以看出，第二种情况A被赦免和第三种情况A被执行死刑的比值是：1/6:1/3，也就是1:2，所以A被赦免的概率是1/3，而C则变成了2/3。</p>
+<h1><a href></a>小心被图表欺骗</h1>
+<h2><a href></a>缺少零值</h2>
+<p>如果下面两张表分别表示了A公司B公司的销售额，或收入、支出等等之类的，你一定会觉得A变化比较大，而B公司比较稳定。但实际上下面两张表出自同一组数据，只是第一张表中缺少了零值。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3cfc5b48cbd4e4a8c411f22f5b08df0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=921&amp;h=591&amp;s=24531&amp;e=png&amp;b=ffffff">
+有了零值以后，曲线平稳了许多。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3efede21356e42529403a879eeceef73~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=786&amp;h=589&amp;s=26252&amp;e=png&amp;b=fefefe">
+<strong>当柱状图忽略的零值，常常用来人为提升某种利益关系的对比。</strong></p>
+<p>如下图，蓝色看起来明显要差很多，大约是5倍的关系。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6c5b5b49404a43718b176de7b135047e~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=719&amp;h=681&amp;s=15213&amp;e=png&amp;b=fefefe">
+但实际上相差只有2倍多。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/743642b469714d71b74a4bf98b14c179~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=719&amp;h=681&amp;s=18785&amp;e=png&amp;b=fefefe"></p>
+<h2><a href></a>双坐标陷阱</h2>
+<p>下面图表中，蓝线对应纵坐标左边的数值，橘线对应纵坐标右边的数值。</p>
+<p><strong>看起来蓝线的增长明显要高于橘线的增长。</strong></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c4cbfa25745845788e07a0bc9bf7874d~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=737&amp;s=55679&amp;e=png&amp;b=ffffff"></p>
+<p><strong>现在呢！你还认为蓝线的增长高于橘线的增长吗？</strong></p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/69495c17c8ef4584a51d945fd1a02c44~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1125&amp;h=737&amp;s=52848&amp;e=png&amp;b=fefefe">
+这也是一种常用的为了表达某种观点而刻意为之的一种行为，当你想表达蓝线增长率大约橘线增长率时，就放第一张表，反之则放第二张表。</p>
+<h2><a href></a>范围区间陷阱</h2>
+<p><strong>让支持率看起来更加漂亮</strong></p>
+<p>如果这样统计支持率看起来不太好看，30-39年龄段的支持率只有18%</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6318b2a4d0c84b629e294740091e8d27~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=316&amp;h=385&amp;s=9849&amp;e=png&amp;b=ffffff">
+调整一下年龄段区间，这样支持率看起来好多了。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/34962401532941f7a12e11c14e224e8e~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=318&amp;h=388&amp;s=10805&amp;e=png&amp;b=ffffff">
+<strong>改变色块的取值范围</strong></p>
+<p>左图是来自凤凰新闻，右图来自BBC。虽然两张地图都划了 5 个色块，但 BBC 将确诊病例大于 500 例的省份都赋予最严重的深红色，导致了当时确诊 529 例的重庆和确诊 51986 例的湖北是一样的颜色，很有误导性。而凤凰网的数据划分范围就合理的多，是以 10 的次方为分界线。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e30dffbe22744a82ab8929ab473cbe25~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=640&amp;h=382&amp;s=275128&amp;e=png&amp;b=f8f1f0"></p>
+<h2><a href></a>当心被平均值欺骗</h2>
+<p>假设下面是三家公司的每个员工工资收入报表。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2d701a31d914bd9851b7b3c7b9d9ac6~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=585&amp;h=1059&amp;s=42501&amp;e=png&amp;b=fffdfd">
+A公司员工平均收入：4025元，是三家公司里面平均收入最高的，但实际上大多数收入都被一个人独占了（收入最高的员工达到：23000），而B公司的平均收入也比C公司要高，但实际上收入的波动也很大，中位数为3100，而C公司的中位数为3600，所以还得再考察清楚。</p>
+<h2><a href></a>考虑偏差</h2>
+<p>在下面这个考试成绩的报表中，虽然A和B的总分都是140分，但明显A的数学成绩是非常突出的（A的正偏差值非常大）。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/25366ffc02ca4c91a56d016c62c68a37~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1369&amp;h=397&amp;s=39457&amp;e=png&amp;b=fefcfc"></p>
+<h2><a href></a>当心基数较小时</h2>
+<p>波士顿一份报纸报道说，韦尔弗利特当年的谋杀率是马萨诸塞州之最，每10万名居民中就有40起谋杀案，这个数字是波士顿的两倍多，后者每10万名居民中只有17起谋杀案。<br>
+这个统计是怎么来的呢？首先是有一名男子在30公里外犯下谋杀案，然后在韦尔弗利特警察局自首，但最关键的是韦尔弗利特只有2491名居民，再加上一项错误的统计，最终变成了每10万居民中就有40起谋杀。而波士顿发生了98起谋杀案，相当于每10万居民中有17起谋杀案。<br>
+所以将2491与100000放在一起进行比对，2491的波动当然会比100000更大，尤其是异常数据带来的巨大影响。</p>
+<h2><a href></a>相关性的误会</h2>
+<p>三段论推理是演绎推理中的一种简单推理判断，通过大前提、小前提、结论完成推理。亚里士多德提出的一个著名三段论：“所有的人都会死；苏格拉底是人；所以，苏格拉底必定会死。”<br>
+那么：“苏格拉底会死；动物也会死；所以，苏格拉底是动物。”</p>
+<p>类似的问题，常常会体现在相关性的统计数据上。<br>
+美国的啤酒销量和已婚人口的数量，二者的相关性达到了惊人的99%。面对这种强烈的相关性，我们能够认为饮酒会导致婚姻？或者倒过来，我们能够认为婚姻会导致饮酒？<br>
+实际上，正确的解释是，随着时间的增长，啤酒消费量也会增长，类似的，婚姻、婴儿、汽车、鞋子、大学入学率、心脏病以及其他许多事物也会增长。穿鞋会导致婴儿数量增长吗？开车会导致心脏病吗？这些事物的增长源自人口的增长，它们之间不一定存在任何关系。</p>
+<h2><a href></a>图形化欺骗</h2>
+<p>下面这张图想表达什么？20是10的2倍，30是10的3倍，但图中可不是按照这个比例来表示的。</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b659e2fc73b144a3ad58687539b1c712~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1138&amp;h=711&amp;s=26561&amp;e=png&amp;b=f3f3f6"></p>
+<p>真是的比例关系看上去应该是这样的</p>
+<p><img class="lazy" alt="image.png" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1772059bfa5e4171b3b15e38b4931b23~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1138&amp;h=709&amp;s=31994&amp;e=png&amp;b=f3f3f6"></p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="揭秘统计数据：如何用数据魔法揭示生活中的奥秘？" href="https://juejin.cn/post/7337946762357784576" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">揭秘统计数据：如何用数据魔法揭示生活中的奥秘？</span><span class="cap link footnote">https://juejin.cn/post/7337946762357784576</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/76c36d06.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/76c36d06.html&title=揭秘统计数据：如何用数据魔法揭示生活中的奥秘？ - 果粉圈&pics=https://cdn.g0f.cn//?r=https://juejin.cn&url=https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9d2eab3bca324ce99a84d0a491d1d1a7~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=468&h=450&s=313822&e=png&b=ed8a07&summary=
+
+theme: channing-cyan
+前言
+你有没有遇到过，某天报表的数据突显异常，排查后发现原来是单位弄错了。
+你有没有遇到过，某组数据看起来没啥感觉，但做成报表组合到一起看问题则会非常明显。
+你有没有遇到过，有些凭直觉来感..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=揭秘统计数据：如何用数据魔法揭示生活中的奥秘？ - 果粉圈&amp;body=https://blog.g0f.cn/post/76c36d06.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/76c36d06.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/3b70a237.html">Insider Newsletter Digest: Cook Up a Controller With GitHub Copilot</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/f1601c3e.html">单例模式</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">theme: channing-cyan</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">中奖率1%，那是不是连续抽100次就一定会中奖呢？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">幸存者偏差</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">有意思的反直觉场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">蒙提霍尔悖论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">三个囚徒问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">小心被图表欺骗</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">缺少零值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">双坐标陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">范围区间陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">当心被平均值欺骗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">考虑偏差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">当心基数较小时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">相关性的误会</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">图形化欺骗</span></a></li></ol></li></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

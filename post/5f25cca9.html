@@ -1,0 +1,612 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>How to Stay Safe From Repo-Jacking - 果粉圈</title>
+
+  
+    <meta name="description" content="“Repo-jacking” is a type of supply chain attack that has received attention for its potential impact on open source software. In this blog post, I’ll explain what repo-jacking is and what you can do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Stay Safe From Repo-Jacking">
+<meta property="og:url" content="https://blog.g0f.cn/post/5f25cca9.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="“Repo-jacking” is a type of supply chain attack that has received attention for its potential impact on open source software. In this blog post, I’ll explain what repo-jacking is and what you can do">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-21T08:32:49.000Z">
+<meta property="article:modified_time" content="2024-02-21T08:32:49.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="These Blogs">
+<meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <meta name="keywords" content="These Blogs,Github">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/these-blogs/">These Blogs</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/these-blogs/github/">Github</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-21T08:32:49.000Z">2024-02-21</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-21T08:32:49.000Z">2024-02-21</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>How to Stay Safe From Repo-Jacking</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<p>“Repo-jacking” is a type of supply chain attack that has received attention for its potential impact on open source software. In this blog post, I’ll explain what repo-jacking is and what you can do to stay safe. The TL;DR summary is that if you’re getting all of your software dependencies from a package manager like <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.npmjs.com/">npm</a> or <a target="_blank" rel="external nofollow noopener noreferrer" href="https://pypi.org/">PyPI</a> then you can’t be directly affected by repo-jacking. You need to be more careful if you’re pulling dependencies directly from GitHub, but there’s a simple solution which is to lock to a specific commit ID, and I’ll explain how to do that in a few of the most common scenarios.</p>
+<p>Supply chain attacks are, in general, a very serious concern because a successful attack could potentially deliver malware to a very large number of victims. But the chances of an attacker achieving a successful large-scale supply chain attack with repo-jacking alone are very small. The majority of software dependencies are delivered via package managers, so the most likely attack vector would be to use repo-jacking to upload a malicious package to a package manager, but package managers like npm or PyPI won’t let you do that unless you also have access to the maintainer’s credentials. And if you have access to the maintainer’s credentials then you already have the power to launch a supply chain attack, without any need for repo-jacking.</p>
+<h2 id="what-is-repo-jacking">What is repo-jacking?<a aria-label="What is repo-jacking?" class="heading-link pl-2 text-italic text-bold" href="#what-is-repo-jacking"></a></h2>
+<p>Repo-jacking is a specific type of software supply chain attack. A supply chain attack is when a trusted software package gets replaced with malware. For example, imagine the consequences if the “automatic update” system of a major software vendor got infiltrated: it would enable the infiltrator to distribute malware to millions of devices, pwning them all instantly. The same scenario applies if an attacker manages to replace a major open source software project with malware. For example, imagine if the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/kubernetes/kubernetes">kubernetes/kubernetes</a> repository got replaced with malware. A lot of developers regularly download and build Kubernetes, so if malware was inserted into its build system then it would get run on a lot of developer laptops.</p>
+<p>The most straightforward way that a supply chain attack could happen on a GitHub repository would be for somebody with write permission (that is, one of the project’s maintainers) to push a malicious commit. Alternatively, somebody might create a pull request and manage to sneak a malicious code change past the reviewers. GitHub has numerous protections, such as <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-03-09-raising-the-bar-for-software-security-github-2fa-begins-march-13/">mandatory 2FA</a>, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">protected branches</a>, and <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">access management controls</a>, to guard against those kinds of attacks.</p>
+<p>Repo-jacking is a supply chain attack that could happen if a GitHub user changes their username. As a purely hypothetical example, consider GitHub’s own account at <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/github">https://github.com/github</a>, which has hundreds of public repositories. Now, suppose GitHub were to change its account name to <code>gh</code><sup id="fnref-76655-1"><a class="jetpack-footnote" href="#fn-76655-1" title="Read footnote.">1</a></sup>. Then, a repository such as <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/github/cmark-gfm">https://github.com/github/cmark-gfm</a> would be renamed to <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/github/cmark-gfm">https://github.com/gh/cmark-gfm</a>. Now, imagine that an attacker manages to register a new GitHub account with the newly available username <code>github</code>. Then, they could create a repository named <code>cmark-gfm</code> and start serving malware to developers who are still downloading their software from the original address.</p>
+<h2 id="whats-the-risk-of-repo-jacking">What’s the risk of repo-jacking?<a aria-label="What’s the risk of repo-jacking?" class="heading-link pl-2 text-italic text-bold" href="#whats-the-risk-of-repo-jacking"></a></h2>
+<p>GitHub uses a <a target="_blank" rel="external nofollow noopener noreferrer" href="https://en.wikipedia.org/wiki/Tombstone_(programming)">tombstoning</a> algorithm to reduce the risk of repo-jacking by permanently retiring specific owner name, repository name combinations<sup id="fnref-76655-2"><a class="jetpack-footnote" href="#fn-76655-2" title="Read footnote.">2</a></sup>. The <code>github/cmark-gfm</code> example above is purely hypothetical, because, in that scenario, the old name would get automatically tombstoned. For example, even if an attacker managed to register the username <code>github</code>, they would still be prevented from creating a new repository with the name <code>cmark-gfm</code> because that owner name, repository name combination (<code>github/cmark-gfm</code>) would be permanently retired. Therefore, repo-jacking is only a risk for repositories that fall below a certain usage threshold. We don’t tombstone all renamed repositories because there’s a tradeoff between usability and security: a tombstone is a potential inconvenience for our users which we don’t want to impose unless there’s a genuine security-related reason to do so. That’s why our tombstoning policy only kicks in after the repository has met certain criteria, such as exceeding a <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/repositories/creating-and-managing-repositories/transferring-a-repository">specific number of clones</a>.</p>
+<p>Therefore, the only way to achieve a successful repo-jacking attack is by targeting a project that falls under our usage thresholds, which means that the attack is unlikely to have a high impact.</p>
+<h3 id="automatic-redirection">Automatic redirection<a aria-label="Automatic redirection" class="heading-link pl-2 text-italic text-bold" href="#automatic-redirection"></a></h3>
+<p>A contributing factor that could increase the risk of repo-jacking is that renamed repositories are automatically redirected. Using the <code>github/cmark-gfm</code> example again, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/github/cmark-gfm">github/cmark-gfm</a> would be automatically redirected to <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/gh/cmark-gfm">gh/cmark-gfm</a>. In other words, operations like cloning <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/github/cmark-gfm">github/cmark-gfm</a> would continue to work. However, the automatic redirect would be removed at the moment when the new <code>github</code> user creates a repository named <code>cmark-gfm</code>. The benefit of automatic redirection is that it reduces the number of outages that a rename might cause, but it also means that people are much less likely to notice that one of their dependencies has been renamed. That, in turn, increases the number of projects that could potentially be affected by a successful repo-jacking attack.</p>
+<h3 id="package-managers">Package managers<a aria-label="Package managers" class="heading-link pl-2 text-italic text-bold" href="#package-managers"></a></h3>
+<p>Software is often distributed via package managers (rather than being downloaded directly from GitHub), which creates an extra layer of defense against repo-jacking. Examples of package managers are <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.npmjs.com/">npm</a> (JavaScript), <a target="_blank" rel="external nofollow noopener noreferrer" href="https://pypi.org/">PyPI</a> (Python), and <a target="_blank" rel="external nofollow noopener noreferrer" href="https://crates.io/">crates.io</a> (Rust). To replace a package on a package manager with malware, you would typically need to gain (unauthorized) access to the maintainer’s account, for example, by guessing their password. That’s a separate issue from repo-jacking. Also, an attacker who has access to the maintainer’s account can probably upload malware directly, without any need for repo-jacking.</p>
+<p>There is one situation in which a package manager could accidentally amplify a repo-jacking attack, and that’s if it automatically pulls the latest version from GitHub. That happened in <a target="_blank" rel="external nofollow noopener noreferrer" href="https://thehackernews.com/2022/05/pypi-package-ctx-and-php-library-phpass.html">May 2022</a> when a security researcher repo-jacked the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/hautelook/phpass/">hautelook/phpass</a> repository. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://packagist.org/">Packagist</a>, a package manager for PHP, automatically crawls GitHub for new releases and uploads them automatically, so the researcher was able to upload malware purely through repo-jacking. Packagist was recently <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/composer/packagist/pull/1411">updated</a> to eliminate the risk of that happening again.</p>
+<p>Other package managers such as PyPI and npm work differently: you cannot upload a new version of a package without first successfully authenticating with the package manager. In other words, repo-jacking is insufficient by itself to upload malware to PyPI or npm.</p>
+<h3 id="downloading-software-directly-from-github">Downloading software directly from GitHub<a aria-label="Downloading software directly from GitHub" class="heading-link pl-2 text-italic text-bold" href="#downloading-software-directly-from-github"></a></h3>
+<p>Repo-jacking is a more realistic concern if you or your project’s build system are downloading software directly from GitHub, rather than from a package manager. The three most likely reasons why you might be doing that are:</p>
+<ol>
+<li>You’re using <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/actions">GitHub Actions</a>.</li>
+<li>You’re using the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://go.dev/">Go programming language</a>.</li>
+<li>You’re using <a target="_blank" rel="external nofollow noopener noreferrer" href="https://git-scm.com/docs/git-submodule">git submodules</a>.</li>
+</ol>
+<p>All three enable you to directly reference another GitHub repository. For example, in a GitHub Actions <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/actions/using-workflows/about-workflows">workflow</a> file, you can use an open source action like this:</p>
+<pre><code>steps:
+    - uses: actions/javascript-action@v1.0.1
+</code></pre>
+<p>That will download and run code from the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/actions/javascript-action">actions/javascript-action</a> repository. Similarly, it is quite common in the Go programming language to import code directly from other GitHub repositories like this:</p>
+<pre><code class="language-go">require (                                                                                                                                                                                                             
+        github.com/google/uuid v1.3.0
+)
+</code></pre>
+<p>The simplest way to avoid repo-jacking when you’re downloading software directly from GitHub is to reference a specific <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/about-commits">commit ID</a>. Since Git commit IDs are SHA-1 hashes, an attacker would have to break SHA-1 (<a target="_blank" rel="external nofollow noopener noreferrer" href="https://shattered.io/">theoretically possible</a>, but <em>very</em> unlikely) to replace the code with malware. If you’re using Git submodules, then you don’t need to worry because submodules are always locked to a specific commit ID: you only need to be careful when you update the submodule to a new version. If you’re using Go, then you can use a <a target="_blank" rel="external nofollow noopener noreferrer" href="https://go.dev/ref/mod#authenticating">go.sum</a> file to lock cryptographic hashes of all your dependencies. And finally, If you’re using GitHub Actions, you can use this syntax to lock a specific commit ID:</p>
+<pre><code>steps:
+    - uses: actions/javascript-action@4be183afbd08ddadedcf09f17e8e112326894107
+</code></pre>
+<h2 id="using-the-repo-id-to-check-for-repo-jacking">Using the repo ID to check for repo-jacking<a aria-label="Using the repo ID to check for repo-jacking" class="heading-link pl-2 text-italic text-bold" href="#using-the-repo-id-to-check-for-repo-jacking"></a></h2>
+<p>The advice in this section is primarily aimed at developers who’re implementing a system (such as a package manager) that interacts with GitHub’s API, but the code is very simple so you could easily use it to check your own dependencies too. Using GitHub’s API, it is very easy to check if a repository has been renamed or replaced. Besides its name, every repository has a unique repository ID, which you can retrieve using the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/rest/repos/repos#get-a-repository">“Get a repository” API</a>. The ID is a unique integer, which does not change if the repo is renamed. Repo-jacking involves replacing the original repository with a new one, which causes the repo ID to change. Therefore, it’s easy to detect repo-jacking by checking that the repo ID hasn’t changed. Here’s an example of how to do that using the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://pypi.org/project/PyGithub/">PyGithub</a> Python library:</p>
+<pre><code class="language-py">from github import Github
+
+<p>def check_repo_id(full_name, id):<br>    gh &#x3D; Github()<br>    repo &#x3D; gh.get_repo(full_name)<br>    if repo.id !&#x3D; id:<br>        raise Exception(f’repo ID has changed to &amp;#123;repo.id&amp;#125;’)<br>    if repo.full_name !&#x3D; full_name:<br>        raise Exception(f’repo has been renamed to &amp;#123;repo.full_name&amp;#125;’)</p>
+<p>check_repo_id(“github&#x2F;cmark-gfm”, 75244322)<br></p></code></pre><p></p>
+<p>The function <code>check_repo_id</code> uses GitHub’s API to get the repository ID and throws an exception if it doesn’t match the expected value. As an additional precaution, it also checks that the repository hasn’t been renamed.</p>
+<h2 id="conclusion">Conclusion<a aria-label="Conclusion" class="heading-link pl-2 text-italic text-bold" href="#conclusion"></a></h2>
+<p>Repo-jacking is a supply chain attack that could happen if a GitHub user decides to change their username; however, GitHub uses a tombstoning algorithm to reduce the risk of repo-jacking by permanently retiring the names of popular repositories when they get renamed. Software is often downloaded from package managers, rather than from GitHub directly, which means that the package manager creates an extra layer of protection against repo-jacking. If your project has dependencies that are directly downloaded from GitHub, then the simplest way to stay safe is by locking to a specific commit ID.</p>
+<p>A very exciting new advance in supply chain security, which I haven’t even touched on in this blog post, is the work that’s being done on build provenance. GitHub workflows can now use <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect">OpenID Connect</a> (OIDC) to securely upload build artifacts to a package manager. The workflow sends an <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#understanding-the-oidc-token">OIDC token</a> to the package manager, containing information which the package manager can use to decide whether to publish a new version of the package. For example, the token includes the name of the repository and the workflow file that was run. The repository ID is also included, which means that it prevents repo-jacking (as well as many other forms of supply chain attack). OIDC build provenance has already been integrated into <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-04-19-introducing-npm-package-provenance/">npm</a>, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.pypi.org/posts/2023-04-20-introducing-trusted-publishers/">PyPI</a>, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.trailofbits.com/2023/11/06/adding-build-provenance-to-homebrew/">homebrew</a>, and <a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.rubygems.org/2023/12/14/trusted-publishing.html">RubyGems.org</a>.</p>
+<p>Another important development in supply chain security is the cross-organization collaboration on the Supply-chain Levels for Software Artifacts (SLSA) framework. The website <a target="_blank" rel="external nofollow noopener noreferrer" href="https://slsa.dev/">https://slsa.dev/</a> is worth a read.</p>
+<div class="post-content-cta"><p>Learn more about <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/en/code-security/getting-started/github-security-features">GitHub’s security features</a>.</p>
+</div>
+<h4 id="notes">Notes<a aria-label="Notes" class="heading-link pl-2 text-italic text-bold" href="#notes"></a></h4>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn-76655-1">
+The username <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/gh">https://github.com/gh</a> is already taken, so this isn’t actually possible. <a href="#fnref-76655-1" title="Return to main content.">↩</a>
+</li>
+<li id="fn-76655-2">
+Learn more about how we permanently retire in our <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository">documentation</a>. <a href="#fnref-76655-2" title="Return to main content.">↩</a>
+</li>
+</ol>
+</div>
+<p>The post <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2024-02-21-how-to-stay-safe-from-repo-jacking/">How to stay safe from repo-jacking</a> appeared first on <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog">The GitHub Blog</a>.</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="How to stay safe from repo-jacking" href="https://github.blog/2024-02-21-how-to-stay-safe-from-repo-jacking/" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">How to stay safe from repo-jacking</span><span class="cap link footnote">https://github.blog/2024-02-21-how-to-stay-safe-from-repo-jacking/</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/5f25cca9.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/5f25cca9.html&title=How to Stay Safe From Repo-Jacking - 果粉圈&pics=https://picsum.photos/400/300?random=6247&summary=
+“Repo-jacking” is a type of supply chain attack that has received attention for its potential impact on open source ..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=How to Stay Safe From Repo-Jacking - 果粉圈&amp;body=https://blog.g0f.cn/post/5f25cca9.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/5f25cca9.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/4bad42cd.html">我国 5G 基站总数超 337 万个，5G 移动电话用户达 8.05 亿户</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/d69ce273.html">法国电信公司 Orange 违反 GPL 许可协议，被罚 65 万欧元</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/61d30a8.html" title="A Guide to Open Source for the Social Sector"><span class="title">A Guide to Open Source for the Social Sector</span></a><a class="item" href="/post/468856e6.html" title="AppSec Is Harder Than You Think. Here’s How AI Can Help."><span class="title">AppSec Is Harder Than You Think. Here’s How AI Can Help.</span></a><a class="item" href="/post/4007b74f.html" title="Bringing Npm Registry Services to GitHub Codespaces"><span class="title">Bringing Npm Registry Services to GitHub Codespaces</span></a><a class="item" href="/post/aaedef42.html" title="Build Code Security Skills With the GitHub Secure Code Game"><span class="title">Build Code Security Skills With the GitHub Secure Code Game</span></a><a class="item" href="/post/1085f346.html" title="Copilot in GitHub Support Is Now Available!"><span class="title">Copilot in GitHub Support Is Now Available!</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#what-is-repo-jacking"><span class="toc-text">What is repo-jacking?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#whats-the-risk-of-repo-jacking"><span class="toc-text">What’s the risk of repo-jacking?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#automatic-redirection"><span class="toc-text">Automatic redirection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#package-managers"><span class="toc-text">Package managers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#downloading-software-directly-from-github"><span class="toc-text">Downloading software directly from GitHub</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#using-the-repo-id-to-check-for-repo-jacking"><span class="toc-text">Using the repo ID to check for repo-jacking</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#conclusion"><span class="toc-text">Conclusion</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#notes"><span class="toc-text">Notes</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

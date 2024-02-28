@@ -1,0 +1,1033 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>探索C语言中的联合体与枚举：数据多面手的完美组合！ - 果粉圈</title>
+
+  
+    <meta name="description" content="​      ✨✨ 欢迎大家来到贝蒂大讲堂✨✨ 🎈🎈养成好习惯，先赞后看哦~🎈🎈 所属专栏：C语言学习 贝蒂的主页：Betty‘s blog  1. 联合体的定义 联合体又叫共用体，它是一种特殊的数据类型，允许您在相同的内存位置存储不同的数据类型。给联合体其中⼀个成员赋值，其他成员的值也跟着变化。 2. 联合体基础 2.1 联合体声明 联合体的结构类似于结构体，由关键字union和多个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="探索C语言中的联合体与枚举：数据多面手的完美组合！">
+<meta property="og:url" content="https://blog.g0f.cn/post/45997d6f.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="​      ✨✨ 欢迎大家来到贝蒂大讲堂✨✨ 🎈🎈养成好习惯，先赞后看哦~🎈🎈 所属专栏：C语言学习 贝蒂的主页：Betty‘s blog  1. 联合体的定义 联合体又叫共用体，它是一种特殊的数据类型，允许您在相同的内存位置存储不同的数据类型。给联合体其中⼀个成员赋值，其他成员的值也跟着变化。 2. 联合体基础 2.1 联合体声明 联合体的结构类似于结构体，由关键字union和多个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/01/30/pFKQiw9.jpg">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1ox0A.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1T9tP.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1TZ0s.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1Tut0.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1TDje.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1TgAI.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF17gr4.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF17faR.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1HkZj.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/01/10/pFpzqAA.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/08/pF3pia8.png">
+<meta property="og:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/08/pF3puq0.png">
+<meta property="article:published_time" content="2024-02-08T06:32:22.000Z">
+<meta property="article:modified_time" content="2024-02-08T06:32:22.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="媒体">
+<meta property="article:tag" content="掘金">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/01/30/pFKQiw9.jpg">
+  
+  
+  
+  <meta name="keywords" content="媒体,掘金">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/">媒体</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E5%AA%92%E4%BD%93/%E6%8E%98%E9%87%91/">掘金</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-08T06:32:22.000Z">2024-02-08</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-08T06:32:22.000Z">2024-02-08</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>探索C语言中的联合体与枚举：数据多面手的完美组合！</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<blockquote>
+<p>​     <img class="lazy" alt="pFp8UCq.jpg" referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/01/30/pFKQiw9.jpg"></p>
+<p>✨✨ 欢迎大家来到贝蒂大讲堂✨✨</p>
+<p>🎈🎈养成好习惯，先赞后看哦~🎈🎈</p>
+<p>所属专栏：<a target="_blank" rel="external nofollow noopener noreferrer" href="http://t.csdnimg.cn/2p75k">C语言学习</a><br>
+贝蒂的主页：<a target="_blank" rel="external nofollow noopener noreferrer" href="https://blog.csdn.net/Bettysweetyaaa?type=lately">Betty‘s blog</a></p>
+</blockquote>
+<h2>1. 联合体的定义</h2>
+<p><strong>联合体</strong>又叫<strong>共用体</strong>，它是一种特殊的数据类型，允许您在<strong>相同的内存位置存储不同的数据类型</strong>。给联合体其中⼀个成员赋值，其他成员的值也跟着变化。</p>
+<h2>2. 联合体基础</h2>
+<h3>2.1 联合体声明</h3>
+<p>联合体的结构类似于结构体，由关键字union和多个成员变量组成。格式如下：</p>
+<blockquote>
+<p>union [union tag]
+&#123;
+<br>member definition;<br>
+member definition;<br>
+member definition;<br>
+&#125; [one or more union variables];</p>
+</blockquote>
+<ul>
+<li><strong>union tag</strong> 是你自己定义的，每个 member definition 是标准的变量定义，比如 int i; 或者 float f; 或者其他有效的变量定义。在共用体定义的末尾，最后一个分号之前，您可以指定<strong>一个或多个共用体变量</strong>，这一点和结构体类似。</li>
+</ul>
+<h4>(1) 普通联合体</h4>
+<pre><code class="language-c">union data
+&#123;
+    int n;
+    char ch;
+&#125;;
+</code></pre>
+<h4>(2) 嵌套联合体</h4>
+<p>联合体也是可以嵌套使用的。</p>
+<pre><code class="language-c">union Un1
+&#123;
+char c[5];
+int i;
+&#125;;
+union Un2&#123;
+int n;
+union Un1 u1;
+&#125;;
+</code></pre>
+<h4>(3) 匿名联合体</h4>
+<p>匿名联合体是一种特殊联合体，省略了联合体名称，<strong>这种联合体只能在其定义的代码块内使用一次</strong>。例如，如果你在一个函数内部定义了一个匿名联合体，则该联合体只能在该函数内部使用。当代码块执行完毕后，该联合体将不再可见。</p>
+<pre><code class="language-c">union
+&#123;
+    int n;
+    char ch;
+&#125;;
+</code></pre>
+<h4>(4) typedef联合体</h4>
+<p>我们也可以使用typedef简化联合体。</p>
+<pre><code class="language-c">typedef union Un1
+&#123;
+char c[5];
+int i;
+&#125;Un1;//之后可以使用Un1代替union Un1
+</code></pre>
+<h3>2.2 联合体变量的创建与初始化</h3>
+<p>联合体变量创建除了在创建联合体时候定义，也可以在主函数内定义并且同时能够对齐初始化。</p>
+<p>用例如下：</p>
+<pre><code class="language-c">union Un
+&#123;
+char c;
+int i;
+&#125;;
+int main()
+&#123;
+//联合体的初始化
+union Un u1 = &#123; 'a',0 &#125;;//错误
+union Un u2 = &#123; 0 &#125;;//正确
+return 0;
+&#125;
+</code></pre>
+<ul>
+<li>联合体的初始化只能使用一个值，因为联合体的所有成员共享同一块内存空间。</li>
+</ul>
+<h3>2.3 访问联合体</h3>
+<p>为了访问联合体的成员，我们使用<strong>成员访问运算符（.）</strong>。成员访问运算符是联合体变量名称和我们要访问的共用体成员之间的一个句号。下面是一个实例:</p>
+<pre><code class="language-c">#include&lt;string.h&gt;
+typedef union Un1
+&#123;
+char c[10];
+int i;
+&#125;Un1;
+
+<p>int main()<br>&amp;#123;<br>         Un1 u &#x3D; &amp;#123; 0 &amp;#125;;<br>printf(“%d “, u.i);<br>printf(“%s “, strcpy(u.c, “abcdef”));<br>return 0;<br>&amp;#125;<br></p></code></pre><p></p>
+<p>输出结果:</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1ox0A.png"></p>
+<h2>3. 联合体的内存存储</h2>
+<h3>3.1 联合体的大小</h3>
+<p>联合体的大小是其成员变量大小之和，还是和结构体一样遵循某种特殊规律呢？我们通过以下代码实验一下。</p>
+<pre><code class="language-v">union Un
+&#123;
+char c[5];
+int i;
+&#125;;
+int main()
+&#123;
+union Un u2 = &#123; 0 &#125;;
+printf("大小为%zd", sizeof(union Un));
+return 0;
+&#125;
+</code></pre>
+<p>输出结果:</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1T9tP.png"></p>
+<p>通过验证我们知晓联合体的大小并不是其成员变量大小之和，也是遵循某种特定的规律。</p>
+<p>那么这种规律到底是什么呢？其实很简单</p>
+<blockquote>
+<ul>
+<li>联合的⼤⼩⾄少是最⼤成员的⼤⼩。</li>
+<li>当最⼤成员⼤⼩不是最⼤对⻬数的整数倍的时候，就要对⻬到最⼤对⻬数的整数倍。</li>
+<li>对⻬数=<strong>编译器默认的⼀个对⻬数与该成员变量⼤⼩的较⼩值</strong>。(VS 中默认的值为 8 ，Linux中gcc没有默认对齐数，对⻬数就是成员⾃⾝的⼤⼩)</li>
+</ul>
+</blockquote>
+<h3>3.2 存储形式</h3>
+<p>知道了联合体的大小，我们也就会很容易知道它的内存存储方式了。下面有具体四个样例：</p>
+<h4>(1) 样例一</h4>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+union Un
+&#123;
+char c;
+int i;
+&#125;;
+int main()
+&#123;
+//联合变量的定义
+union Un un = &#123; 0 &#125;;
+// 下⾯输出的结果是⼀样的吗？
+printf("%p\n", &amp;(un.i));
+printf("%p\n", &amp;(un.c));
+printf("%p\n", &amp;un);
+return 0;
+&#125;
+</code></pre>
+<p>输出结果:</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1TZ0s.png"></p>
+<ul>
+<li>通过这次实验我们联合体从起始位置开始共用的</li>
+</ul>
+<h4>(2) 样例二</h4>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+//联合类型的声明
+union Un
+&#123;
+char c;
+int i;
+&#125;;
+int main()
+&#123;
+//联合变量的定义
+union Un un = &#123; 0 &#125;;
+un.i = 0x11223344;
+un.c = 0x55;
+printf("%x\n", un.i);
+return 0;
+&#125;
+</code></pre>
+<p>输出结果：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1Tut0.png"></p>
+<p>示意图：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1TDje.png"></p>
+<ul>
+<li>蓝色为共用部分，绿色为非共用部分</li>
+<li>VS编译器为小端存储</li>
+</ul>
+<h4>(3) 样例三</h4>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+union Un1
+&#123;
+char c;
+int i;
+&#125;;
+int main()
+&#123;
+// 下⾯输出的结果是什么？
+printf("大小为%d\n", sizeof(union Un1));
+return 0;
+&#125;
+</code></pre>
+<p>输出结果：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1TgAI.png"></p>
+<p>示意图：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF17gr4.png"></p>
+<p>解析：</p>
+<ol>
+<li>c的大小为一个字节，i的大小为四个字节，他们共用一个字节。</li>
+<li>最大对齐数为4，结构体大小此时刚好为4，是最大对齐数的整数倍。</li>
+</ol>
+<h4>(4) 样例四</h4>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+union Un2
+&#123;
+short c[7];
+int i;
+&#125;;
+int main()
+&#123;
+// 下⾯输出的结果是什么？
+printf("大小为%d\n", sizeof(union Un2));
+return 0;
+&#125;
+</code></pre>
+<p>输出结果：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF17faR.png"></p>
+<p>示意图：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/07/pF1HkZj.png"></p>
+<p>解析：</p>
+<ol>
+<li>short大小为2，c中有7个大小为14，i大小为4，共用四个字节。</li>
+<li>最大对齐数为4，联合体大小为最大对齐数的整数倍，为16。</li>
+</ol>
+<h2>4. 利用联合体判断大小端</h2>
+<p>我们早在学习<a target="_blank" rel="external nofollow noopener noreferrer" href="http://t.csdnimg.cn/zrl5W">数据在内存中如何存储</a>时就已经了解过一种判断大小端的方法，今天就为大家介绍另一种方法——通过联合体判断大小端，</p>
+<p>还是这幅图，我们要判断大小端就需要判断第一位存储到底是01还是00。</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/01/10/pFpzqAA.png"></p>
+<p>那如何取出第一位呢？除了通过指针，我们也能利用联合体共用同一块内存这一性质判断。</p>
+<p>代码如下：</p>
+<pre><code class="language-c">int check_sys()
+&#123;
+union
+&#123;
+int i;
+char c;
+&#125;un;
+un.i = 1;
+return un.c; //返回1是⼩端，返回0是⼤端
+&#125;
+int main()
+&#123;
+int ret = check_sys();
+if (ret == 1)
+&#123;
+printf("⼩端\n");
+&#125;
+else
+&#123;
+printf("⼤端\n");
+&#125;
+return 0;
+&#125;
+</code></pre>
+<h2>5. 联合体的应用</h2>
+<p>通过联合体我们可以节省一部分内存。比如：我们要搞⼀个活动，要上线⼀个礼品兑换单，礼品兑换单中有三种商品：<strong>图书</strong>、<strong>杯⼦</strong>、<strong>衬衫</strong>。每⼀种商品都有：库存量、价格、商品类型和商品类型相关的其他信息。</p>
+<p>其他信息：</p>
+<blockquote>
+<p>图书：书名、作者、⻚数
+杯⼦：设计
+衬衫：设计、可选颜⾊、可选尺⼨</p>
+</blockquote>
+<p>我第一想法是通过一个结构体定义：</p>
+<pre><code class="language-c">struct gift_list
+&#123;
+//公共属性
+int stock_number; //库存量
+double price; //定价
+int item_type; //商品类型
+//特殊属性
+char title[20]; //书名
+char author[20]; //作者
+int num_pages; //⻚数
+char design[30]; //设计
+int colors; //颜⾊
+int sizes; //尺⼨
+&#125;;
+</code></pre>
+<p>上述的结构其实设计的很简单，⽤起来也⽅便，但是结构的设计中包含了所有礼品的各种属性，这样使得结构体的⼤⼩就会<strong>偏⼤</strong>，⽐较浪费内存。但是对于礼品兑换单中的商品来说，只有<strong>部分属性信息是常⽤的</strong>。⽐如：商品是图书，就不需要design、colors、sizes。所以我们就可以把公共属性单独写出来，剩余属于各种商品本⾝的属性使⽤联合体起来，这样就可以介绍所需的内存空间，⼀定程度上<strong>节省了内存</strong>。</p>
+<p>通过联合体定义：</p>
+<pre><code class="language-c">struct gift_list
+&#123;
+int stock_number; //库存量
+double price; //定价
+int item_type; //商品类型
+union &#123;
+struct
+&#123;
+char title[20]; //书名
+char author[20]; //作者
+int num_pages; //⻚数
+&#125;book;
+struct
+&#123;
+char design[30]; //设计
+&#125;mug;
+struct
+&#123;
+char design[30]; //设计
+int colors; //颜⾊
+int sizes; //尺⼨
+&#125;shirt;
+&#125;item;
+&#125;;
+</code></pre>
+<h2>6. 枚举的定义</h2>
+<p>在 C 语言中，<strong>枚举（enum）<strong>是一种用户定义的数据类型，用于定义一个由标识符列表组成的</strong>整数常量集合</strong>。枚举类型通过关键字 enum来定义。</p>
+<p>在实际应用中我们经常把能够且便于一一列举的类型用枚举来表示。就比如：一周的星期、一年的月份……，其基本语法如下：</p>
+<blockquote>
+<p>enum 枚举类型名
+&#123;
+标识符1,
+标识符2,
+...
+&#125;;</p>
+</blockquote>
+<ul>
+<li>枚举类型名受自己定义，如：week，year......，标识符就是其中的<strong>枚举常量</strong>，如Mon，Tues，Wed......</li>
+<li>每个枚举常量可以用一个标识符来表示，也可以为它们指定一个整数值，如果没有指定，那么默认从 <strong>0</strong> 开始递增。</li>
+</ul>
+<h2>7. 枚举基础</h2>
+<h3>7.1 枚举的声明</h3>
+<h4>(1) 普通枚举</h4>
+<p>接下来我们举个例子，比如：一星期有 7 天，如果不用枚举，我们需要使用 #define 来为每个整数定义一个别名：</p>
+<pre><code class="language-c">#define MON  1
+#define TUE  2
+#define WED  3
+#define THU  4
+#define FRI  5
+#define SAT  6
+#define SUN  7
+</code></pre>
+<p>这个看起来代码量就比较多，接下来我们看看使用枚举的方式：</p>
+<pre><code class="language-c">enum DAY
+&#123;
+      MON=1, //指定从1开始，否则默认从0开始
+      TUE,
+      WED,
+      THU, 
+      FRI, 
+      SAT, 
+      SUN
+&#125;;
+</code></pre>
+<h4>(2) 匿名枚举</h4>
+<p>和匿名结构体与匿名联合体类似，枚举也有匿名类型。</p>
+<pre><code class="language-c">enum
+&#123;
+    APPLE,
+    BANANA,
+    ORANGE
+&#125;;
+</code></pre>
+<h4>(3) typedef枚举</h4>
+<p>我们也可以使用typedef简化枚举。</p>
+<pre><code class="language-c">typedef enum DAY
+&#123;
+    MON = 1, //指定从1开始，否则默认从0开始
+    TUE,
+    WED,
+    THU,
+    FRI,
+    SAT,
+    SUN
+&#125;DAY;
+</code></pre>
+<h3>7.2 打印枚举常量</h3>
+<pre><code class="language-c">typedef enum DAY
+&#123;
+    MON, 
+    TUE,
+    WED,
+    THU,
+    FRI,
+    SAT,
+    SUN
+&#125;DAY;
+int main()
+&#123;
+    for (int i = MON; i &lt; SUN; i++)
+    &#123;
+        printf("%d ", i);
+    &#125;
+    return 0;
+&#125;
+</code></pre>
+<p>输出结果：</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/08/pF3pia8.png"></p>
+<ul>
+<li>这也间接证明枚举是一个常量，默认从0开始。</li>
+</ul>
+<h3>7.3 枚举变量的创建与初始化</h3>
+<p>我们可以利用定义的枚举常量对枚举变量进行赋值。</p>
+<pre><code class="language-c">typedef enum DAY
+&#123;
+    MON, 
+    TUE,
+    WED,
+    THU,
+    FRI,
+    SAT,
+    SUN
+&#125;DAY;
+int main()
+&#123;
+    DAY a = MON;//最好用枚举常量赋值
+    return 0;
+&#125;
+</code></pre>
+<ul>
+<li>那是否可以拿整数给枚举变量赋值呢？在C语⾔中是可以的，但是在C++是不⾏的，C++的类型检查⽐较严格。</li>
+</ul>
+<h2>8. 枚举常量的大小</h2>
+<p>枚举常量的大小同 int 的大小一样，都是四个字节。</p>
+<p>我们可以通过以下代码来实验：</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+enum color1
+&#123;
+    RED,
+    GREEN,
+    BLUE
+&#125;;
+
+<p>enum color2<br>&amp;#123;<br>    GRAY &#x3D; 0x112233445566,<br>    YELLOW,<br>    PURPLE<br>&amp;#125;;</p>
+<p>int main()<br>&amp;#123;<br>    printf(“enum color1: %d\n”, sizeof(enum color1));<br>    printf(“enum color2: %d\n”, sizeof(enum color2));<br>    return 0;<br>&amp;#125;</p>
+<p></p></code></pre><p></p>
+<p>输出结果:</p>
+<p><img class="lazy" alt referrerpolicy="no-referrer" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/02/08/pF3puq0.png"></p>
+<h2>9. 枚举的优点</h2>
+<p>乍一看，我们可能会感觉枚举有点画蛇添足的感觉，那使用枚举到底有哪些优点呢？</p>
+<p>优点：</p>
+<blockquote>
+<ol>
+<li>增加代码的可读性和可维护性</li>
+<li>和#define定义的标识符⽐较枚举有类型检查，更加严谨。</li>
+<li>便于调试，预处理阶段会删除 #define 定义的符号</li>
+<li>使⽤⽅便，⼀次可以定义多个常量</li>
+<li>枚举常量是遵循作⽤域规则的，枚举声明在函数内，只能在函数内使⽤</li>
+</ol>
+</blockquote>
+<h2>10. 枚举的应用</h2>
+<p>枚举的使用常与switch语句联系起来。</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+int main()
+&#123;
+
+<pre><code>enum color &amp;#123; red = 1, green, blue &amp;#125;;
+
+enum  color favorite_color;
+
+/* 用户输入数字来选择颜色 */
+printf(&quot;请输入你喜欢的颜色: (1. red, 2. green, 3. blue): \n&quot;);
+scanf(&quot;%d&quot;, &amp;amp;favorite_color);
+
+/* 输出结果 */
+switch (favorite_color)
+&amp;#123;
+case red:
+    printf(&quot;你喜欢的颜色是红色\n&quot;);
+    break;
+case green:
+    printf(&quot;你喜欢的颜色是绿色\n&quot;);
+    break;
+case blue:
+    printf(&quot;你喜欢的颜色是蓝色\n&quot;);
+    break;
+default:
+    printf(&quot;你没有选择你喜欢的颜色\n&quot;);
+&amp;#125;
+
+return 0;
+</code></pre>
+<p>&amp;#125;<br></p></code></pre><p></p>
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="探索C语言中的联合体与枚举：数据多面手的完美组合！" href="https://juejin.cn/post/7332735079162085411" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">探索C语言中的联合体与枚举：数据多面手的完美组合！</span><span class="cap link footnote">https://juejin.cn/post/7332735079162085411</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/45997d6f.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/45997d6f.html&title=探索C语言中的联合体与枚举：数据多面手的完美组合！ - 果粉圈&pics=https://cors.mhuig.top/?r=https://juejin.cn&url=https://s11.ax1x.com/2024/01/30/pFKQiw9.jpg&summary=
+
+​     
+✨✨ 欢迎大家来到贝蒂大讲堂✨✨
+🎈🎈养成好习惯，先赞后看哦~🎈🎈
+所属专栏：C语言学习
+贝蒂的主页：Betty‘s blog
+
+1. 联合体的定义
+联合体又叫共用体，它是一种特殊的数据类型，允许您在相同的内..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=探索C语言中的联合体与枚举：数据多面手的完美组合！ - 果粉圈&amp;body=https://blog.g0f.cn/post/45997d6f.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/45997d6f.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/808d10db.html">赫兹跳动 v1.5.0 发布，Status Page 构建能力，祝大家新年快乐！</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/a2afd6b9.html">Globular Star Cluster 47 Tuc</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/458ccead.html" title="2024春节档票房破50亿"><span class="title">2024春节档票房破50亿</span></a><a class="item" href="/post/12808cb7.html" title="你好，iLogtail 2.0！"><span class="title">你好，iLogtail 2.0！</span></a><a class="item" href="/post/7f205441.html" title="小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片"><span class="title">小米 Watch 2 智能手表海外曝光：圆形表盘设计，骁龙 W5 + 芯片</span></a><a class="item" href="/post/4757fea7.html" title="消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存"><span class="title">消息称苹果 iPhone 16 Pro Max 将拥有 iPhone 有史以来最强手机续航能力，仍配备 8GB 内存</span></a><a class="item" href="/post/9b8a73a1.html" title="2023年总结"><span class="title">2023年总结</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">1. 联合体的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">2. 联合体基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">2.1 联合体声明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(1) 普通联合体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(2) 嵌套联合体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(3) 匿名联合体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(4) typedef联合体</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">2.2 联合体变量的创建与初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">2.3 访问联合体</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">3. 联合体的内存存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.1 联合体的大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">3.2 存储形式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(1) 样例一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(2) 样例二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(3) 样例三</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(4) 样例四</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">4. 利用联合体判断大小端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">5. 联合体的应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">6. 枚举的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">7. 枚举基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">7.1 枚举的声明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(1) 普通枚举</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(2) 匿名枚举</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-text">(3) typedef枚举</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">7.2 打印枚举常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">7.3 枚举变量的创建与初始化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">8. 枚举常量的大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">9. 枚举的优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">10. 枚举的应用</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

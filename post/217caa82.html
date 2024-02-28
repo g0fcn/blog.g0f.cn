@@ -1,0 +1,659 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>How AI Code Generation Works - 果粉圈</title>
+
+  
+    <meta name="description" content="Generative AI coding tools are changing software production for enterprises. Not just for their code generation abilities—from vulnerability detection and facilitating comprehension of unfamiliar c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How AI Code Generation Works">
+<meta property="og:url" content="https://blog.g0f.cn/post/217caa82.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="Generative AI coding tools are changing software production for enterprises. Not just for their code generation abilities—from vulnerability detection and facilitating comprehension of unfamiliar c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2023/11/github-copilot-banner.png?w=1024&amp;resize=1024%2C257">
+<meta property="article:published_time" content="2024-02-22T10:32:28.000Z">
+<meta property="article:modified_time" content="2024-02-22T10:32:28.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="These Blogs">
+<meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2023/11/github-copilot-banner.png?w=1024&amp;resize=1024%2C257">
+  
+  
+  
+  <meta name="keywords" content="These Blogs,Github">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/these-blogs/">These Blogs</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/these-blogs/github/">Github</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-22T10:32:28.000Z">2024-02-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-22T10:32:28.000Z">2024-02-22</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>How AI Code Generation Works</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html><body><p>Generative AI coding tools are changing software production for enterprises. Not just for their code generation abilities—from vulnerability detection and facilitating comprehension of unfamiliar codebases, to streamlining documentation and pull request descriptions, they’re <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.wired.com/story/fast-forward-ai-rewiring-coders-brains-github-copilot/">fundamentally reshaping</a> how developers approach application infrastructure, deployment, and their own work experience.</p>
+<p>We’re now witnessing a significant turning point. As AI models get better, refusing adoption would be like “asking an office worker to use a typewriter instead of a computer,” says <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/wunderalbert">Albert Ziegler</a>, principal researcher and member of the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://githubnext.com/">GitHub Next</a> research and development team.</p>
+<p>In this post, we’ll dive into the inner workings of AI code generation, exploring how it functions, its capabilities and benefits, and how developers can use it to enhance their development experience while propelling your enterprise forward in today’s competitive landscape.</p>
+<h2 id="how-to-use-ai-to-generate-code">How to use AI to generate code<a aria-label="How to use AI to generate code" class="heading-link pl-2 text-italic text-bold" href="#how-to-use-ai-to-generate-code"></a></h2>
+<p>AI code generation refers to full or partial lines of code that are generated by machines instead of human developers. This emerging technology leverages advanced machine learning models, particularly <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-10-27-demystifying-llms-how-they-can-do-things-they-werent-trained-to-do/">large language models</a> (LLMs), to understand and replicate the syntax, patterns, and paradigms found in human-generated code.</p>
+<p>The AI models powering tools, like ChatGPT and GitHub Copilot, are trained on natural language text and source code from publicly available sources that include a diverse range of code examples. This training enables them to understand the nuances of various programming languages, coding styles, and common practices. As a result, the AI can generate code suggestions that are syntactically correct and contextually relevant based on input from developers.</p>
+<p>Favored by <a target="_blank" rel="external nofollow noopener noreferrer" href="https://survey.stackoverflow.co/2023/#ai">55% of developers</a>, our AI-powered pair programmer, GitHub Copilot, provides contextualized coding assistance based on your organization’s codebase across dozens of programming languages, and targets developers of all experience levels. With GitHub Copilot, developers can use AI to generate code in three ways:</p>
+<h3 id="1-type-code-and-ai-can-autocomplete-the-code">1. Type code and AI can autocomplete the code<a aria-label="1. Type code and AI can autocomplete the code" class="heading-link pl-2 text-italic text-bold" href="#1-type-code-and-ai-can-autocomplete-the-code"></a></h3>
+<p>Autocompletions are the earliest version of AI code generation. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/jnbrymn">John Berryman</a>, a senior researcher of ML on the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/features/copilot">GitHub Copilot</a> team, explains the user experience: “I’ll be writing code and taking a pause to think. While I’m doing that, the agent itself is also thinking, looking at surrounding code and content in neighboring tabs. Then it pops up on the screen as gray ‘ghost text’ that I can reject, partially accept, or fully accept and then, if necessary, modify.”</p>
+<p>While every developer can reap the benefits of using AI coding tools, experienced programmers can often feel these gains even more so. “In many cases, especially for experienced programmers in a familiar environment, this suggestion speeds us up. I would have written the same thing. It’s just faster to hit ‘tab’ (thus accepting the suggestion) than it is to write out those 20 characters by myself,” says <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/johanrosenkilde">Johan Rosenkilde</a>, principal researcher for GitHub Next.</p>
+<p>Whether developers are new or highly skilled, they’ll often have to work in less familiar languages, and code completion suggestions using GitHub Copilot can lend a helping hand. “Using GitHub Copilot for code completion has really helped speed up my learning experience,” says Berryman. “I will often accept the suggestion because it’s something I wouldn’t have written on my own since I don’t know the syntax.”</p>
+<p>Using an AI coding tool has become an invaluable skill in itself. Why? Because the more developers practice coding with these tools, the faster they’ll get at using them.</p>
+<h3 id="2-explicit-code-comments-codes-using-natural-language-to-receive-even-better-ai-generated-code-suggestions">2. Explicit code comments codes using natural language to receive even better AI-generated code suggestions<a aria-label="2. Explicit code comments codes using natural language to receive even better AI-generated code suggestions" class="heading-link pl-2 text-italic text-bold" href="#2-explicit-code-comments-codes-using-natural-language-to-receive-even-better-ai-generated-code-suggestions"></a></h3>
+<p>For experienced developers in unfamiliar environments, tools like GitHub Copilot can even help jog their memories.</p>
+<p>Let’s say a developer imports a new type of library they haven’t used before, or that they don’t remember. Maybe they’re looking to figure out the standard library function or the order of the argument. In these cases, it can be helpful to make GitHub Copilot more explicitly aware of where the developer wants to go by writing a comment.</p>
+<p>“It’s quite likely that the developer might not remember the formula, but they can <em>recognize</em> the formula, and GitHub Copilot can remember it by being prompted,” says Rosenkilde. This is where natural language commentary comes into play: it can be a shortcut for explaining intent when the developer is struggling with the first few characters of code that they need.</p>
+<p>If developers give specific names to their functions and variables, and write documentation, they can get better suggestions, too. That’s because GitHub Copilot can read the variable names and use them as an indicator for what that function should do.</p>
+<p>Suddenly that changes how developers write code for the better, because code with good variable and function names are more maintainable. And oftentimes the main job of a programmer is to maintain code, not write it from scratch.</p>
+<p>“When you push that code, someone is going to review it, and they will likely have a better time reviewing that code if it’s well named, if there’s even a hint of documentation in it, and so on,” says Rosenkilde. In this sense, the symbiotic relationship between the developer and the AI coding tool is not just beneficial for the developer, but for the entire team.</p>
+<h3 id="3-chat-directly-with-ai">3. Chat directly with AI<a aria-label="3. Chat directly with AI" class="heading-link pl-2 text-italic text-bold" href="#3-chat-directly-with-ai"></a></h3>
+<p>With AI chatbots, code generation can be more interactive. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.youtube.com/watch?v=3surPGP7_4o">GitHub Copilot Chat</a>, for example, allows developers to interact with code by asking it to explain code, improve syntax, provide ideas, generate tests, and modify existing code—making it a versatile ally in managing coding tasks.</p>
+<p>Rosenkilde uses the different functionalities of GitHub Copilot:</p>
+<p>“When I want to do something and I can’t remember how to do it, I type the first few letters of it, and then I wait to see if Copilot can guess what I’m doing,” he says. “If that doesn’t work, maybe I delete those characters and I write a one liner in commentary and see whether Copilot can guess the next line. If that doesn’t work, then I go to Copilot Chat and explain in more detail what I want done.”</p>
+<p>Typically, Copilot Chat returns with something much more verbose and complete than what you get from GitHub Copilot code completion. “Namely, it describes back to you what it is you want done and how it can be accomplished. It gives you code examples, and you can respond and say, oh, I see where you’re going. But actually I meant it like this instead,” says Rosenkilde.</p>
+<p>But using AI chatbots doesn’t mean developers should be hands off. Mistakes in reasoning could lead the AI down a path of  further mistakes if left unchecked. Berryman recommends that users should interact with the chat assistant in much the same way that you would when pair programming with a human. “Go back and forth with it. Tell the assistant about the task you are working on, ask it for ideas, have it help you write code, and critique and redirect the assistant’s work in order to keep it on the right track.”</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/features/copilot?utm_source=blog&amp;utm_medium=blogA&amp;utm_campaign=cta&amp;utm_content=copilot"><img><img alt class="aligncenter size-large wp-image-75213 width-fit" data-recalc-dims="1" data-src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" decoding="async" fetchpriority="high" height="257" sizes="(max-width: 1000px) 100vw, 1000px" src="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2023/11/github-copilot-banner.png?w=1024&amp;resize=1024%2C257" width="1024"></a></p>
+<h2 id="the-importance-of-code-reviews">The importance of code reviews<a aria-label="The importance of code reviews" class="heading-link pl-2 text-italic text-bold" href="#the-importance-of-code-reviews"></a></h2>
+<p>GitHub Copilot is designed to empower developers to execute their ideas. As long as there is some context for it to draw on, it will likely generate the type of code the developer wants. But this doesn’t replace code reviews between developers.</p>
+<p>Code reviews play an important role in maintaining code quality and reliability in software projects, regardless of whether AI coding tools are involved. In fact, the earlier developers can spot bugs in the code development process, the cheaper it is by orders of magnitude.</p>
+<p>Ordinary verification would be: does the code parse? Do the tests work? With AI code generation, Ziegler explains that developers should, “Scrutinize it in enough detail so that you can be sure the generated code is correct and bug-free. Because if you use tools like that in the wrong way and just accept everything, then the bugs that you introduce are going to cost you more time than you save.”</p>
+<p>Rosenkilde adds, “A review with another human being is not the same as that, right? It’s a conversation between two developers about whether this change fits into the kind of software they’re building in this organization. GitHub Copilot doesn’t replace that.”</p>
+<h2 id="the-advantages-of-using-ai-to-generate-code">The advantages of using AI to generate code<a aria-label="The advantages of using AI to generate code" class="heading-link pl-2 text-italic text-bold" href="#the-advantages-of-using-ai-to-generate-code"></a></h2>
+<p>When developer teams use AI coding tools across the software development cycle, they experience a host of benefits, including:</p>
+<h3 id="faster-development-more-productivity">Faster development, more productivity<a aria-label="Faster development, more productivity" class="heading-link pl-2 text-italic text-bold" href="#faster-development-more-productivity"></a></h3>
+<p>AI code generation can significantly speed up the development process by automating repetitive and time-consuming tasks. This means that developers can focus on high-level architecture and problem-solving. In fact, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2022-09-07-research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/#table-survey-responses-measuring-dimensions-of-developer-productivity-when-using-github-copilot">88% of developers reported feeling more productive</a> when using GitHub Copilot.</p>
+<p>Rosenkilde reflects on his own experience with GitHub’s AI pair programmer: “95% of the time, Copilot brings me joy and makes my day a little bit easier. And this doesn’t change the code I would have written. It doesn’t change the way I would have written it. It doesn’t change the design of my code. All it does is it makes me faster at writing that same code.” And Rosenkilde isn’t alone: <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2022-09-07-research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/">60% of developers feel more fulfilled with their jobs</a> when using GitHub Copilot.</p>
+<h3 id="mental-load-alleviated">Mental load alleviated<a aria-label="Mental load alleviated" class="heading-link pl-2 text-italic text-bold" href="#mental-load-alleviated"></a></h3>
+<p>The benefits of faster development aren’t just about speed: they’re also about alleviating the mental effort that comes with completing tedious tasks. For example, when it comes to debugging, developers have to reverse engineer what went wrong. Detecting a bug can involve digging through an endless list of potential hiding places where it might be lurking, making it repetitive and tedious work.</p>
+<p>Rosenkilde explains, “Sometimes when you’re debugging, you just have to resort to creating print statements that you can’t get around. Thankfully, Copilot is brilliant at print statements.”</p>
+<p>A whopping <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2022-09-07-research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/">87% of developers reported spending less mental effort on repetitive tasks</a> with the help of GitHub Copilot.</p>
+<h3 id="less-context-switching">Less context switching<a aria-label="Less context switching" class="heading-link pl-2 text-italic text-bold" href="#less-context-switching"></a></h3>
+<p>In software development, context switching is when developers move between different tasks, projects, or environments, which can disrupt their workflow and decrease productivity. They also often deal with the stress of juggling multiple tasks, remembering syntax details, and managing complex code structures.</p>
+<p>With GitHub Copilot developers can bypass several levels of context switching, staying in their IDE instead of searching on Google or jumping into external documentation.</p>
+<p>“When I’m writing natural language commentary,” says Rosenkilde, “GitHub Copilot code completion can help me. Or if I use Copilot Chat, it’s a conversation in the context that I’m in, and I don’t have to explain quite as much.”</p>
+<p>Generating code with AI helps developers offload the responsibility of recalling every detail, allowing them to focus on higher-level thinking, problem-solving, and strategic planning.</p>
+<p>Berryman adds, “With GitHub Copilot Chat, I don’t have to restate the problem because the code never leaves my trusted environment. And I get an answer immediately. If there is a misunderstanding or follow-up questions, they are easy to communicate with.”</p>
+<h2 id="what-to-look-for-in-enterprise-ready-ai-code-generation-tools">What to look for in enterprise-ready AI code generation tools<a aria-label="What to look for in enterprise-ready AI code generation tools" class="heading-link pl-2 text-italic text-bold" href="#what-to-look-for-in-enterprise-ready-ai-code-generation-tools"></a></h2>
+<p>Before you implement any AI into your workflow, you should always review and test tools thoroughly to make sure they’re a good fit for your organization. Here are a few considerations to keep in mind.</p>
+<h3 id="compliance">Compliance<a aria-label="Compliance" class="heading-link pl-2 text-italic text-bold" href="#compliance"></a></h3>
+<ul>
+<li><strong>Regulatory compliance</strong>. Does the tool comply with relevant regulations in your industry?</li>
+<li><strong>Compliance certifications</strong>. Are there attestations that demonstrate the tool’s compliance with regulations?</li>
+</ul>
+<h3 id="security">Security<a aria-label="Security" class="heading-link pl-2 text-italic text-bold" href="#security"></a></h3>
+<ul>
+<li><strong>Encryption</strong>. Is the data transmission and storage encrypted to protect sensitive information?</li>
+<li><strong>Access controls</strong>. Are you able to implement strong authentication measures and access controls to prevent unauthorized access?</li>
+<li><strong>Compliance with security standards</strong>. Is the tool compliant with industry standards? </li>
+<li><strong>Security audits</strong>. Does the tool undergo regular security audits and updates to address vulnerabilities? </li>
+</ul>
+<h3 id="privacy">Privacy<a aria-label="Privacy" class="heading-link pl-2 text-italic text-bold" href="#privacy"></a></h3>
+<ul>
+<li><strong>Data handling</strong>. Are there clear policies for handling user data and does it adhere to privacy regulations like GDPR, CCPA, etc.?</li>
+<li><strong>Data anonymization</strong>. Does the tool support anonymization techniques to protect user privacy?  </li>
+</ul>
+<h3 id="permissioning">Permissioning<a aria-label="Permissioning" class="heading-link pl-2 text-italic text-bold" href="#permissioning"></a></h3>
+<ul>
+<li><strong>Role-based access control</strong>. Are you able to manage permissions based on user roles and responsibilities?</li>
+<li><strong>Granular permissions</strong>. Can you control access to different features and functionalities within the tool?</li>
+<li><strong>Opt-in/Opt-out mechanisms</strong>. Can users control the use of their data and opt out if needed? </li>
+</ul>
+<h3 id="pricing">Pricing<a aria-label="Pricing" class="heading-link pl-2 text-italic text-bold" href="#pricing"></a></h3>
+<ul>
+<li><strong>Understand the pricing model</strong>. is it based on usage, number of users, features, or other metrics?</li>
+<li><strong>Look for transparency</strong>. Is the pricing structure clear with no hidden costs?</li>
+<li><strong>Scalability</strong>. Does the pricing scale with your usage and business growth?</li>
+</ul>
+<p>Additionally, consider factors such as customer support, ease of integration with existing systems, performance, and user experience when evaluating AI coding tools. Lastly, it’s important to thoroughly assess how well the tool aligns with your organization’s specific requirements and priorities in each of these areas.</p>
+<p>Visit the GitHub <a target="_blank" rel="external nofollow noopener noreferrer" href="https://resources.github.com/copilot-trust-center/">Copilot Trust Center</a> to learn more around security, privacy, and other topics.</p>
+<h2 id="can-ai-code-generation-be-detected">Can AI code generation be detected?<a aria-label="Can AI code generation be detected?" class="heading-link pl-2 text-italic text-bold" href="#can-ai-code-generation-be-detected"></a></h2>
+<p>The short answer here is: maybe.</p>
+<p>Let’s first give some context to the question. It’s never really the case that a whole code base is generated with AI, because large chunks of AI-generated code are very likely to be wrong. The standard code review process is a good way to avoid this, since large swaths of completely auto-generated code would stand out to a human developer as simply not working.</p>
+<p>For smaller amounts of AI-generated code, there is no way at the moment to detect traces of AI in code with true confidence. There are offerings that purport to classify whether content has AI-generated <em>text</em>, but there are limited equivalents for code, since you’d need a dedicated model to do it. Ziegler explains, “Computer generated code is good enough that it doesn’t leave any particular traces and normally has no clear tells.”</p>
+<p>At GitHub, the Copilot team makes use of a duplicate detection filter that detects exact duplicates in code. So, if you’re writing code and it’s an exact copy of something that exists elsewhere, then it’ll flag it.</p>
+<h2 id="is-ai-code-generation-secure">Is AI code generation secure?<a aria-label="Is AI code generation secure?" class="heading-link pl-2 text-italic text-bold" href="#is-ai-code-generation-secure"></a></h2>
+<p>AI code generation is not any more insecure than human generated code. A combination of testing, manual code reviews, scanning, monitoring, and feedback loops can produce the same quality of code as your human-generated code.</p>
+<p>When it comes to code generated by GitHub Copilot, developers can use tools like <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/features/security/code'">code scanning</a>, which actively reviews your code for potential security issues in real-time and seamlessly integrates the findings into the developer workflow.</p>
+<p>Ultimately, AI code generation will have vulnerabilities—but so does code written by human developers. As Ziegler explains, “It’s unclear whether computer generated code does particularly worse. So, the answer is not if you have GitHub Copilot, use a vulnerability checker. The answer is <em>always</em> use a vulnerability checker.”</p>
+<blockquote><p>
+<strong>Watch this video for more tips and words of advice around secure coding best practices with AI.</strong></p>
+<div>
+<div class="mod-vh position-relative" style="height: 0; padding-bottom: calc((9 / 16)*100%);">
+<iframe allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="position-absolute top-0 left-0 width-full height-full" frameborder="0" loading="lazy" src="https://cdn.g0f.cn//?r=https://github.blog&url=https://www.youtube.com/embed/5nu4SofCC8U?version=3&amp;rel=1&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;fs=1&amp;hl=en-US&amp;autohide=2&amp;wmode=transparent" title="YouTube video player"></iframe>
+</div></div>
+</blockquote>
+<h2 id="empower-your-enterprise-with-ai-code-generation">Empower your enterprise with AI code generation<a aria-label="Empower your enterprise with AI code generation" class="heading-link pl-2 text-italic text-bold" href="#empower-your-enterprise-with-ai-code-generation"></a></h2>
+<p>While the benefits to using AI code generation tools can be significant, it’s important to note that human oversight remains crucial to ensure that the generated code aligns with project goals, coding standards, and business needs.</p>
+<p>Tech leaders should embrace the use of AI code generation—not only to streamline development, but also to empower developer teams to collaborate, drive meaningful business outcomes, and deliver exceptional value to customers.</p>
+<div class="post-content-cta"><p>Ready to get started with the world’s most widely adopted AI developer tool? <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/features/copilot">Learn more</a> or <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/features/copilot/plans">get started now</a>.</p>
+</div>
+</body></html>
+<p>The post <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2024-02-22-how-ai-code-generation-works/">How AI code generation works</a> appeared first on <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog">The GitHub Blog</a>.</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="How AI code generation works" href="https://github.blog/2024-02-22-how-ai-code-generation-works/" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">How AI code generation works</span><span class="cap link footnote">https://github.blog/2024-02-22-how-ai-code-generation-works/</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/217caa82.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/217caa82.html&title=How AI Code Generation Works - 果粉圈&pics=https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2023/11/github-copilot-banner.png?w=1024&resize=1024%2C257&summary=
+
+
+Generative AI coding tools are changing software production for enterprises. Not just for their code generation ab..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=How AI Code Generation Works - 果粉圈&amp;body=https://blog.g0f.cn/post/217caa82.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/217caa82.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/ca8930d9.html">新闻联播 2024/02/22</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/ab1d2da9.html">2024 年，只有搞颜色的 P 站真正关心网站性能</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/61d30a8.html" title="A Guide to Open Source for the Social Sector"><span class="title">A Guide to Open Source for the Social Sector</span></a><a class="item" href="/post/468856e6.html" title="AppSec Is Harder Than You Think. Here’s How AI Can Help."><span class="title">AppSec Is Harder Than You Think. Here’s How AI Can Help.</span></a><a class="item" href="/post/4007b74f.html" title="Bringing Npm Registry Services to GitHub Codespaces"><span class="title">Bringing Npm Registry Services to GitHub Codespaces</span></a><a class="item" href="/post/aaedef42.html" title="Build Code Security Skills With the GitHub Secure Code Game"><span class="title">Build Code Security Skills With the GitHub Secure Code Game</span></a><a class="item" href="/post/1085f346.html" title="Copilot in GitHub Support Is Now Available!"><span class="title">Copilot in GitHub Support Is Now Available!</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#how-to-use-ai-to-generate-code"><span class="toc-text">How to use AI to generate code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-type-code-and-ai-can-autocomplete-the-code"><span class="toc-text">1. Type code and AI can autocomplete the code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-explicit-code-comments-codes-using-natural-language-to-receive-even-better-ai-generated-code-suggestions"><span class="toc-text">2. Explicit code comments codes using natural language to receive even better AI-generated code suggestions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-chat-directly-with-ai"><span class="toc-text">3. Chat directly with AI</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#the-importance-of-code-reviews"><span class="toc-text">The importance of code reviews</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#the-advantages-of-using-ai-to-generate-code"><span class="toc-text">The advantages of using AI to generate code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#faster-development-more-productivity"><span class="toc-text">Faster development, more productivity</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mental-load-alleviated"><span class="toc-text">Mental load alleviated</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#less-context-switching"><span class="toc-text">Less context switching</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#what-to-look-for-in-enterprise-ready-ai-code-generation-tools"><span class="toc-text">What to look for in enterprise-ready AI code generation tools</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#compliance"><span class="toc-text">Compliance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#security"><span class="toc-text">Security</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#privacy"><span class="toc-text">Privacy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#permissioning"><span class="toc-text">Permissioning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pricing"><span class="toc-text">Pricing</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#can-ai-code-generation-be-detected"><span class="toc-text">Can AI code generation be detected?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#is-ai-code-generation-secure"><span class="toc-text">Is AI code generation secure?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#empower-your-enterprise-with-ai-code-generation"><span class="toc-text">Empower your enterprise with AI code generation</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

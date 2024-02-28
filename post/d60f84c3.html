@@ -1,0 +1,701 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>The Architecture of SAST Tools: An Explainer for Developers - 果粉圈</title>
+
+  
+    <meta name="description" content="In today’s age of shifting left—an approach to coding that integrates security checks earlier into the software development lifecycle (SDLC)—developers are expected to be proficient at using securi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Architecture of SAST Tools: An Explainer for Developers">
+<meta property="og:url" content="https://blog.g0f.cn/post/d60f84c3.html">
+<meta property="og:site_name" content="果粉圈">
+<meta property="og:description" content="In today’s age of shifting left—an approach to coding that integrates security checks earlier into the software development lifecycle (SDLC)—developers are expected to be proficient at using securi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/cve-screenshot.png?w=1024&amp;resize=1024%2C595">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/sql-application-diagram.png?w=1024&amp;h=574">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/sast-tool-diagram.png?w=1024&amp;h=574">
+<meta property="og:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/taint-analysis-flowchart.png?w=687&amp;h=1024">
+<meta property="article:published_time" content="2024-02-12T09:03:05.000Z">
+<meta property="article:modified_time" content="2024-02-12T09:03:05.000Z">
+<meta property="article:author" content="naive">
+<meta property="article:tag" content="These Blogs">
+<meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/cve-screenshot.png?w=1024&amp;resize=1024%2C595">
+  
+  
+  
+  <meta name="keywords" content="These Blogs,Github">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="果粉圈" type="application/atom+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post"><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">果粉圈</div><div class="sub normal cap">明明只是玩玩而已😃</div><div class="sub hover cap" style="opacity:0"> 你居然还当真了😭</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewbox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"/><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"/></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/post/5855cd9f.html"><span class="title">（新春走基层）年画非遗传承人的坚守与创新</span></a><a class="item title" href="/post/d79129e7.html"><span class="title">邂逅国潮繁花浪漫 这些地方龙年“潮”味拉满了！</span></a><a class="item title" href="/post/1b884d7c.html"><span class="title">锦绣中国年｜在日本感受龙年春节的浓浓“年味儿”</span></a><a class="item title" href="/post/5d328e1e.html"><span class="title">香港廉政公署成立50周年：见证香港半世纪反贪史</span></a><a class="item title" href="/post/4161bef1.html"><span class="title">马克龙与以色列总理内塔尼亚胡通电话讨论加沙局势</span></a><a class="item title" href="/post/be57e44b.html"><span class="title">（新春见闻）春节假期三亚兴起空中看海热</span></a><a class="item title" href="/post/c1eb7f63.html"><span class="title">印尼国防部长普拉博沃宣布赢得总统选举</span></a><a class="item title" href="/post/ac817149.html"><span class="title">多功能新能源补给站助力交通绿色转型 电力耗能实现“碳中和”</span></a><a class="item title" href="/post/21e55478.html"><span class="title">巴黎上诉法院维持萨科齐在竞选资金超标案中的有罪判决</span></a><a class="item title" href="/post/732f6c75.html"><span class="title">快速计票统计显示：普拉博沃赢得印尼大选</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3845874.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/3616429.svg"></a><a class="social" href="/" rel="noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/942ebbf1a4b91.svg"></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/these-blogs/">These Blogs</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/these-blogs/github/">Github</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-02-12T09:03:05.000Z">2024-02-12</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-02-12T09:03:05.000Z">2024-02-12</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>The Architecture of SAST Tools: An Explainer for Developers</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html><body><p>In today’s age of shifting left—an approach to coding that integrates security checks earlier into the software development lifecycle (SDLC)—<strong>developers are expected to be proficient at using security tools</strong>. This additional responsibility can be <strong>overwhelming for developers</strong> who don’t specialize in security. The main issue: on top of their normal responsibilities, developers have to sift through many <strong>false positive alerts</strong> to find and address the real, critical vulnerabilities.</p>
+<p><strong>But shifting left isn’t going anywhere</strong>. Its benefits have been <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.ibm.com/reports/data-breach?utm_content=SRCWW&amp;p1=Search&amp;p4=43700077724063991&amp;p5=e&amp;gclid=CjwKCAiAu9yqBhBmEiwAHTx5pxBHz4SuILQAVmxIm2_f4iWKGnZtXURRY1mZrnv7TSDLFH7vXUo7MxoCHMkQAvD_BwE&amp;gclsrc=aw.ds">proven</a>. <strong>So, what can developers do to improve their security experience?</strong> They can start by understanding how different security tooling works, the latest advancements, and why they matter. By <strong>understanding the inner workings of a SAST tool</strong>, developers can better interpret its results and fix vulnerable code, feel empowered to contribute to security discussions and decisions, and improve their relationship with security teams.</p>
+<p>In this post, we’ll cover what our security experts, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/sylwia-budzynska">Sylwia Budzynska</a>, <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/securingdev">Keith Hoodlet</a>, and <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/nickliffen">Nick Liffen</a>, have written about SAST tools—from what they are and how they work—and break down why they’re important to developers who are coding in the age of security-first development.</p>
+<h2 id="why-developers-and-security-experts-use-sast-tools">Why developers and security experts use SAST tools<a aria-label="Why developers and security experts use SAST tools" class="heading-link pl-2 text-italic text-bold" href="#why-developers-and-security-experts-use-sast-tools"></a></h2>
+<p>GitHub Security Researcher <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/sylwia-budzynska">Sylwia Budzynska</a> wrote a post about <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-06-15-codeql-zero-to-hero-part-2-getting-started-with-codeql/#common-uses-of-codeql-for-security-research-and-application-security">common uses of SAST tools</a>. Here’s a quick recap.</p>
+<p>Developers and security experts rely on SAST tools to:</p>
+<ul>
+<li><strong>Automate source code scanning</strong> to prevent vulnerabilities and catch them earlier in the development pipeline.
+</li>
+<li>
+<p><strong>Expand vulnerability detection</strong>. Through a technique called variant analysis, SAST tools can find new vulnerabilities by detecting variants of a known vulnerability in different parts of the code base.</p>
+</li>
+<li>
+<p><strong>Assist with manual code reviews</strong>. In <a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/">CodeQL</a>, GitHub’s SAST tool, your code is treated and analyzed as data. This allows you to execute queries against the database to retrieve the data you want from your code, like patterns that highlight potential vulnerabilities. You can run standard <a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/docs/writing-codeql-queries/about-codeql-queries/">CodeQL queries</a> written by GitHub researchers and community contributors, or write your own to conduct a custom analysis.</p>
+</li>
+</ul>
+<p><img><img alt="Screenshot of a security alert on GitHub.com that describes a new CVE, CVE-2023-35947, found with AI-generated models and variant analysis." class="aligncenter size-large wp-image-76542 width-fit" data-recalc-dims="1" data-src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" decoding="async" height="595" loading="lazy" sizes="(max-width: 1000px) 100vw, 1000px" src="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/cve-screenshot.png?w=1024&amp;resize=1024%2C595" width="1024"></p>
+<p><em>GitHub’s security team used a combination of AI-generated models and variant analysis to discover a new vulnerability. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-09-12-codeql-team-uses-ai-to-power-vulnerability-detection-in-code/">Here’s how</a>.</em></p>
+<p>For comprehensive coverage, organizations often use SAST in tandem with other security testing, including:</p>
+<ul>
+<li><strong>Software composition analysis (SCA)</strong>, which identifies vulnerabilities in a codebase that stem from a third-party dependency. An SCA tool like <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-01-12-a-smarter-quieter-dependabot/">Dependabot</a> scans the origins of the third-party code for security threats and licensing requirements. With this information, you can update your codebase by addressing vulnerabilities, attributing credit, or complying with the open source license accordingly. SCA tools can be used at any point in the SDLC. \</li>
+<li><strong><a target="_blank" rel="external nofollow noopener noreferrer" href="https://resources.github.com/security/what-is-dast/">Dynamic application security testing</a> (DAST)</strong> finds security vulnerabilities in an application once it’s running.</li>
+<li><strong>Interactive application security testing (IAST)</strong> combines SAST and DAST to identify vulnerabilities that might be missed by either one alone.</li>
+</ul>
+<aside class="p-4 p-md-6 post-aside--large"><p class="h5-mktg gh-aside-title">What’s the difference between SAST and SCA? </p><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/bkoshea">Brittany O’Shea</a>, GitHub’s director of product marketing for application and platform security, dives deeper. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2022-09-09-sca-vs-sast-what-are-they-and-which-one-is-right-for-you/">Learn more about SAST and SCA tools, and how they can secure your projects &gt;</a></p>
+</aside>
+<h2 id="the-pros-and-cons-of-sast">The pros and cons of SAST<a aria-label="The pros and cons of SAST" class="heading-link pl-2 text-italic text-bold" href="#the-pros-and-cons-of-sast"></a></h2>
+<p>Let’s start with the pros:</p>
+<ul>
+<li>Modern SAST tools can be used early in the SDLC. Ideally, this means that <strong>builds and production shouldn’t be disrupted by vulnerable code</strong>.</li>
+<li>Given that organizations typically have one security expert for every 100 developers, vulnerabilities are bound to be overlooked when code reviews are only done manually. SAST tools are designed and known for their ability to analyze the entire codebase, which can augment manual code reviews. This helps <strong>teams detect challenging vulnerabilities and improves the speed at which they ship secure and quality code</strong>.</li>
+<li>SAST tools are valued for their ability to trace data flows. This allows them to <strong>identify where in the source code sensitive data might leak</strong>, <strong>check that all data inputs are validated and sanitized</strong>, and <strong>verify that security protocols are followed when data is stored or transferred</strong>.</li>
+<li>While most SAST tools only trace partial data flows, CodeQL uses a database to represent your source code, so it has a full understanding of how data flows throughout your whole application.</li>
+<li>Advanced SAST tools can integrate directly in your build process, or CI/CD pipeline, while having access to your codebase. That means your <strong>code is automatically scanned for vulnerabilities with every push or build</strong>.</li>
+<li>SAST tools like CodeQL <strong>make it easy for developers to address vulnerabilities</strong> by providing <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts">security alerts</a> that state the exact line of code that triggered the alert, the nature of the alert, properties of the alert (like its severity level), and how to fix the problem.</li>
+<li><strong>Coupling SAST tooling with generative AI</strong> speeds up this process by suggesting an AI-generated code fix to developers. For instance, developers who use Github Advanced Security’s <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/about-autofix-for-codeql-code-scanning">code scanning autofix</a> feature can apply AI-generated code fixes to easily remediate vulnerabilities directly in a pull request.</li>
+</ul>
+<div class="post-content-cta"><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2024-01-05-5-ways-to-make-your-devsecops-strategy-developer-friendly/">Discover five easy ways to make developers love security &gt; </a></p>
+</div>
+<p>Now, some cons. Well, mainly the big one: <strong>false positives</strong>.</p>
+<div class="content-table-wrap"><table>
+<tbody>
+<tr>
+<td><strong>Problems and consequences</strong></td>
+<td><strong>Solutions</strong></td>
+</tr>
+<tr>
+<td>Your SAST tool might match vulnerable patterns in a database to patterns found in comments throughout the source code and in harmless function names.</td>
+<td>Adding a <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-03-31-codeql-zero-to-hero-part-1-the-fundamentals-of-static-analysis-for-vulnerability-research/#early-static-analysis-tools-lexical-pattern-matching">lexical analysis function</a>–which transforms code into tokens and ignores characters that aren’t related to the semantics of code—filters out pattern matches unrelated to the source code (like patterns found in your code comments).</td>
+</tr>
+<tr>
+<td>A legacy SAST tool might not be able to differentiate between input data that comes from a user (and therefore exploitable) and input data that comes from a local source (and therefore benign).
+<p>Your SAST tool might not detect when input data has been sanitized or validated as it moves throughout your source code (making the data safe).</p></td>
+<td><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/">Abstracting your code into a hierarchical structure</a> provides a better understanding of where input data enters and is used throughout your code. As a result, the SAST tool will better determine when input data is actually exploitable and raises fewer false positives.</td>
+</tr>
+<tr>
+<td>With so many false positives, developers and security experts may lose confidence in the tool’s data and get alert fatigue, which can cause them to skim past critical alerts.</td>
+<td>A SAST tool with an alert system that can be set with <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/managing-code-scanning-alerts-for-your-repository">custom and automated triage rules</a> ensures that the most urgent security alerts are addressed first. Engineering teams should also be able to <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/managing-code-scanning-alerts-for-your-repository#filtering-code-scanning-alerts">filter and search alerts</a> to sift through all the results and focus on a particular type of alert.</td>
+</tr>
+</tbody>
+</table></div>
+<p>For further reading on false positives, read:</p>
+<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2024-01-05-5-ways-to-make-your-devsecops-strategy-developer-friendly/">5 ways to make your DevSecOps strategy developer-friendly</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-03-31-codeql-zero-to-hero-part-1-the-fundamentals-of-static-analysis-for-vulnerability-research/">The fundamentals of static analysis and vulnerability research</a></li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://securing.dev/posts/3-types-of-static-analysis/">The 3 types of static analysis</a></li>
+</ul>
+<h2 id="how-do-sast-tools-work">How do SAST tools work?<a aria-label="How do SAST tools work?" class="heading-link pl-2 text-italic text-bold" href="#how-do-sast-tools-work"></a></h2>
+<p><strong>SQL injections</strong>—malicious SQL code that allows users to gain access to sensitive data—<strong>are a common vulnerability that is easier to find with SAST</strong> than with other testing methods. This is because SAST tools trace data flows, and SQL injections target applications that store and retrieve data in SQL databases.</p>
+<figure class="wp-caption aligncenter mx-0" id="attachment_76545"><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/wp-content/uploads/2024/02/sql-application-diagram.png"><img><img alt="A schematic diagram depicting an SQL application under an SQL injection attack. The attack vector is shown at the point of data entry by a user. The diagram then depicts the application processing the data with an SQL database and generating an output." class="width-fit size-large wp-image-76545 width-fit" data-recalc-dims="1" data-src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" decoding="async" sizes="(max-width: 1000px) 100vw, 1000px" src="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/sql-application-diagram.png?w=1024&amp;h=574"></a><figcaption class="text-mono color-fg-muted mt-14px f5-mktg">Click diagram to enlarge and save.</figcaption></figure>
+<p>Methods used by SAST tools to find vulnerabilities include:</p>
+<ul>
+<li><strong>Signature-based pattern matching</strong> matches patterns of known injection techniques to patterns found in your source code.</li>
+<li><strong>Semantic analysis</strong> not only matches patterns, but also considers how your code was constructed—the surrounding context, logic, and dependencies between different code parts—when scanning for vulnerabilities.</li>
+<li><strong>Taint analysis</strong> tracks the flow of input data throughout your source code to see if it ends up in a function that could be exploited with malicious user input.</li>
+</ul>
+<p>🕵🏻‍♀️ Let’s focus on <strong>semantic and taint analysis</strong>, which provide more flexibility, precision, and broader coverage than signature-based matching (or other legacy methods of static analysis).</p>
+<p>We’ll break down how <strong>an advanced SAST tool like CodeQL</strong> uses semantic and taint analysis to <strong>trace a full data flow</strong> and find vulnerabilities in your code. 👇</p>
+<figure class="wp-caption aligncenter mx-0" id="attachment_76539"><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/wp-content/uploads/2024/02/sast-tool-diagram.png"><img><img alt="A schematic diagram depicting the steps an SAST tool takes to scan the source code of an SQL application under an SQL injection attack. The first step is tokenizing the source code, the second is abstracting the source code, the third conducting semantic analysis, the fourth conducting taint analysis, and the last generating a security alert about the SQL injection vulnerability." class="width-fit size-large wp-image-76539 width-fit" data-recalc-dims="1" data-src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" decoding="async" sizes="(max-width: 1000px) 100vw, 1000px" src="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/sast-tool-diagram.png?w=1024&amp;h=574"></a><figcaption class="text-mono color-fg-muted mt-14px f5-mktg">Click diagram to enlarge and save.</figcaption></figure>
+<p>Here’s code that contains a user-controlled parameter, or a parameter where the user submits data:</p>
+<pre><code class="language-java">@postmapping("/sqlinjection/attack11")
+@responsebody
+public Attackresult completed(@requestparam string name, @requestparam String auth_tan) &#123;
+return injectablequeryintegrity(name, auth_tan);
+&#125;
+</code></pre>
+<h3 id="1-tokenize-the-source-code">1. Tokenize the source code<a aria-label="1. Tokenize the source code" class="heading-link pl-2 text-italic text-bold" href="#1-tokenize-the-source-code"></a></h3>
+<p>SAST tools use lexical analysis to transform code into tokens. Because tokens are categorized according to the grammar rules of a programming language, your code becomes a list of standardized parts that makes it easier to analyze. Tokenizing source code allows the SAST tool to conduct a semantic analysis that ignores characters unrelated to the semantics of your code.</p>
+<h3 id="2-abstract-the-source-code">2. Abstract the source code<a aria-label="2. Abstract the source code" class="heading-link pl-2 text-italic text-bold" href="#2-abstract-the-source-code"></a></h3>
+<p>To help decipher the meaning of source code and its structure, most SAST tools visualize your source code as a tree. An abstract syntax tree (AST) transforms lines of your code into a hierarchical structure to show relationships between code, which code belongs with which function, and more.</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-03-31-codeql-zero-to-hero-part-1-the-fundamentals-of-static-analysis-for-vulnerability-research/#syntactic-pattern-matching-abstract-syntax-tree-and-control-flow-graph">Here’s what an AST looks like</a> and <a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/">here’s how to view the AST of your source code</a>.</p>
+<h3 id="3-conduct-semantic-analysis">3. Conduct semantic analysis<a aria-label="3. Conduct semantic analysis" class="heading-link pl-2 text-italic text-bold" href="#3-conduct-semantic-analysis"></a></h3>
+<p>Aided by an abstraction of the source code, this analysis allows the SAST tool to understand the code’s meaning and structure. As we mentioned above, a semantic analysis enables CodeQL to ignore tokens that aren’t related to the semantics of your source code. As a result, the SAST tool scans your source code (and not your code comments) for vulnerabilities.</p>
+<h3 id="4-conduct-a-taint-analysis">4. Conduct a taint analysis<a aria-label="4. Conduct a taint analysis" class="heading-link pl-2 text-italic text-bold" href="#4-conduct-a-taint-analysis"></a></h3>
+<p>Earlier, we noted that SQL injections enter your source code through unsanitized or invalidated user input data. But <strong>SAST tools look for vulnerabilities in the way your source code handles data, not the data itself</strong>. In other words, SAST tools scan the source code written by a developer, not input data entered by a user. This is where taint analysis comes in.</p>
+<p><strong>A SAST tool uses taint analysis to do three things</strong>:</p>
+<ul>
+<li><strong>Identify sources, sanitizers, and sinks</strong>. Sources are where the input data enters the source code, sanitizers are functions that make input safe, and sinks are functions that if called with unsanitized data could cause harm.</li>
+<li><strong>Track the flow of input data from a source to a sink</strong>. The taint analysis uses abstractions from your source code to follow input data from a source to see if it ends up in a sink or a function that could be exploited with that user input data.</li>
+<li><strong>Check if input data—whether it’s from the user or a local, benign source— passes through sanitization or validation functions</strong> as the input data flows from source to sink.</li>
+</ul>
+<p>Advanced SAST tools like CodeQL can evaluate how well these functions actually sanitize or validate the data, and use that judgment to decide whether or not to raise the path as a potential vulnerability. If any input data doesn’t pass through these sanitizing functions, the tool will flag the path as a potential vulnerability.</p>
+<figure class="wp-caption aligncenter mx-0" id="attachment_76546"><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/wp-content/uploads/2024/02/taint-analysis-flowchart.png"><img><img alt="A schematic diagram shows the four steps of a taint analysis. Two user-controlled parameters, `name` and `auth_tan` pass through a function call, which creates a query statement. The query statement is executed with warnings that it contains user-controlled parameters." class="width-fit size-large wp-image-76546 width-fit" data-recalc-dims="1" data-src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" decoding="async" sizes="(max-width: 1000px) 100vw, 1000px" src="https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/taint-analysis-flowchart.png?w=687&amp;h=1024"></a><figcaption class="text-mono color-fg-muted mt-14px f5-mktg">Click diagram to enlarge and save.</figcaption></figure>
+<p>Above is an example of how CodeQL traces data flow. The two statements in the last step, <code>Query might include code from this user input</code> is evidence of the CodeQL data flow at work.</p>
+<p>The SAST tools recognizes that user-provided data, <code>name</code> and <code>auth_tan</code>, are directly embedded into the SQL query, <code>SELECT * FROM employees WHERE last_name = ‘“ + name + “‘ AND auth_tan = ‘“ + auth_tan + “‘“</code>.</p>
+<p>Executing this query might generate a security alert if the user input hasn’t passed through sufficient sanitizers or any sanitizers at all.</p>
+<p>📝 Two important notes:</p>
+<ul>
+<li><strong>Finding a sink is not the same as finding a vulnerability</strong>. A sink or a sensitive function on its own isn’t a vulnerability, and many sinks can be used safely. Locating a sink means the tool has found a _potentially _vulnerable source of code in that it’s a function that _could _be exploited if unsanitized input data calls that function.</li>
+<li><strong>For a vulnerability to exist, the tool must find that unsanitized or invalidated input data can flow from source to sink without going through a sanitizer</strong>. To determine if a sink is a vulnerability, the SAST tool must use taint analysis to trace the possible paths that the unsanitized or invalidated input data can take to sensitive functions. (That’s where abstractions of your source code come in handy.) If a SAST tool finds such a data flow, it’ll send an alert about a potential security vulnerability to engineering teams.</li>
+</ul>
+<p>🔒 At the end of these four processes, engineering teams will receive security alerts from the SAST tool. To ensure teams address the most urgent security alerts first, it’s important to set <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/managing-code-scanning-alerts-for-your-repository">custom and automated triage rules</a> and have the ability to <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/managing-code-scanning-alerts/managing-code-scanning-alerts-for-your-repository#filtering-code-scanning-alerts">filter and search alerts</a> to focus on a particular type.</p>
+<h3 id="5-run-custom-queries">5. Run custom queries<a aria-label="5. Run custom queries" class="heading-link pl-2 text-italic text-bold" href="#5-run-custom-queries"></a></h3>
+<p>Another way that some SAST tools can find vulnerabilities is when developers and security experts write queries to search for certain vulnerabilities. CodeQL, in particular, is known for its flexibility in that it allows developers to write custom queries that meet the needs of their codebase.</p>
+<p>You can run standard CodeQL queries or write your own to conduct a custom analysis.</p>
+<p>Learn how to practice writing your own CodeQL query with these resources:</p>
+<ul>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/docs/writing-codeql-queries/ql-tutorials/#ql-tutorials">Query language tutorials </a>can teach you how to write queries and introduce you to key logic concepts.</li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/docs/writing-codeql-queries/codeql-queries/#codeql-queries">CodeQL query basics</a> provides fundamental knowledge about CodeQL queries and how to troubleshoot.</li>
+<li><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2023-06-15-codeql-zero-to-hero-part-2-getting-started-with-codeql/#ql-query-language-writing-your-own-codeql-query">Writing your own CodeQL query</a> provides step-by-step instructions (as well as exercises) for writing and refining your CodeQL queries.</li>
+</ul>
+<h2 id="automating-sast">Automating SAST<a aria-label="Automating SAST" class="heading-link pl-2 text-italic text-bold" href="#automating-sast"></a></h2>
+<p>Instead of manually pushing a code scan, developers can <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning">integrate a modern SAST tool into their current CI/CD pipeline</a>, automating vulnerability code scans with every push or build.</p>
+<p>A SAST tool that’s integrated into your build process while having access to your codebase means the tool can better understand the semantic elements of your code and conduct a more comprehensive taint analysis, according to <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/securingdev">Keith Hoodlet</a>, principal security specialist at GitHub.</p>
+<h2 id="why-we-need-sast">Why we need SAST<a aria-label="Why we need SAST" class="heading-link pl-2 text-italic text-bold" href="#why-we-need-sast"></a></h2>
+<p><strong>When you create or work with an application, you need to make sure that it handles data securely</strong>. For instance, an educational project designed to be used by students might be subject to the <a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.ftc.gov/legal-library/browse/rules/childrens-online-privacy-protection-rule-coppa">Children’s Online Privacy Protection Act</a> (COPPA), which requires websites that gather data from children under 13 report any breaches to parents.</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.com/wordplaydev/wordplay">Wordplay</a>, an educational programming language and web-based IDE is designed to be used by students, which means most project contributors are aspiring developers who are just starting to learn best practices of secure code writing. Consequently, the project needs to protect against data breaches that could expose the projects and identity of those students.</p>
+<p>“When students submit pull requests that touch any private data, they need to know that they aren’t shipping common vulnerability patterns that might leak it,” says Amy Ko, founder.</p>
+<aside class="post-aside--small float-sm-right col-sm-5 col-md-6 col-lg-5 my-5 my-sm-2 ml-sm-4 ml-lg-6"><p class="h6-mktg gh-aside-title">More about Wordplay</p><p>Wordplay was built at the University of Washington, a GitHub Accessibility partner. It’s designed for students who want to code but whose primary speaking language isn’t English, which is often a barrier to entry to code. It’s also more accessible since it’s screen-readable.</p>
+<p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://medium.com/bits-and-behavior/wordplay-accessible-language-inclusive-interactive-typography-e4b9027eaf10">Read the full story behind Wordplay</a></p>
+</aside>
+<p><strong>But limited bandwidth makes it difficult to review every single line of submitted code</strong>. That’s why the Wordplay team relies on CodeQL to integrate vulnerability checks into its CI/CD pipeline.</p>
+<p>“CodeQL is like having a community of experienced security developers regularly code reviewing our work,” Ko adds. “The key reason we use it is to expand our team’s expertise and capacity.”</p>
+<p>In addition to using CodeQL to prevent data breaches, the Wordplay team has ideas about how it might use the tool to <strong>find patterns that could lead to accessibility issues</strong>, like lack of feedback in response to keyboard inputs. For example, CodeQL could be used to identify input sequences that don’t provide feedback.</p>
+<h2 id="how-sast-helps-developers-in-a-new-age-of-coding">How SAST helps developers in a new age of coding<a aria-label="How SAST helps developers in a new age of coding" class="heading-link pl-2 text-italic text-bold" href="#how-sast-helps-developers-in-a-new-age-of-coding"></a></h2>
+<p><strong>Modern SAST tools help developers adapt to this new age of coding</strong>. As they take on additional security responsibilities in the shift left movement, developers can rely on SAST tools to trace data flows and locations of exploitable vulnerabilities throughout their projects. What’s more: as developers write more code with the help of AI coding assistants, they can feel more confident that SAST is analyzing their entire source code for vulnerabilities.</p>
+<p><strong>Getting to know the workings of a SAST tool</strong>, which is one of the most widely used security tools, will give developers a better understanding of its results and security alerts, and that can empower them to actively participate in security discussions and decisions—ultimately benefiting engineering and security teams alike, and organizations overall.</p>
+<div class="post-content-cta"><p>Harness the power of CodeQL. <a target="_blank" rel="external nofollow noopener noreferrer" href="https://docs.github.com/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql">Learn more</a> or <a target="_blank" rel="external nofollow noopener noreferrer" href="https://codeql.github.com/">get started now</a>.</p>
+</div>
+</body></html>
+<p>The post <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog/2024-02-12-the-architecture-of-sast-tools-an-explainer-for-developers/">The architecture of SAST tools: An explainer for developers</a> appeared first on <a target="_blank" rel="external nofollow noopener noreferrer" href="https://github.blog">The GitHub Blog</a>.</p>
+
+</div>
+
+<div>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="The architecture of SAST tools: An explainer for developers" href="https://github.blog/2024-02-12-the-architecture-of-sast-tools-an-explainer-for-developers/" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill="icon"><div class="left"><span class="title">The architecture of SAST tools: An explainer for developers</span><span class="cap link footnote">https://github.blog/2024-02-12-the-architecture-of-sast-tools-an-explainer-for-developers/</span></div><div class="right"><div class="lazy img" data-bg="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/link/8f277b4ee0ecd.svg"></div></div></a></div>
+</div>
+
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://blog.g0f.cn/post/d60f84c3.html"></div>
+        <div class="social-wrap dis-select"><a class="social share-item wechat" onclick="util.toggle(&quot;qrcode-wechat&quot)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/b32ef3da1162a.svg"></a><a class="social share-item weibo" target="_blank" rel="external nofollow noopener noreferrer" href="https://service.weibo.com/share/share.php?url=https://blog.g0f.cn/post/d60f84c3.html&title=The Architecture of SAST Tools: An Explainer for Developers - 果粉圈&pics=https://cdn.g0f.cn//?r=https://github.blog&url=https://github.blog/wp-content/uploads/2024/02/cve-screenshot.png?w=1024&resize=1024%2C595&summary=
+
+
+In today’s age of shifting left—an approach to coding that integrates security checks earlier into the software de..."><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/80c07e4dbb303.svg"></a><a class="social share-item email" href="mailto:?subject=The Architecture of SAST Tools: An Explainer for Developers - 果粉圈&amp;body=https://blog.g0f.cn/post/d60f84c3.html"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/a1b00e20f425d.svg"></a><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg"></a></div>
+        
+        <div class="qrcode" id="qrcode-wechat" style="opacity:0;height:0">
+          <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://blog.g0f.cn/post/d60f84c3.html">
+        </div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/post/7f7ff27e.html">小米 14 手机欧洲售价曝光：12GB+512GB 首发 1099 欧元，没有 Pro 版</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/post/446bdf44.html">深度工作 | 在尝试了各种时间管理APP后，我最终选择了...</a></div></section></div>
+
+<div class="related-wrap" id="related-posts">
+    <section class="header">
+      <div class="title cap theme">您可能感兴趣的文章</div>
+    </section>
+    <section class="body">
+    <div class="related-posts"><a class="item" href="/post/61d30a8.html" title="A Guide to Open Source for the Social Sector"><span class="title">A Guide to Open Source for the Social Sector</span></a><a class="item" href="/post/468856e6.html" title="AppSec Is Harder Than You Think. Here’s How AI Can Help."><span class="title">AppSec Is Harder Than You Think. Here’s How AI Can Help.</span></a><a class="item" href="/post/4007b74f.html" title="Bringing Npm Registry Services to GitHub Codespaces"><span class="title">Bringing Npm Registry Services to GitHub Codespaces</span></a><a class="item" href="/post/aaedef42.html" title="Build Code Security Skills With the GitHub Secure Code Game"><span class="title">Build Code Security Skills With the GitHub Secure Code Game</span></a><a class="item" href="/post/1085f346.html" title="Copilot in GitHub Support Is Now Available!"><span class="title">Copilot in GitHub Support Is Now Available!</span></a></div></section></div>
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期</a><a href="/">分类</a><a href="/">标签</a><a href="/">归档</a></div><div class="sitemap-group"><span class="fs15">项目</span><a href="/">开源库</a></div><div class="sitemap-group"><span class="fs15">社交</span><a href="/">友链</a><a href="/">留言板</a></div><div class="sitemap-group"><span class="fs15">更多</span><a href="/">关于本站</a><a href="/">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，保留作者链接，如需删除可联系我。转载请注明出处。<a href="https://blog.g0f.cn/sitemap.xml">sitemap</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#why-developers-and-security-experts-use-sast-tools"><span class="toc-text">Why developers and security experts use SAST tools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#the-pros-and-cons-of-sast"><span class="toc-text">The pros and cons of SAST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-do-sast-tools-work"><span class="toc-text">How do SAST tools work?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-tokenize-the-source-code"><span class="toc-text">1. Tokenize the source code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-abstract-the-source-code"><span class="toc-text">2. Abstract the source code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-conduct-semantic-analysis"><span class="toc-text">3. Conduct semantic analysis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-conduct-a-taint-analysis"><span class="toc-text">4. Conduct a taint analysis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-run-custom-queries"><span class="toc-text">5. Run custom queries</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#automating-sast"><span class="toc-text">Automating SAST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#why-we-need-sast"><span class="toc-text">Why we need SAST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#how-sast-helps-developers-in-a-new-age-of-coding"><span class="toc-text">How SAST helps developers in a new age of coding</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class="float-panel blur">
+  <button type="button" style="display:none" class="laptop-only rightbar-toggle mobile" onclick="sidebar.rightbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type="button" style="display:none" class="mobile-only leftbar-toggle mobile" onclick="sidebar.leftbar()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewbox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js`,
+    marked: `https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+  <script>
+  function load_comment(){
+    if(!document.getElementById("waline_container"))return;
+    utils.css('https://unpkg.com/@waline/client@v2/dist/waline.css');
+    utils.js('https://unpkg.com/@waline/client@v2/dist/waline.js', {defer:true}).then(function () {
+      const el = document.getElementById("waline_container");
+      var path = el.getAttribute('comment_id');
+      if (!path) {
+        path = decodeURI(window.location.pathname);
+      }
+      Waline.init(Object.assign({"js":"https://unpkg.com/@waline/client@v2/dist/waline.js","css":"https://unpkg.com/@waline/client@v2/dist/waline.css","serverURL":"https://waline.g0f.cn","commentCount":true,"pageview":false,"locale":{"placeholder":"你可以在遵守国家法律的前提下畅所欲言"}}, {
+        el: '#waline_container',
+        path: path,
+        
+      }));
+    });
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    load_comment();
+  });
+
+</script>
+
+
+
+
+<script>
+  ctx.services = {
+    fcircle: `/js/services/fcircle.js`,
+    friends: `/js/services/friends.js`,
+    ghinfo: `/js/services/ghinfo.js`,
+    siteinfo: `/js/services/siteinfo.js`,
+    mdrender: `/js/services/mdrender.js`,
+    memos: `/js/services/memos.js`,
+    sites: `/js/services/sites.js`,
+    timeline: `/js/services/timeline.js`,
+    weibo: `/js/services/weibo.js`,
+  }
+  window.addEventListener('DOMContentLoaded', (event) => {
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id];
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`stellar-${id}-api`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"></script><script defer src="https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css`,
+    js: `https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('stellar-memos-api');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || null
+        }
+      });
+    })
+  }
+</script><script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script><script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
